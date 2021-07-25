@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://mbmti.ir
+ * @since             1.0.0
+ * @package           MBM_IPAK
+ *
+ * @wordpress-plugin
+ * Plugin Name:       MBM Ipak
+ * Plugin URI:        https://mbmti.ir
+ * Description:       سیستم حسابداری ایپک
+ * Version:           1.0.0
+ * Author:            ایپک
+ * Author URI:        https://mbmti.ir
+ * Text Domain:       mbm-ipak
+ * Domain Path:       /languages
+ */
+
+// If this file is called directly, abort.
+if (!defined('WPINC')) die;
+
+/* General Definition
+******************************/
+define('MBM_IPAK_VERSION', '1.0.0');
+
+define('MBM_IPAK_BASE', plugin_dir_path(__FILE__));
+define('MBM_IPAK_URI', plugin_dir_url(__FILE__));
+define('MBM_IPAK_FILE', __FILE__);
+define('MBM_IPAK_Model', MBM_IPAK_BASE . 'model/');
+define('MBM_IPAK_View', MBM_IPAK_BASE . 'view/');
+
+require MBM_IPAK_Model . 'core.php';
+
+$plugin = new MBM_Ipak_Core();
+$plugin->run();
