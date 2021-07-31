@@ -31,10 +31,10 @@ define('MBM_IPAK_VERSION', '1.0.0');
 define('MBM_IPAK_BASE', plugin_dir_path(__FILE__));
 define('MBM_IPAK_URI', plugin_dir_url(__FILE__));
 define('MBM_IPAK_FILE', __FILE__);
-define('MBM_IPAK_Model', MBM_IPAK_BASE . 'model/');
+define('MBM_IPAK_Include', MBM_IPAK_BASE . 'include/');
 define('MBM_IPAK_View', MBM_IPAK_BASE . 'view/');
 
-require MBM_IPAK_Model . 'core.php';
+require MBM_IPAK_Include . 'core.php';
 
 $plugin = new MBM_Ipak_Core();
 $plugin->run();
