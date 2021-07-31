@@ -26,8 +26,8 @@ class MBM_Ipak_Core
         wp_enqueue_script(
             'hesab_script',
             MBM_IPAK_URI . 'assets/js/admin.js',
-            array('jQuery'),
-            1.0
+            array('jquery'),
+            null,true
         );
     }
 
