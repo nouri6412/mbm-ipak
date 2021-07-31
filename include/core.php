@@ -3,30 +3,68 @@ class MBM_Ipak_Core
 {
     public function __construct()
     {
+        add_action('admin_enqueue_scripts',  array($this, "styles"));
+        add_action('admin_enqueue_scripts', array($this, "scripts"));
         add_action("admin_menu", array($this, "menu"));
         register_activation_hook(MBM_IPAK_FILE, array($this, "install"));
     }
+
     public function run()
     {
     }
+
+    public function styles()
+    {
+        wp_enqueue_style('hesab-styles',
+         MBM_IPAK_URI . 'assets/css/admin.css', 
+         array(), 
+         1.0);
+    }
+
+    public function scripts()
+    {
+        wp_enqueue_script(
+            'hesab_script',
+            MBM_IPAK_URI . 'assets/js/admin.js',
+            array('jQuery'),
+            1.0
+        );
+    }
+
+
     public function dashboard()
     {
         echo 'hello';
     }
+
     public function define_bank()
     {
+        $entity = new MBM_Ipak_Entity('bank', 'list');
+        $entity->render();
     }
+
+    public function define_bank_create()
+    {
+        $entity = new MBM_Ipak_Entity('bank', 'create');
+        $entity->render();
+    }
+
     public function define_contact()
     {
     }
+
     public function define_cost()
     {
     }
+
     public function menu()
     {
         add_menu_page('سیستم حسابداری', ' حسابداری ایپک', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"), 'dashicons-money-alt');
         add_submenu_page('ipak-hesab-dashboard', 'داشبورد حسابداری', 'داشبورد حسابداری', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"));
+
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف بانک', 'تعاریف بانک', 'manage_options', 'ipak-hesab-define-bank', array($this, "define_bank"));
+        add_submenu_page(null, 'بانک جدید', 'بانک جدید', 'manage_options', 'ipak-hesab-define-bank-create', array($this, "define_bank_create"));
+
         add_submenu_page('ipak-hesab-dashboard', '  تعاریف طرف حساب / اشخاص / شرکت', 'تعاریف طرف حساب / اشخاص / شرکت', 'manage_options', 'ipak-hesab-define-contact', array($this, "define_contact"));
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف هزینه', 'تعاریف هزینه', 'manage_options', 'ipak-hesab-define-cost',  array($this, "define_cost"));
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف درآمد', 'تعاریف درآمد', 'manage_options', 'ipak-hesab-define-income',  array($this, "define_income"));
@@ -46,52 +84,11 @@ class MBM_Ipak_Core
         //add_submenu_page('ipak-hesab-dashboard', '', '', 'manage_options', 'ipak-hesab-define-bank', array($this,"define_bank"));
 
     }
+
     public function install()
     {
-        global $wpdb;
-
-        $table_name = $wpdb->prefix . "hesab_model";
-        $charset_collate = $wpdb->get_charset_collate();
-        $sql = "CREATE TABLE $table_name (
-                `id` BIGINT(18) NOT NULL AUTO_INCREMENT,
-                `type_id` BIGINT(18) NOT NULL,
-                `title` varchar(500) CHARACTER SET utf8 NOT NULL,
-                PRIMARY KEY (`id`)
-              ) $charset_collate; ";
-
-        $table_name = $wpdb->prefix . "hesab_model_type";
-        $sql .= "CREATE TABLE $table_name (
-                    `id` BIGINT(18) NOT NULL,
-                    `title` varchar(500) CHARACTER SET utf8 NOT NULL,
-                    `title_fa` varchar(500) CHARACTER SET utf8 NOT NULL,
-                    PRIMARY KEY (`id`)
-                  ) $charset_collate; ";
-
-        $sql .= "INSERT INTO $table_name(id,title,title_fa) select '1','bank','بانک' where not exists(select * from $table_name where title = 'bank');  ";
-        $sql .= "INSERT INTO $table_name(id,title,title_fa) select '2','contact','طرف حساب' where not exists(select * from $table_name where title = 'contact');  ";
-        $sql .= "INSERT INTO $table_name(id,title,title_fa) select '3','cost','هزینه' where not exists(select * from $table_name where title = 'cost');  ";
-        $sql .= "INSERT INTO $table_name(id,title,title_fa) select '4','income','درآمد' where not exists(select * from $table_name where title = 'income');  ";
-
-        $table_name = $wpdb->prefix . "hesab_model_type_meta";
-        $sql .= "CREATE TABLE $table_name (
-                    `id` BIGINT(18) NOT NULL AUTO_INCREMENT,
-                    `type_id` BIGINT(18) NOT NULL,
-                    `key_meta` varchar(500) CHARACTER SET utf8 NOT NULL,
-                    `label_meta` varchar(500) CHARACTER SET utf8 NOT NULL,
-                    `type_meta` varchar(500) CHARACTER SET utf8 NOT NULL,
-                    PRIMARY KEY (`id`)
-                  ) $charset_collate; ";
-
-        $table_name = $wpdb->prefix . "hesab_model_meta";
-        $sql .= "CREATE TABLE $table_name (
-            `id` BIGINT(18) NOT NULL AUTO_INCREMENT,
-            `key_meta_id` varchar(500) CHARACTER SET utf8 NOT NULL,
-            `model_id` varchar(500) CHARACTER SET utf8 NOT NULL,
-            `value_meta` text CHARACTER SET utf8 NOT NULL,
-            PRIMARY KEY (`id`)
-          ) $charset_collate; ";
-
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+        $sql = new MBM_Ipak_Sql_Scripts;
+        dbDelta($sql->get_install_script());
     }
 }

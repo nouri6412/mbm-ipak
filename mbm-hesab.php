@@ -34,7 +34,8 @@ define('MBM_IPAK_FILE', __FILE__);
 define('MBM_IPAK_Include', MBM_IPAK_BASE . 'include/');
 define('MBM_IPAK_View', MBM_IPAK_BASE . 'view/');
 
+require MBM_IPAK_Include . 'sql_scripts.php';
+require MBM_IPAK_Include . 'entity.php';
 require MBM_IPAK_Include . 'core.php';
 
 $plugin = new MBM_Ipak_Core();
-$plugin->run();
