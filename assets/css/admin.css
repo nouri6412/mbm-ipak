@@ -1,0 +1,15 @@
+.loading-ajax{
+    display: none; 
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-image: url(../img/bg.png);
+}
+.loading-ajax img{
+    width: 48px;
+    right: 50%;
+    display: block;
+    margin: auto;
+    margin-top: 20%;
+}

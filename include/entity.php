@@ -1,5 +1,5 @@
 <?php
-class MBM_Ipak_Entity
+class MBM_Ipak_Entity extends MBM_Ipak_Base_Class
 {
     var $model_type = '';
     var $opt = 'list';
@@ -11,10 +11,12 @@ class MBM_Ipak_Entity
     }
     public function render()
     {
-        echo $this->model_type.'</br>'.$this->opt;
+        $this->view('model/insert');
     }
 
     public function post()
     {
     }
+
+
 }

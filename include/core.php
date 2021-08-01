@@ -15,10 +15,12 @@ class MBM_Ipak_Core
 
     public function styles()
     {
-        wp_enqueue_style('hesab-styles',
-         MBM_IPAK_URI . 'assets/css/admin.css', 
-         array(), 
-         1.0);
+        wp_enqueue_style(
+            'hesab-styles',
+            MBM_IPAK_URI . 'assets/css/admin.css',
+            array(),
+            1.0
+        );
     }
 
     public function scripts()
@@ -26,17 +28,26 @@ class MBM_Ipak_Core
         global $wp_query;
 
         wp_enqueue_script(
-            'hesab_script',
+            'ipak_hesab_script',
             MBM_IPAK_URI . 'assets/js/admin.js',
             array('jquery'),
-            null,true
+            1,
+            true
         );
 
-        wp_localize_script( 'custom-scripts', 'ipak_hesab_object', array(
-            'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            'current_page' => get_query_var( 'paged' ) ? get_query_var('paged') : 1,
+        wp_enqueue_script(
+            'ipak_hesab_ajax_script',
+            MBM_IPAK_URI . 'assets/js/ajax.js',
+            array('jquery'),
+            1,
+            true
+        );
+
+        wp_localize_script('ipak_hesab_ajax_script', 'ipak_hesab_object', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
             'max_page' => $wp_query->max_num_pages
-        ) );
+        ));
     }
 
 
