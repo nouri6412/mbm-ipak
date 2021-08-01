@@ -1,16 +1,25 @@
-function ipak_hesab_model_insert()
-{
- jQuery.ajax( {
-     url : ipak_hesab_object.ajaxurl,
-     data : {
-         'action' : 'ipak_hesab_model_insert',
-         'test' :  'hello test ajax'
-     },
-     dataType : 'json',
-     type : 'POST',
-     success : function ( result )
-     {
-         console.log(result);	
-     }
- } );
+function ipak_hesab_base_ajax(data, callback) {
+    jQuery.ajax({
+        url: ipak_hesab_object.ajaxurl,
+        data: data,
+        dataType: 'json',
+        type: 'POST',
+        success: callback,
+        beforeSend: function()
+        {
+            jQuery('.loading-ajax').show();
+        },
+        complete:function()
+        {
+            jQuery('.loading-ajax').hide();
+        }
+    });
+}
+function ipak_hesab_model_insert() {
+    ipak_hesab_base_ajax({
+        'action': 'ipak_hesab_model_insert',
+        'test': 'hello test ajax'
+    }, function (result) {
+        console.log(result);
+    });
 }
