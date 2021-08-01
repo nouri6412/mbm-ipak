@@ -23,12 +23,20 @@ class MBM_Ipak_Core
 
     public function scripts()
     {
+        global $wp_query;
+
         wp_enqueue_script(
             'hesab_script',
             MBM_IPAK_URI . 'assets/js/admin.js',
             array('jquery'),
             null,true
         );
+
+        wp_localize_script( 'custom-scripts', 'ipak_hesab_object', array(
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'current_page' => get_query_var( 'paged' ) ? get_query_var('paged') : 1,
+            'max_page' => $wp_query->max_num_pages
+        ) );
     }
 
 
