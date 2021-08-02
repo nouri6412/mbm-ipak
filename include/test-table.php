@@ -21,7 +21,7 @@ class Customers_List extends WP_List_Table {
 		parent::__construct( [
 			'singular' => __( 'Customer', 'sp' ), //singular name of the listed records
 			'plural'   => __( 'Customers', 'sp' ), //plural name of the listed records
-			'ajax'     => false //does this table support ajax?
+			'ajax'     => true //does this table support ajax?
 		] );
 
 	}
