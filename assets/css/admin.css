@@ -1,3 +1,22 @@
+@font-face {
+    font-family: "yekan";
+    src: url(../fonts/Yekan.eot);
+    src: url(../fonts/Yekan.eot?#iefix) format("embedded-opentype"), url(../fonts/Yekan.woff) format("woff"), url(../fonts/Yekan.ttf) format("truetype"), url(../fonts/Yekan.svg#BYekan) format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Vazir';
+    src: url('../fonts/Vazir-Medium-FD-WOL.eot');
+    src: url('../fonts/Vazir-Medium-FD-WOL.eot?#iefix') format('embedded-opentype'), url('../fonts/Vazir-Medium-FD-WOL.woff2') format('woff2'), url('../fonts/Vazir-Medium-FD-WOL.woff') format('woff'), url('../fonts/Vazir-Medium-FD-WOL.ttf') format('truetype');
+    font-weight: normal;
+}
+
+.ipak-main{
+    font-family: Vazir, yekan;
+}
+
 .loading-ajax{
     display: none; 
     position: fixed;
@@ -6,6 +25,7 @@
     top: 0;
     background-image: url(../img/bg.png);
 }
+
 .loading-ajax img{
     width: 48px;
     right: 50%;

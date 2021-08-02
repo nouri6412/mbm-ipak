@@ -15,12 +15,35 @@ class MBM_Ipak_Core
 
     public function styles()
     {
+
+        wp_enqueue_style(
+            'hesab-styles_date',
+            MBM_IPAK_URI . 'assets/css/DatePicker.css',
+            array(),
+            1.0
+        );
+
+        wp_enqueue_style(
+            'hesab-styles_bootstrap',
+            MBM_IPAK_URI . 'assets/css/bootstrap.min.css',
+            array(),
+            1.0
+        );
+
+        wp_enqueue_style(
+            'hesab-styles_bootstrap_rtl',
+            MBM_IPAK_URI . 'assets/css/bootstrap-rtl.css',
+            array(),
+            1.0
+        );
+
         wp_enqueue_style(
             'hesab-styles',
             MBM_IPAK_URI . 'assets/css/admin.css',
             array(),
             1.0
         );
+
     }
 
     public function scripts()
@@ -28,8 +51,24 @@ class MBM_Ipak_Core
         global $wp_query;
 
         wp_enqueue_script(
+            'ipak_hesab_script_bootstrap',
+            MBM_IPAK_URI . 'assets/js/bootstrap.min.js',
+            array('jquery'),
+            1,
+            true
+        );
+
+        wp_enqueue_script(
             'ipak_hesab_script',
             MBM_IPAK_URI . 'assets/js/admin.js',
+            array('jquery'),
+            1,
+            true
+        );
+
+        wp_enqueue_script(
+            'ipak_hesab_script_date',
+            MBM_IPAK_URI . 'assets/js/DatePicker.js',
             array('jquery'),
             1,
             true

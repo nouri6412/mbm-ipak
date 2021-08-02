@@ -5,16 +5,16 @@ function ipak_hesab_base_ajax(data, callback) {
         dataType: 'json',
         type: 'POST',
         success: callback,
-        beforeSend: function()
-        {
+        beforeSend: function () {
             jQuery('.loading-ajax').show();
         },
-        complete:function()
-        {
+        complete: function () {
             jQuery('.loading-ajax').hide();
         }
     });
 }
+
+
 function ipak_hesab_model_insert() {
     ipak_hesab_base_ajax({
         'action': 'ipak_hesab_model_insert',
