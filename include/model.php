@@ -3,18 +3,27 @@ if (!class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 }
 
-class Customers_List extends WP_List_Table
+class MBM_Ipak_Models_List extends WP_List_Table
 {
 
     var $model_table_name = '';
+    var $model = '';
+    var $model_obj = '';
     var $primary_key = '';
+    var $columns = [];
+    var $where="";
     /** Class constructor */
-    public function __construct()
+    public function __construct($params = [])
     {
+        $this->model              = $params["model"];
+        $this->model_obj          = $params["model_obj"];
+        $this->model_table_name   = $params["model_table_name"];
+        $this->primary_key        = $this->model_obj["primary_key"];
+        $this->columns            = $this->model_obj["fields"];
 
         parent::__construct([
-            'singular' => __('model', 'sp'), //singular name of the listed records
-            'plural'   => __('models', 'sp'), //plural name of the listed records
+            'singular' => __($this->model, 'sp'), //singular name of the listed records
+            'plural'   => __($this->model . 's', 'sp'), //plural name of the listed records
             'ajax'     => true //does this table support ajax?
         ]);
     }
@@ -33,7 +42,7 @@ class Customers_List extends WP_List_Table
 
         global $wpdb;
 
-        $sql = "SELECT * FROM {$this->model_table_name}";
+        $sql = "SELECT * FROM {$this->model_table_name}".' where 1=1 '.$this->where;
 
         if (!empty($_REQUEST['orderby'])) {
             $sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
@@ -43,9 +52,7 @@ class Customers_List extends WP_List_Table
         $sql .= " LIMIT $per_page";
         $sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
 
-
         $result = $wpdb->get_results($sql, 'ARRAY_A');
-
         return $result;
     }
 
@@ -55,7 +62,7 @@ class Customers_List extends WP_List_Table
      *
      * @param int $id customer ID
      */
-    public  function delete_customer($id)
+    public  function delete_model($id)
     {
         global $wpdb;
 
@@ -76,7 +83,7 @@ class Customers_List extends WP_List_Table
     {
         global $wpdb;
 
-        $sql = "SELECT COUNT(*) FROM {$this->model_table_name}";
+        $sql = "SELECT COUNT(*) FROM {$this->model_table_name}".' where 1=1 '.$this->where;
 
         return $wpdb->get_var($sql);
     }
@@ -100,11 +107,10 @@ class Customers_List extends WP_List_Table
     public function column_default($item, $column_name)
     {
         switch ($column_name) {
-            case 'address':
-            case 'city':
+            case 'id':
                 return $item[$column_name];
             default:
-                return print_r($item, true); //Show the whole array for troubleshooting purposes
+                return print_r($item[$column_name], true); //Show the whole array for troubleshooting purposes
         }
     }
 
@@ -119,7 +125,7 @@ class Customers_List extends WP_List_Table
     {
         return sprintf(
             '<input type="checkbox" name="bulk-delete[]" value="%s" />',
-            $item['ID']
+            $item[$this->primary_key]
         );
     }
 
@@ -134,12 +140,12 @@ class Customers_List extends WP_List_Table
     function column_name($item)
     {
 
-        $delete_nonce = wp_create_nonce('sp_delete_customer');
+        $delete_nonce = wp_create_nonce('sp_delete_' . $this->model);
 
-        $title = '<strong>' . $item['name'] . '</strong>';
+        $title = '<strong>' . $item[$this->primary_key] . '</strong>';
 
         $actions = [
-            'delete' => sprintf('<a href="?page=%s&action=%s&customer=%s&_wpnonce=%s">Delete</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['ID']), $delete_nonce)
+            'delete' => sprintf('<a href="?page=%s&action=%s&' . $this->model . '=%s&_wpnonce=%s">حذف</a>', esc_attr($_REQUEST['page']), 'delete', absint($item[$this->primary_key]), $delete_nonce)
         ];
 
         return $title . $this->row_actions($actions);
@@ -154,12 +160,12 @@ class Customers_List extends WP_List_Table
     function get_columns()
     {
         $columns = [
-            'cb'      => '<input type="checkbox" />',
-            'name'    => __('Name', 'sp'),
-            'address' => __('Address', 'sp'),
-            'city'    => __('City', 'sp')
+            'cb'      => '<input type="checkbox" />'
         ];
 
+        foreach ($this->columns as $col) {
+            $columns[$col["title"]] = $col["label"];
+        }
         return $columns;
     }
 
@@ -171,10 +177,11 @@ class Customers_List extends WP_List_Table
      */
     public function get_sortable_columns()
     {
-        $sortable_columns = array(
-            'name' => array('name', true),
-            'city' => array('city', false)
-        );
+        $sortable_columns = [];
+
+        foreach ($this->columns as $col) {
+            $sortable_columns[$col["title"]] = array($col["title"], $col["sortable"]);
+        }
 
         return $sortable_columns;
     }
@@ -187,7 +194,7 @@ class Customers_List extends WP_List_Table
     public function get_bulk_actions()
     {
         $actions = [
-            'bulk-delete' => 'Delete'
+            'bulk-delete' => 'حذف'
         ];
 
         return $actions;
@@ -205,16 +212,16 @@ class Customers_List extends WP_List_Table
         /** Process bulk action */
         $this->process_bulk_action();
 
-        $per_page     = $this->get_items_per_page('customers_per_page', 5);
+        $per_page     = $this->get_items_per_page($this->model . 's' . '_per_page', 5);
         $current_page = $this->get_pagenum();
-        $total_items  = self::record_count();
+        $total_items  = $this->record_count();
 
         $this->set_pagination_args([
             'total_items' => $total_items, //WE have to calculate the total number of items
             'per_page'    => $per_page //WE have to determine how many items to show on a page
         ]);
 
-        $this->items = self::get_customers($per_page, $current_page);
+        $this->items = $this->get_models($per_page, $current_page);
     }
 
     public function process_bulk_action()
@@ -226,10 +233,10 @@ class Customers_List extends WP_List_Table
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
 
-            if (!wp_verify_nonce($nonce, 'sp_delete_customer')) {
+            if (!wp_verify_nonce($nonce, 'sp_delete_' . $this->model)) {
                 die('Go get a life script kiddies');
             } else {
-                self::delete_customer(absint($_GET['customer']));
+                $this->delete_model(absint($_GET[$this->model]));
 
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
                 // add_query_arg() return the current url
@@ -247,7 +254,7 @@ class Customers_List extends WP_List_Table
 
             // loop over the array of record IDs and delete them
             foreach ($delete_ids as $id) {
-                self::delete_customer($id);
+                $this->delete_model($id);
             }
 
             // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
