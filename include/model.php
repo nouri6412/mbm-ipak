@@ -107,7 +107,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
     public function column_default($item, $column_name)
     {
         switch ($column_name) {
-            case 'id':
+            case 'title':
                 return $item[$column_name];
             default:
                 return print_r($item[$column_name], true); //Show the whole array for troubleshooting purposes
@@ -137,18 +137,18 @@ class MBM_Ipak_Models_List extends WP_List_Table
      *
      * @return string
      */
-    function column_name($item)
+    function column_id($item)
     {
 
         $delete_nonce = wp_create_nonce('sp_delete_' . $this->model);
 
-        $title = '<strong>' . $item[$this->primary_key] . '</strong>';
+        $title = '<strong>' . $item['id'] . '</strong>';
 
         $actions = [
             'delete' => sprintf('<a href="?page=%s&action=%s&' . $this->model . '=%s&_wpnonce=%s">حذف</a>', esc_attr($_REQUEST['page']), 'delete', absint($item[$this->primary_key]), $delete_nonce)
         ];
 
-        return $title . $this->row_actions($actions);
+        return $title .$this->row_actions($actions);
     }
 
 
@@ -164,7 +164,10 @@ class MBM_Ipak_Models_List extends WP_List_Table
         ];
 
         foreach ($this->columns as $col) {
-            $columns[$col["title"]] = $col["label"];
+            if($col["title"]!=$this->primary_key || 1==1)
+            {
+                $columns[$col["title"]] = $col["label"];
+            }
         }
         return $columns;
     }
