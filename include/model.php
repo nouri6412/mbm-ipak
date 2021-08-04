@@ -145,7 +145,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
         $title = '<strong>' . $item['id'] . '</strong>';
 
         $actions = [
-            'delete' => sprintf('<a href="?page=%s&action=%s&' . $this->model . '=%s&_wpnonce=%s">حذف</a>', esc_attr($_REQUEST['page']), 'delete', absint($item[$this->primary_key]), $delete_nonce)
+            'delete' => sprintf('<a href="?page=%s&action=%s&' . $this->model . '=%s&_wpnonce=%s">حذف</a>', esc_attr($_REQUEST['page']), 'delete', absint($item[$this->primary_key]), $delete_nonce),
+            'edit'   => '<a onclick="ipak_hesab_model_insert();" href="#">ویرایش</a>'
         ];
 
         return $title .$this->row_actions($actions);

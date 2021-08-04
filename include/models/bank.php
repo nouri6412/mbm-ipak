@@ -6,7 +6,7 @@ $this->models["bank"]["primary_key"] = "id";
 $this->models["bank"]["fields"] = array(
     "id" => array(
         "title" => "id",
-        "label" => "آی دی بانک",
+        "label" => "شماره سیستمی بانک",
         "sortable" => true,
         "is_primary" => true
     ),
