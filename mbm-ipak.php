@@ -33,6 +33,7 @@ define('MBM_IPAK_URI', plugin_dir_url(__FILE__));
 define('MBM_IPAK_FILE', __FILE__);
 define('MBM_IPAK_Include', MBM_IPAK_BASE . 'include/');
 define('MBM_IPAK_View', MBM_IPAK_BASE . 'view/');
+$ViewData=[];
 
 require MBM_IPAK_Include . 'sql_scripts.php';
 require MBM_IPAK_Include . 'model.php';

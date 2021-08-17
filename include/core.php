@@ -18,6 +18,13 @@ class MBM_Ipak_Core
     {
 
         wp_enqueue_style(
+            'hesab-styles_font',
+            MBM_IPAK_URI . 'assets/css/font-awesome.min.css',
+            array(),
+            1.0
+        );
+
+        wp_enqueue_style(
             'hesab-styles_date',
             MBM_IPAK_URI . 'assets/css/DatePicker.css',
             array(),

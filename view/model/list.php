@@ -1,5 +1,6 @@
 <div class="wrap">
     <h2><?php  echo $title_page; ?></h2>
+    <button data-toggle="modal" data-target="#ipak-model-form" class="btn btn-primary"><span class="span-inside-btn"><?php echo "ایجاد"." ".$this->model["label"]; ?></span><i class="fa fa-plus"></i></button>
 
     <div id="poststuff">
         <div id="post-body" class="metabox-holder columns-2">
