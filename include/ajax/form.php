@@ -1,7 +1,7 @@
 <?php
-class MBM_Ipak_Ajax
+class MBM_Ipak_Ajax_Form
 {
-    function model_insert()
+    function form()
     {
         $output = 'ok';
     
@@ -13,11 +13,6 @@ class MBM_Ipak_Ajax
         die();
     }
 }
-$MBM_Ipak_Ajax=new MBM_Ipak_Ajax;
+$MBM_Ipak_Ajax_Form=new MBM_Ipak_Ajax_Form;
 //add_action( 'wp_ajax_nopriv_ajax_submit_like', 'submit' );
-add_action( 'wp_ajax_ipak_hesab_model_insert', array($MBM_Ipak_Ajax,'model_insert') );
-
-foreach (glob(MBM_IPAK_Include."ajax/*.php") as $filename)
-{
-    require $filename;
-}
+add_action( 'wp_ajax_ipak_hesab_model_form', array($MBM_Ipak_Ajax_Form,'form') );

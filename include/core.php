@@ -90,6 +90,14 @@ class MBM_Ipak_Core
             true
         );
 
+        wp_enqueue_script(
+            'ipak_hesab_ajax_script_form',
+            MBM_IPAK_URI . 'assets/js/form.js',
+            array('jquery'),
+            1,
+            true
+        );
+
         wp_localize_script('ipak_hesab_ajax_script', 'ipak_hesab_object', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
