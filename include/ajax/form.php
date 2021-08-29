@@ -3,8 +3,12 @@ class MBM_Ipak_Ajax_Form
 {
     function form()
     {
-        $output = $_POST["model_name"];
-    
+        $model_name = $_POST["model_name"];
+        $MBM_Ipak_Models = new MBM_Ipak_Models;
+
+        $model = $MBM_Ipak_Models->get_model($model_name);
+
+        $output = $model["label"];
         echo json_encode( [
             'success'       => true,
             'html'          => $output,
