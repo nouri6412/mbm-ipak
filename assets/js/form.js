@@ -3,6 +3,6 @@ function ipak_hesab_model_form(model) {
         'action': 'ipak_hesab_model_form',
         'model': model
     }, function (result) {
-        console.log(result);
+        jQuery('.ipak-model-form .modal-body').html(result.html);
     });
 }
