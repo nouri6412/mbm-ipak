@@ -1,6 +1,7 @@
 <?php
 $this->models["bank"] = [];
 $this->models["bank"]["id"] = "1";
+$this->models["bank"]["name"] = "bank";
 $this->models["bank"]["label"] = "بانک";
 $this->models["bank"]["primary_key"] = "id";
 $this->models["bank"]["fields"] = array(
