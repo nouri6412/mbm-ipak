@@ -3,7 +3,7 @@ class MBM_Ipak_Ajax_Form
 {
     function form()
     {
-        $output = 'ok';
+        $output = $_POST["model_name"];
     
         echo json_encode( [
             'success'       => true,
