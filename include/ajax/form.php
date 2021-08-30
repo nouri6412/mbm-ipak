@@ -103,7 +103,7 @@ class MBM_Ipak_Ajax_Form
 
         $ret = '<div class="' . $values["class"] . ' form-group">';
         $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
-        $ret .= '<input  ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
+        $ret .= '<input id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
         $ret .= '</div>';
 
         return $ret;
@@ -115,15 +115,31 @@ class MBM_Ipak_Ajax_Form
 
         $ret = '<div class="' . $values["class"] . ' form-group">';
         $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
-        $ret .= '<textarea  ' .  $values["type_field"] . ' class="form-control ' . $values["input_class"] . '" >' . $values["value"] . '</textarea>';
+        $ret .= '<textarea  id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' class="form-control ' . $values["input_class"] . '" >' . $values["value"] . '</textarea>';
         $ret .= '</div>';
 
         return $ret;
     }
 
-     function submit($model)
+    function submit($model)
     {
-        
+        global $wpdb;
+        $title = "";
+        foreach ($model["fields"] as $field) {
+            if (isset($field["in_form"]) && $field["in_form"]) {
+                if (isset($_POST[$field["title"]])) {
+                    if (isset($field["is_title"]) && $field["is_title"]) {
+                        $title = $_POST[$field["title"]];
+                    }
+                }
+            }
+        }
+
+        $table     = $wpdb->prefix . "hesab_model";
+
+        $query_string       = $wpdb->prepare("insert into $table(type_id,title) values(%d,%s)", array($model["id"], $title));
+        $query_result       = $wpdb->query($query_string);
+        echo  'salam ' . $wpdb->insert_id;;
     }
 }
 $MBM_Ipak_Ajax_Form = new MBM_Ipak_Ajax_Form;

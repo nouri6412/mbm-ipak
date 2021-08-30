@@ -12,6 +12,7 @@ class MBM_Ipak_Entity extends MBM_Ipak_Base_Class
         $this->model_name = $type;
         $this->opt = $op;
     }
+    
     public function render()
     {
         global $wpdb, $ViewData;
@@ -25,12 +26,12 @@ class MBM_Ipak_Entity extends MBM_Ipak_Base_Class
             $this->view('model/form');
         }
     }
+
     public function post()
     {
-        if(isset($_POST["submit_model"]))
-        {
-           $MBM_Ipak_Ajax_Form=new MBM_Ipak_Ajax_Form;
-           $MBM_Ipak_Ajax_Form->submit($this->model);
+        if (isset($_POST["submit_model"])) {
+            $MBM_Ipak_Ajax_Form = new MBM_Ipak_Ajax_Form;
+            $MBM_Ipak_Ajax_Form->submit($this->model);
         }
     }
 }
