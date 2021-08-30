@@ -16,7 +16,7 @@ class MBM_Ipak_Ajax_Form
         }
 
         $output .= '<div class="col-md-12">'
-            . '<input class="btn btn-primary" type="submit" value="ذخیره" />'
+            . '<input name="submit_model" class="btn btn-primary" type="submit" value="ذخیره" />'
             . '</div>';
 
         $output .= '</div>';
@@ -119,6 +119,11 @@ class MBM_Ipak_Ajax_Form
         $ret .= '</div>';
 
         return $ret;
+    }
+
+     function submit($model)
+    {
+        
     }
 }
 $MBM_Ipak_Ajax_Form = new MBM_Ipak_Ajax_Form;
