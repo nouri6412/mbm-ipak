@@ -8,12 +8,16 @@ class MBM_Ipak_Ajax_Form
 
         $model = $MBM_Ipak_Models->get_model($model_name);
 
-        $output = '<form class="model-form">';
+        $output = '<form method="post" action="' . esc_html(admin_url('admin.php')) . '?page=' . $_POST["page"] . '" class="model-form">';
         $output .= '<div class="row">';
 
         foreach ($model["fields"] as $field) {
             $output .= $this->field_form($field);
         }
+
+        $output .= '<div class="col-md-12">'
+            . '<input class="btn btn-primary" type="submit" value="ذخیره" />'
+            . '</div>';
 
         $output .= '</div>';
         $output .= '</form>';
@@ -35,11 +39,9 @@ class MBM_Ipak_Ajax_Form
                         return $this->field_text($field);
                     } else if ($field["type"]["type"] == "number") {
                         return $this->field_text($field);
-                    }
-                    else if ($field["type"]["type"] == "textarea") {
+                    } else if ($field["type"]["type"] == "textarea") {
                         return $this->field_textarea($field);
                     }
-                    
                 } else {
                     $field["type"]["type"] = "text";
                     return $this->field_text($field);

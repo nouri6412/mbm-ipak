@@ -1,4 +1,6 @@
 function ipak_hesab_base_ajax(data, callback) {
+    console.log(ipak_hesab_object);
+    data["page"]=ipak_hesab_object.page;
     console.log(data);
     jQuery.ajax({
         url: ipak_hesab_object.ajaxurl,
