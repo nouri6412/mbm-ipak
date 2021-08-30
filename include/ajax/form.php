@@ -36,6 +36,10 @@ class MBM_Ipak_Ajax_Form
                     } else if ($field["type"]["type"] == "number") {
                         return $this->field_text($field);
                     }
+                    else if ($field["type"]["type"] == "textarea") {
+                        return $this->field_textarea($field);
+                    }
+                    
                 } else {
                     $field["type"]["type"] = "text";
                     return $this->field_text($field);
@@ -49,9 +53,9 @@ class MBM_Ipak_Ajax_Form
     }
     function get_values($field)
     {
-        $values=[];
+        $values = [];
 
-        
+
         $values["label_title"] = $field["title"];
 
         if (isset($field["label"])) {
@@ -82,23 +86,34 @@ class MBM_Ipak_Ajax_Form
             $values["type_field"]  = ' type="number" ';
         }
 
-        $values["input_class"]='';
+        $values["input_class"] = '';
 
-        if (isset($values["type"]["input_class"]) ) {
+        if (isset($values["type"]["input_class"])) {
             $values["input_class"] = $values["type"]["input_class"];
         }
 
         return $values;
     }
+
     function field_text($field)
     {
-
-         
-        $values=$this->get_values($field);
+        $values = $this->get_values($field);
 
         $ret = '<div class="' . $values["class"] . ' form-group">';
         $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
-        $ret .= '<input  ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control '. $values["input_class"].'" />';
+        $ret .= '<input  ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
+        $ret .= '</div>';
+
+        return $ret;
+    }
+
+    function field_textarea($field)
+    {
+        $values = $this->get_values($field);
+
+        $ret = '<div class="' . $values["class"] . ' form-group">';
+        $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
+        $ret .= '<textarea  ' .  $values["type_field"] . ' class="form-control ' . $values["input_class"] . '" >' . $values["value"] . '</textarea>';
         $ret .= '</div>';
 
         return $ret;

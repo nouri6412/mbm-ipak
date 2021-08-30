@@ -32,6 +32,6 @@ $this->models["bank"]["fields"] = array(
         "label" => "آدرس بانک",
         "sortable" => true,
         "in_form" => true,
-        "type" => array("type" => "text", "size" => 50,"class"=>"col-md-12")
+        "type" => array("type" => "textarea", "size" => 500,"class"=>"col-md-12")
     )
 );
