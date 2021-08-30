@@ -8,7 +8,7 @@ class MBM_Ipak_Ajax_Form
 
         $model = $MBM_Ipak_Models->get_model($model_name);
 
-        $output = '<form>';
+        $output = '<form class="model-form">';
         $output .= '<div class="row">';
 
         foreach ($model["fields"] as $field) {
@@ -23,7 +23,7 @@ class MBM_Ipak_Ajax_Form
             'html'          => $output,
             'max_num_pages' => 1
         ]);
-        
+
         die();
     }
     function field_form($field)
@@ -33,42 +33,73 @@ class MBM_Ipak_Ajax_Form
                 if (isset($field["type"]["type"]) && $field["type"]["type"]) {
                     if ($field["type"]["type"] == "text") {
                         return $this->field_text($field);
+                    } else if ($field["type"]["type"] == "number") {
+                        return $this->field_text($field);
                     }
                 } else {
+                    $field["type"]["type"] = "text";
                     return $this->field_text($field);
                 }
+            } else {
+                $field["type"] = [];
+                $field["type"]["type"] = "text";
+                return $this->field_text($field);
             }
         }
     }
+    function get_values($field)
+    {
+        $values=[];
+
+        
+        $values["label_title"] = $field["title"];
+
+        if (isset($field["label"])) {
+            $values["label_title"] = $field["label"];
+        }
+
+        $values["value"] = "";
+
+        if (isset($field["value"])) {
+            $values["value"] = $field["value"];
+        }
+
+        $values["type"] = [];
+
+        if (isset($field["type"])) {
+            $values["type"]  = $field["type"];
+        }
+
+        $values["class"] = "col-md-4";
+
+        if (isset($values["type"]["class"])) {
+            $values["class"] = $values["type"]["class"];
+        }
+
+        $values["type_field"] = '';
+
+        if ($values["type"] == "number") {
+            $values["type_field"]  = ' type="number" ';
+        }
+
+        $values["input_class"]='';
+
+        if (isset($values["type"]["input_class"]) ) {
+            $values["input_class"] = $values["type"]["input_class"];
+        }
+
+        return $values;
+    }
     function field_text($field)
     {
-        $class = "col-md-4";
-        $label_title = $field["title"];
 
-        if (isset($field["label"]) && $field["label"]) {
-            $label_title = $field["label"];
-        }
+         
+        $values=$this->get_values($field);
 
-        $value = "";
-
-        if (isset($field["value"]) && $field["value"]) {
-            $value = $field["value"];
-        }
-
-        $type = [];
-
-        if (isset($field["type"]) && $field["type"]) {
-            $type = $field["type"];
-        }
-
-        if (isset($type["class"])) {
-            $class = $type["class"];
-        }
-
-        $ret = '<div class="' . $class . '">';
-        $ret .= '<label class="label-control">' . $label_title . '</label>';
-        $ret .= '<input value="' . $value . '" class="form-control" />';
-        $ret .= '<div>';
+        $ret = '<div class="' . $values["class"] . ' form-group">';
+        $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
+        $ret .= '<input  ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control '. $values["input_class"].'" />';
+        $ret .= '</div>';
 
         return $ret;
     }
