@@ -14,6 +14,9 @@ $this->models["bank"]["fields"] = array(
     "title" => array(
         "title" => "title",
         "label" => "عنوان بانک",
-        "sortable" => true
+        "sortable" => true,
+        "in_form" => true,
+        "is_title" => true,
+        "type" => array("type" => "text", "size" => 50)
     )
 );

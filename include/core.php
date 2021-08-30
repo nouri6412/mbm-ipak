@@ -39,7 +39,7 @@ class MBM_Ipak_Core
         );
 
         wp_enqueue_style(
-            'hesab-styles_bootstrap_rtl',
+            'hesab-styles-bootstrap-rtl',
             MBM_IPAK_URI . 'assets/css/bootstrap-rtl.css',
             array(),
             1.0
