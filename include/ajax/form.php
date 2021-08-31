@@ -8,6 +8,7 @@ class MBM_Ipak_Ajax_Form
         $model_id = $_POST["model_id"];
         $MBM_Ipak_Models = new MBM_Ipak_Models;
         $item_edit = [];
+        $output='';
 
         if ($model_id > 0) {
             $table     = $wpdb->prefix . "hesab_model";
@@ -23,6 +24,7 @@ class MBM_Ipak_Ajax_Form
 
                 foreach($items_meta  as $item)
                 {
+                   // $output .= 'salam '.$item["key_meta"].' '.$item["value_meta"].'<br>';
                     $item_edit[$item["key_meta"]]=$item["value_meta"];
                 }
             }
@@ -30,11 +32,11 @@ class MBM_Ipak_Ajax_Form
 
         $model = $MBM_Ipak_Models->get_model($model_name);
 
-        $output = '<form method="post" action="' . esc_html(admin_url('admin.php')) . '?page=' . $_POST["page"] . '" class="model-form">';
+        $output .= '<form method="post" action="' . esc_html(admin_url('admin.php')) . '?page=' . $_POST["page"] . '" class="model-form">';
         $output .= '<div class="row">';
 
         foreach ($model["fields"] as $field) {
-            if(count($item_edit)>0 && isset($field["is_title"]) && isset($item_edit[$field["title"]]))
+            if(count($item_edit)>0 && isset($item_edit[$field["title"]]))
             {
                 $field["value"]=$item_edit[$field["title"]];
             }
