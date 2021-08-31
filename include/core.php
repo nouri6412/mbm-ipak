@@ -1,7 +1,8 @@
 <?php
 class MBM_Ipak_Core
 {
-    var $entities=[];
+    var $entities = [];
+    var $alerts = [];
     public function __construct()
     {
         add_action('admin_enqueue_scripts',  array($this, "styles"));
@@ -12,6 +13,28 @@ class MBM_Ipak_Core
 
     public function run()
     {
+    }
+
+    public function add_alert($message, $type = "danger")
+    {
+        $this->alerts[] = ["message" => $message, "type" => $type];
+    }
+
+    public function get_alert()
+    {
+        return $this->alerts;
+    }
+
+    public function print_alert()
+    {
+        foreach ($this->alerts as $alert) {
+?>
+            <div class="alert alert-<?php echo $alert["type"] ?>">
+                <?php echo $alert["message"]; ?>
+            </div>
+
+<?php
+        }
     }
 
     public function styles()
@@ -51,7 +74,6 @@ class MBM_Ipak_Core
             array(),
             1.0
         );
-
     }
 
     public function scripts()
@@ -140,8 +162,8 @@ class MBM_Ipak_Core
         add_submenu_page('ipak-hesab-dashboard', 'داشبورد حسابداری', 'داشبورد حسابداری', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"));
 
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف بانک', 'تعاریف بانک', 'manage_options', 'ipak-hesab-define-bank', array($this, "define_bank"));
-       $this->add_entity("bank");
-       
+        $this->add_entity("bank");
+
         add_submenu_page(null, 'بانک جدید', 'بانک جدید', 'manage_options', 'ipak-hesab-define-bank-create', array($this, "define_bank_create"));
 
         add_submenu_page('ipak-hesab-dashboard', '  تعاریف طرف حساب / اشخاص / شرکت', 'تعاریف طرف حساب / اشخاص / شرکت', 'manage_options', 'ipak-hesab-define-contact', array($this, "define_contact"));
@@ -166,14 +188,14 @@ class MBM_Ipak_Core
 
     public function get_entity($model_in)
     {
-      return $this->entities[$model_in];
+        return $this->entities[$model_in];
     }
 
-    public function add_entity($model_in,$type="list")
+    public function add_entity($model_in, $type = "list")
     {
         global $wpdb;
 
-        $entity=new MBM_Ipak_Entity($model_in, $type);
+        $entity = new MBM_Ipak_Entity($model_in, $type);
 
         $MBM_Ipak_Models = new MBM_Ipak_Models;
 
@@ -192,16 +214,16 @@ class MBM_Ipak_Core
         $args   = [
             'label'   => $model["label"],
             'default' => 5,
-            'option'  => $model_in.'s_per_page'
+            'option'  => $model_in . 's_per_page'
         ];
 
-        add_screen_option( $option, $args );
+        add_screen_option($option, $args);
 
         $entity->model_obj = $MBM_Ipak_Models_List;
-       
-        $entity->title_page="لیست ".$model["label"]." "."ها";
 
-        $this->entities[$model_in]=$entity;
+        $entity->title_page = "لیست " . $model["label"] . " " . "ها";
+
+        $this->entities[$model_in] = $entity;
     }
 
     public function install()

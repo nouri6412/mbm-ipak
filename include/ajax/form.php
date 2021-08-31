@@ -123,7 +123,7 @@ class MBM_Ipak_Ajax_Form
 
     function submit($model)
     {
-        global $wpdb;
+        global $wpdb, $MBM_Ipak_Core;
         $title = "";
         foreach ($model["fields"] as $field) {
             if (isset($field["in_form"]) && $field["in_form"]) {
@@ -139,7 +139,9 @@ class MBM_Ipak_Ajax_Form
 
         $query_string       = $wpdb->prepare("insert into $table(type_id,title) values(%d,%s)", array($model["id"], $title));
         $query_result       = $wpdb->query($query_string);
-        echo  'salam ' . $wpdb->insert_id;;
+        $insert_id=  $wpdb->insert_id;
+
+        $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد "." ".$insert_id,"success");
     }
 }
 $MBM_Ipak_Ajax_Form = new MBM_Ipak_Ajax_Form;

@@ -17,6 +17,7 @@ $this->models["bank"]["fields"] = array(
         "sortable" => true,
         "in_form" => true,
         "is_title" => true,
+        "is_require"=>true,
         "type" => array("type" => "text", "size" => 50,"class"=>"col-md-6")
     ),
     "number" => array(

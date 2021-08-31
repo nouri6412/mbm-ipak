@@ -46,4 +46,4 @@ require MBM_IPAK_Include . 'core.php';
 
 
 
-$plugin = new MBM_Ipak_Core();
+$MBM_Ipak_Core = new MBM_Ipak_Core();

@@ -1,5 +1,7 @@
-<div class="wrap">
+<div class="wrap ipak-main">
     <h2><?php  echo $title_page; ?></h2>
+<?php global $MBM_Ipak_Core; $MBM_Ipak_Core->print_alert(); ?>
+
     <button onclick="ipak_hesab_model_form({'model_name':'<?php echo $this->model['name']; ?>','model_id':'0'})" data-toggle="modal" data-target="#ipak-model-form" class="btn btn-primary"><span class="span-inside-btn"><?php echo "ایجاد"." ".$this->model["label"]; ?></span><i class="fa fa-plus"></i></button>
 
     <div id="poststuff">
