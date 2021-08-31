@@ -3,8 +3,21 @@ class MBM_Ipak_Ajax_Form
 {
     function form()
     {
+        global $wpdb;
         $model_name = $_POST["model_name"];
+        $model_id = $_POST["model_id"];
         $MBM_Ipak_Models = new MBM_Ipak_Models;
+        $item_edit = [];
+
+        if ($model_id > 0) {
+            $table     = $wpdb->prefix . "hesab_model";
+            $query_string       = $wpdb->prepare("select * from $table where id=%d", array($model_id));
+            $items       = $wpdb->get_results($query_string, ARRAY_A);
+            if($items>0)
+            {
+                $item_edit=$items[0];
+            }
+        }
 
         $model = $MBM_Ipak_Models->get_model($model_name);
 
@@ -12,6 +25,10 @@ class MBM_Ipak_Ajax_Form
         $output .= '<div class="row">';
 
         foreach ($model["fields"] as $field) {
+            if(count($item_edit)>0 && isset($field["is_title"]) && isset($item_edit[$field["title"]]))
+            {
+                $field["value"]=$item_edit[$field["title"]];
+            }
             $output .= $this->field_form($field);
         }
 
@@ -24,8 +41,7 @@ class MBM_Ipak_Ajax_Form
 
         echo json_encode([
             'success'       => true,
-            'html'          => $output,
-            'max_num_pages' => 1
+            'html'          => $output
         ]);
 
         die();
