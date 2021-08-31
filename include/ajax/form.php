@@ -16,6 +16,15 @@ class MBM_Ipak_Ajax_Form
             if($items>0)
             {
                 $item_edit=$items[0];
+
+                $table     = $wpdb->prefix . "hesab_model_meta";
+                $query_string       = $wpdb->prepare("select * from $table where model_id=%d", array($model_id));
+                $items_meta       = $wpdb->get_results($query_string, ARRAY_A);
+
+                foreach($items_meta  as $item)
+                {
+                    $item_edit[$item["key_meta"]]=$item["value_meta"];
+                }
             }
         }
 
