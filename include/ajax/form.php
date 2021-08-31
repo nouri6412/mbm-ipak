@@ -125,23 +125,34 @@ class MBM_Ipak_Ajax_Form
     {
         global $wpdb, $MBM_Ipak_Core;
         $title = "";
+        $is_true = true;
         foreach ($model["fields"] as $field) {
             if (isset($field["in_form"]) && $field["in_form"]) {
                 if (isset($_POST[$field["title"]])) {
+                    $value = trim($_POST[$field["title"]]);
                     if (isset($field["is_title"]) && $field["is_title"]) {
-                        $title = $_POST[$field["title"]];
+                        $title = $value;
+                    }
+                    if (isset($field["is_require"]) && $field["is_require"] && strlen($value) == 0) {
+                        $is_true = false;
+                        $MBM_Ipak_Core->add_alert($field["label"] . " " . "نباید خالی بماند", "danger");
                     }
                 }
             }
         }
+        if ($is_true) {
+            $table     = $wpdb->prefix . "hesab_model";
 
-        $table     = $wpdb->prefix . "hesab_model";
+            $query_string       = $wpdb->prepare("insert into $table(type_id,title) values(%d,%s)", array($model["id"], $title));
+            $query_result       = $wpdb->query($query_string);
+            $insert_id =  $wpdb->insert_id;
 
-        $query_string       = $wpdb->prepare("insert into $table(type_id,title) values(%d,%s)", array($model["id"], $title));
-        $query_result       = $wpdb->query($query_string);
-        $insert_id=  $wpdb->insert_id;
-
-        $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد "." ".$insert_id,"success");
+            if ($insert_id > 0) {
+                $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد " . " " . $insert_id, "success");
+            } else {
+                $MBM_Ipak_Core->add_alert("خطا در ثبت اطلاعات دوباره امتحان فرمائید " . " " . $insert_id, "danger");
+            }
+        }
     }
 }
 $MBM_Ipak_Ajax_Form = new MBM_Ipak_Ajax_Form;
