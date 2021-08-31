@@ -159,7 +159,7 @@ class MBM_Ipak_Ajax_Form
                     if (isset($field["is_title"]) && $field["is_title"]) {
                         $title = $value;
                     } else {
-                        $values[] = ["title" => $field["title"], "value" => $value];
+                        $values[] = ["key" => $field["title"], "value" => $value];
                     }
                     if (isset($field["is_require"]) && $field["is_require"] && strlen($value) == 0) {
                         $is_true = false;
