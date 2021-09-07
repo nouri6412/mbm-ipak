@@ -11,7 +11,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
     var $model_obj = '';
     var $primary_key = '';
     var $columns = [];
-    var $where="";
+    var $where = "";
+    var $data_model;
     /** Class constructor */
     public function __construct($params = [])
     {
@@ -20,6 +21,9 @@ class MBM_Ipak_Models_List extends WP_List_Table
         $this->model_table_name   = $params["model_table_name"];
         $this->primary_key        = $this->model_obj["primary_key"];
         $this->columns            = $this->model_obj["fields"];
+
+        $MBM_Ipak_Models = new MBM_Ipak_Models;
+        $this->data_model = $MBM_Ipak_Models->get_model($this->model);
 
         parent::__construct([
             'singular' => __($this->model, 'sp'), //singular name of the listed records
@@ -42,7 +46,22 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         global $wpdb;
 
-        $sql = "SELECT * FROM {$this->model_table_name}".' where 1=1 '.$this->where;
+        $field_query = "";
+        $vir = "";
+        $table_name = $this->model_table_name . "_meta";
+
+        foreach ($this->data_model["fields"] as $field) {
+            if (isset($field["in_table"]) && $field["in_table"]) {
+                if ((isset($field["is_title"]) && $field["is_title"])||(isset($field["is_primary"]) && $field["is_primary"])) {
+                    $field_query .= $vir . $field["title"];
+                } else {
+                    $field_query .= $vir . "(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "') as " . $field["title"];
+                }
+                $vir = ",";
+            }
+        }
+
+        $sql = "SELECT $field_query FROM {$this->model_table_name} as tb" . ' where 1=1 ' . $this->where;
 
         if (!empty($_REQUEST['orderby'])) {
             $sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
@@ -83,7 +102,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
     {
         global $wpdb;
 
-        $sql = "SELECT COUNT(*) FROM {$this->model_table_name}".' where 1=1 '.$this->where;
+        $sql = "SELECT COUNT(*) FROM {$this->model_table_name}" . ' where 1=1 ' . $this->where;
 
         return $wpdb->get_var($sql);
     }
@@ -146,10 +165,10 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $actions = [
             'delete' => sprintf('<a href="?page=%s&action=%s&' . $this->model . '=%s&_wpnonce=%s">حذف</a>', esc_attr($_REQUEST['page']), 'delete', absint($item[$this->primary_key]), $delete_nonce),
-            'edit'   => '<a onclick="ipak_hesab_model_form(\''.$this->model_obj["name"].'\','.absint($item[$this->primary_key]).');" data-toggle="modal" data-target="#ipak-model-form" href="#">ویرایش</a>'
+            'edit'   => '<a onclick="ipak_hesab_model_form(\'' . $this->model_obj["name"] . '\',' . absint($item[$this->primary_key]) . ');" data-toggle="modal" data-target="#ipak-model-form" href="#">ویرایش</a>'
         ];
 
-        return $title .$this->row_actions($actions);
+        return $title . $this->row_actions($actions);
     }
 
 
@@ -165,8 +184,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
         ];
 
         foreach ($this->columns as $col) {
-            if($col["title"]!=$this->primary_key || 1==1)
-            {
+            if ($col["title"] != $this->primary_key || 1 == 1) {
                 $columns[$col["title"]] = $col["label"];
             }
         }

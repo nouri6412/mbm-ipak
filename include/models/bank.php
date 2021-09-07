@@ -9,6 +9,7 @@ $this->models["bank"]["fields"] = array(
         "title" => "id",
         "label" => "شماره سیستمی بانک",
         "sortable" => true,
+        "in_table"=>true,
         "is_primary" => true
     ),
     "title" => array(
@@ -18,6 +19,7 @@ $this->models["bank"]["fields"] = array(
         "in_form" => true,
         "is_title" => true,
         "is_require"=>true,
+        "in_table"=>true,
         "type" => array("type" => "text", "size" => 50,"class"=>"col-md-6")
     ),
     "number" => array(
@@ -25,6 +27,7 @@ $this->models["bank"]["fields"] = array(
         "label" => "شماره بانک",
         "sortable" => true,
         "in_form" => true,
+        "in_table"=>true,
         "type" => array("type" => "number", "size" => 50,"class"=>"col-md-6")
     )
     ,
@@ -33,6 +36,7 @@ $this->models["bank"]["fields"] = array(
         "label" => "آدرس بانک",
         "sortable" => true,
         "in_form" => true,
+        "in_table"=>true,
         "type" => array("type" => "textarea", "size" => 500,"class"=>"col-md-12")
     )
 );
