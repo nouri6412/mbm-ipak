@@ -10,6 +10,7 @@ $this->models["bank"]["fields"] = array(
         "label" => "شماره سیستمی بانک",
         "sortable" => true,
         "in_table"=>true,
+        "in_form" => true,
         "is_primary" => true
     ),
     "title" => array(
