@@ -90,6 +90,12 @@ class MBM_Ipak_Models_List extends WP_List_Table
             [$this->primary_key => $id],
             ['%d']
         );
+
+        $table_meta=$this->model_table_name."_meta";
+
+        $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d", array($id));
+        $query_result       = $wpdb->query($query_string);
+
     }
 
 
@@ -262,8 +268,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
                 // add_query_arg() return the current url
-                wp_redirect(esc_url_raw(add_query_arg()));
-                exit;
+               // wp_redirect(esc_url_raw(add_query_arg()));
+               // exit;
             }
         }
 
@@ -281,8 +287,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
             // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
             // add_query_arg() return the current url
-            wp_redirect(esc_url_raw(add_query_arg()));
-            exit;
+           // wp_redirect(esc_url_raw(add_query_arg()));
+          //  exit;
         }
     }
 }
