@@ -229,16 +229,14 @@ class MBM_Ipak_Ajax_Form
               //  if($query_result>0)
                 {
                     $table_meta=$table."_meta";
-                   // $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d", array($primary_value));
-                   // $query_result       = $wpdb->query($query_string);
 
                     foreach ($values as $key => $item) {
-                        if (strlen($item["value"]) > 0) {
-                     
-                           
-                            $sql       = $wpdb->prepare("select model_id from $table_meta where model_id=%d and key_meta=%s", array($primary_value, $item["key"]));
-                            $result = $wpdb->get_results($sql, 'ARRAY_A');
-                      
+
+                        $sql       = $wpdb->prepare("select model_id from $table_meta where model_id=%d and key_meta=%s", array($primary_value, $item["key"]));
+                        $result = $wpdb->get_results($sql, 'ARRAY_A');
+
+                        if (strlen($item["value"]) > 0 || count($result) > 0) {  
+
                             if(count($result)==0)
                             {
                                 $query_string       = $wpdb->prepare("insert into $table_meta(model_id,key_meta,value_meta) values(%d,%s,%s)", array($primary_value, $item["key"], $item["value"]));
@@ -246,8 +244,16 @@ class MBM_Ipak_Ajax_Form
                             }
                             else
                             {
-                                $query_string       = $wpdb->prepare("update $table_meta set value_meta =%s where model_id=%d and key_meta=%s", array($item["value"],$primary_value, $item["key"]));
-                                $query_result       = $wpdb->query($query_string);
+                                if(strlen($item["value"])==0)
+                                {
+                                  $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d and key_meta=%s", array($primary_value, $item["key"]));
+                                  $query_result       = $wpdb->query($query_string);
+                                }
+                                else
+                                {
+                                    $query_string       = $wpdb->prepare("update $table_meta set value_meta =%s where model_id=%d and key_meta=%s", array($item["value"],$primary_value, $item["key"]));
+                                    $query_result       = $wpdb->query($query_string);
+                                }
                             }
                         }
                     }
