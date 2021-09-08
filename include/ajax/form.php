@@ -168,7 +168,14 @@ class MBM_Ipak_Ajax_Form
         {
             $values["value"] = mbm_ipak\tools::to_shamsi(date('Y-m-d', strtotime(date("Y-m-d") . ' - 0 days')));
         }
-
+        else
+        {
+            $arr=explode("/",$values["value"]);
+            if(count($arr)==1)
+            {
+                $values["value"] = mbm_ipak\tools::to_shamsi($values["value"]);
+            }
+        }
 
         $ret .= '<input onclick="Mh1PersianDatePicker.Show(this,'."'".$values["value"]."'".',window.holidays)" id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
         $ret .= '</div>';
@@ -203,13 +210,22 @@ class MBM_Ipak_Ajax_Form
                 if (isset($_POST[$field["title"]])) {
                     $value = trim($_POST[$field["title"]]);
 
+                   
+
                     if (isset($field["is_primary"]) && $field["is_primary"]) {
                         $primary_value=$value;
                         $primary_key=$field["title"];
                     }
                     else if (isset($field["is_title"]) && $field["is_title"]) {
                         $title = $value;
-                    } else {
+                    }
+                    else if(isset($field["type"])&&isset($field["type"]["type"])&&$field["type"]["type"]=="date")
+                    {
+                        $values[] = ["key" => $field["title"], "value" => $value];
+                        $value = mbm_ipak\tools::to_miladi($value);
+                        $values[] = ["key" => $field["title"]."_miladi", "value" => $value];
+                    }
+                    else {
                         $values[] = ["key" => $field["title"], "value" => $value];
                     }
                     if (isset($field["is_require"]) && $field["is_require"] && strlen($value) == 0) {
