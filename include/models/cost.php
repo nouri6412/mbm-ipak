@@ -1,13 +1,13 @@
 <?php
-$this->models["bank"] = [];
-$this->models["bank"]["id"] = "1";
-$this->models["bank"]["name"] = "bank";
-$this->models["bank"]["label"] = "بانک";
-$this->models["bank"]["primary_key"] = "id";
-$this->models["bank"]["fields"] = array(
+$this->models["cost"] = [];
+$this->models["cost"]["id"] = "3";
+$this->models["cost"]["name"] = "cost";
+$this->models["cost"]["label"] = "هزینه";
+$this->models["cost"]["primary_key"] = "id";
+$this->models["cost"]["fields"] = array(
     "id" => array(
         "title" => "id",
-        "label" => "شماره سیستمی بانک",
+        "label" => "شماره سیستمی هزینه",
         "sortable" => true,
         "in_table"=>true,
         "in_form" => true,
@@ -15,7 +15,7 @@ $this->models["bank"]["fields"] = array(
     ),
     "title" => array(
         "title" => "title",
-        "label" => "عنوان بانک",
+        "label" => "عنوان هزینه",
         "sortable" => true,
         "in_form" => true,
         "is_title" => true,

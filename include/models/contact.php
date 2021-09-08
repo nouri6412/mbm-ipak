@@ -1,13 +1,13 @@
 <?php
-$this->models["bank"] = [];
-$this->models["bank"]["id"] = "1";
-$this->models["bank"]["name"] = "bank";
-$this->models["bank"]["label"] = "بانک";
-$this->models["bank"]["primary_key"] = "id";
-$this->models["bank"]["fields"] = array(
+$this->models["contact"] = [];
+$this->models["contact"]["id"] = "2";
+$this->models["contact"]["name"] = "contact";
+$this->models["contact"]["label"] = "طرف حساب";
+$this->models["contact"]["primary_key"] = "id";
+$this->models["contact"]["fields"] = array(
     "id" => array(
         "title" => "id",
-        "label" => "شماره سیستمی بانک",
+        "label" => "شماره سیستمی طرف حساب",
         "sortable" => true,
         "in_table"=>true,
         "in_form" => true,
@@ -15,7 +15,7 @@ $this->models["bank"]["fields"] = array(
     ),
     "title" => array(
         "title" => "title",
-        "label" => "عنوان بانک",
+        "label" => "عنوان طرف حساب",
         "sortable" => true,
         "in_form" => true,
         "is_title" => true,

@@ -19,16 +19,19 @@ class MBM_Ipak_Models_List extends WP_List_Table
         $this->model              = $params["model"];
         $this->model_obj          = $params["model_obj"];
         $this->model_table_name   = $params["model_table_name"];
+        $this->where              = $params["where"];
+      //  echo $this->where;
         $this->primary_key        = $this->model_obj["primary_key"];
         $this->columns            = $this->model_obj["fields"];
 
-        $MBM_Ipak_Models = new MBM_Ipak_Models;
-        $this->data_model = $MBM_Ipak_Models->get_model($this->model);
+       // $MBM_Ipak_Models = new MBM_Ipak_Models;
+        $this->data_model = $this->model_obj ;
+
 
         parent::__construct([
-            'singular' => __($this->model, 'sp'), //singular name of the listed records
-            'plural'   => __($this->model . 's', 'sp'), //plural name of the listed records
-            'ajax'     => true //does this table support ajax?
+            'singular' => __('', 'sp'), //singular name of the listed records
+            'plural'   => __('' . 's', 'sp'), //plural name of the listed records
+            'ajax'     => false //does this table support ajax?
         ]);
     }
 
