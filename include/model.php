@@ -55,7 +55,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
                 if ((isset($field["is_title"]) && $field["is_title"])||(isset($field["is_primary"]) && $field["is_primary"])) {
                     $field_query .= $vir . $field["title"];
                 } else {
-                    $field_query .= $vir . "(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "') as " . $field["title"];
+                    $field_query .= $vir . "(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "' limit 1) as " . $field["title"];
                 }
                 $vir = ",";
             }

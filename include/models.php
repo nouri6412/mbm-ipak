@@ -13,7 +13,8 @@ class MBM_Ipak_Models
     {
         if(isset($this->models[$model]))
         {
-            return $this->models[$model];
+            $mod=apply_filters("filter_mbm_ipak_get_model_".$model,$this->models[$model]);
+            return $mod;
         }
         return [];
     }

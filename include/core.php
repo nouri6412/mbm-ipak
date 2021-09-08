@@ -200,6 +200,7 @@ class MBM_Ipak_Core
         $MBM_Ipak_Models = new MBM_Ipak_Models;
 
         $model = $MBM_Ipak_Models->get_model($model_in);
+      
 
         $MBM_Ipak_Models_List = new MBM_Ipak_Models_List(
             array(

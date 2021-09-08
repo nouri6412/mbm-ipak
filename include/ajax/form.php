@@ -136,7 +136,7 @@ class MBM_Ipak_Ajax_Form
     {
         $values = $this->get_values($field);
 
-        $ret .= '<input id="' . $field["title"] . '" name="' . $field["title"] . '" type="hidden" value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
+        $ret = '<input id="' . $field["title"] . '" name="' . $field["title"] . '" type="hidden" value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
 
 
         return $ret;
@@ -172,6 +172,7 @@ class MBM_Ipak_Ajax_Form
         $title = "";
         $is_true = true;
         $primary_value=0;
+        $primary_key='';
         $values = [];
 
         
@@ -182,6 +183,7 @@ class MBM_Ipak_Ajax_Form
 
                     if (isset($field["is_primary"]) && $field["is_primary"]) {
                         $primary_value=$value;
+                        $primary_key=$field["title"];
                     }
                     else if (isset($field["is_title"]) && $field["is_title"]) {
                         $title = $value;
@@ -220,22 +222,37 @@ class MBM_Ipak_Ajax_Form
             }
             else
             {
-                $query_string       = $wpdb->prepare("update $table set title=%s where id=%d", array($title,$primary_value));
+               // $query_result= $wpdb->update($table, array("title"=>$title),  array("id"=>$primary_value) );
+
+                $query_string       = $wpdb->prepare("update $table set title=%s where $primary_key=%d", array($title,$primary_value));
                 $query_result       = $wpdb->query($query_string);
-                if($query_result>0)
+              //  if($query_result>0)
                 {
                     $table_meta=$table."_meta";
-                    $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d", array($primary_value));
-                    $query_result       = $wpdb->query($query_string);
+                   // $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d", array($primary_value));
+                   // $query_result       = $wpdb->query($query_string);
 
                     foreach ($values as $key => $item) {
                         if (strlen($item["value"]) > 0) {
-                            $query_string       = $wpdb->prepare("insert into $table_meta(model_id,key_meta,value_meta) values(%d,%s,%s)", array($primary_value, $item["key"], $item["value"]));
-                            $query_result       = $wpdb->query($query_string);
+                     
+                           
+                            $sql       = $wpdb->prepare("select model_id from $table_meta where model_id=%d and key_meta=%s", array($primary_value, $item["key"]));
+                            $result = $wpdb->get_results($sql, 'ARRAY_A');
+                      
+                            if(count($result)==0)
+                            {
+                                $query_string       = $wpdb->prepare("insert into $table_meta(model_id,key_meta,value_meta) values(%d,%s,%s)", array($primary_value, $item["key"], $item["value"]));
+                                $query_result       = $wpdb->query($query_string);
+                            }
+                            else
+                            {
+                                $query_string       = $wpdb->prepare("update $table_meta set value_meta =%s where model_id=%d and key_meta=%s", array($item["value"],$primary_value, $item["key"]));
+                                $query_result       = $wpdb->query($query_string);
+                            }
                         }
                     }
     
-                    $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد " . " " . $primary_value, "success");
+                    $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد " . " " . $query_result, "success");
                 }
             }
         }

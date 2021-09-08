@@ -33,7 +33,7 @@ define('MBM_IPAK_URI', plugin_dir_url(__FILE__));
 define('MBM_IPAK_FILE', __FILE__);
 define('MBM_IPAK_Include', MBM_IPAK_BASE . 'include/');
 define('MBM_IPAK_View', MBM_IPAK_BASE . 'view/');
-$ViewData=[];
+$ViewData = [];
 
 require MBM_IPAK_Include . 'sql_scripts.php';
 require MBM_IPAK_Include . 'model.php';
@@ -45,5 +45,20 @@ require MBM_IPAK_Include . 'ajax.php';
 require MBM_IPAK_Include . 'core.php';
 
 
+function filter_mbm_ipak_get_model_bank($model)
+{
+    $model["fields"]["test"] = array(
+        "title" => "test",
+        "label" => "عنوان تست",
+        "sortable" => true,
+        "in_form" => true,
+        "is_require" => true,
+        "in_table" => true,
+        "type" => array("type" => "text", "size" => 50, "class" => "col-md-6")
+    );
+    return $model;
+}
+
+add_filter("filter_mbm_ipak_get_model_bank","filter_mbm_ipak_get_model_bank");
 
 $MBM_Ipak_Core = new MBM_Ipak_Core();
