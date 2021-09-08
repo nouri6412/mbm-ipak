@@ -76,6 +76,9 @@ class MBM_Ipak_Ajax_Form
                     } else if ($field["type"]["type"] == "textarea") {
                         return $this->field_textarea($field);
                     }
+                    else if ($field["type"]["type"] == "date") {
+                        return $this->field_date($field);
+                    }
                 } else {
                     $field["type"]["type"] = "text";
                     return $this->field_text($field);
@@ -149,6 +152,25 @@ class MBM_Ipak_Ajax_Form
         $ret = '<div class="' . $values["class"] . ' form-group">';
         $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
         $ret .= '<input id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
+        $ret .= '</div>';
+
+        return $ret;
+    }
+
+    function field_date($field)
+    {
+        $values = $this->get_values($field);
+
+        $ret = '<div class="' . $values["class"] . ' form-group">';
+        $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
+
+        if(strlen($values["value"])==0)
+        {
+            $values["value"] = mbm_ipak\tools::to_shamsi(date('Y-m-d', strtotime(date("Y-m-d") . ' - 0 days')));
+        }
+
+
+        $ret .= '<input onclick="Mh1PersianDatePicker.Show(this,'."'".$values["value"]."'".',window.holidays)" id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
         $ret .= '</div>';
 
         return $ret;

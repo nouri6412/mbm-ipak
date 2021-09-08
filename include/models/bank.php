@@ -23,6 +23,14 @@ $this->models["bank"]["fields"] = array(
         "in_table"=>true,
         "type" => array("type" => "text", "size" => 50,"class"=>"col-md-6")
     ),
+    "date" => array(
+        "title" => "date",
+        "label" => " تاریخ",
+        "sortable" => true,
+        "in_form" => true,
+        "in_table"=>true,
+        "type" => array("type" => "date", "size" => 50,"class"=>"col-md-6")
+    ),
     "description" => array(
         "title" => "description",
         "label" => "توضیحات",
