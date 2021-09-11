@@ -69,7 +69,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
         }
 
         $sql = "SELECT $field_query FROM {$this->model_table_name} as tb" . ' where 1=1 ' . $this->where;
-
+echo $sql;
         if (!empty($_REQUEST['orderby'])) {
             $sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
             $sql .= !empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
