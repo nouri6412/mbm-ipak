@@ -221,12 +221,12 @@ class MBM_Ipak_Ajax_Form
                     }
                     else if(isset($field["type"])&&isset($field["type"]["type"])&&$field["type"]["type"]=="date")
                     {
-                        $values[] = ["key" => $field["title"], "value" => $value];
+                        $values[$field["title"]] = ["key" => $field["title"], "value" => $value];
                         $value = mbm_ipak\tools::to_miladi($value);
-                        $values[] = ["key" => $field["title"]."_miladi", "value" => $value];
+                        $values[$field["title"]."_miladi"] = ["key" => $field["title"]."_miladi", "value" => $value];
                     }
                     else {
-                        $values[] = ["key" => $field["title"], "value" => $value];
+                        $values[$field["title"]] = ["key" => $field["title"], "value" => $value];
                     }
                     if (isset($field["is_require"]) && $field["is_require"] && strlen($value) == 0) {
                         $is_true = false;
@@ -245,8 +245,6 @@ class MBM_Ipak_Ajax_Form
                 $query_string       = $wpdb->prepare("insert into $table(type_id,title) values(%d,%s)", array($model["id"], $title));
                 $query_result       = $wpdb->query($query_string);
                 $insert_id =  $wpdb->insert_id;
-
-               
     
                 if ($insert_id > 0) {
                     $table_meta=$table."_meta";
@@ -268,7 +266,7 @@ class MBM_Ipak_Ajax_Form
             {
                // $query_result= $wpdb->update($table, array("title"=>$title),  array("id"=>$primary_value) );
 
-               do_action($table."_before_update",$primary_value,$title,$values);
+               do_action($table."_before_update",$primary_value,$model["id"],$title,$values);
 
                 $query_string       = $wpdb->prepare("update $table set title=%s where $primary_key=%d", array($title,$primary_value));
                 $query_result       = $wpdb->query($query_string);
@@ -303,7 +301,7 @@ class MBM_Ipak_Ajax_Form
                             }
                         }
                     }
-                    do_action($table."_after_update",$primary_value,$title,$values);
+                    do_action($table."_after_update",$primary_value,$model["id"],$title,$values);
                     $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد " . " " . $query_result, "success");
                 }
             }

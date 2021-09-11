@@ -42,7 +42,7 @@ class MBM_Ipak_Sql_Scripts
     $table_name = $wpdb->prefix . "hesab_sanad";
     $sql .= "CREATE TABLE $table_name (
   `id` bigint(18) NOT NULL AUTO_INCREMENT,
-  `sanad_date` datetime NOT NULL,
+  `sanad_date` date NOT NULL,
   `description` text COLLATE utf8mb4_persian_ci NOT NULL,
   `hesab_model_id` bigint(20) NOT NULL,
   `bed` bigint(20) NOT NULL,

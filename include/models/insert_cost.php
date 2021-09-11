@@ -15,7 +15,7 @@ $this->models["insert_cost"]["fields"] = array(
     ),
     "title" => array(
         "title" => "title",
-        "label" => "عنوان هزینه",
+        "label" => "برچسب/تگ",
         "sortable" => true,
         "in_form" => true,
         "is_title" => true,
@@ -23,18 +23,17 @@ $this->models["insert_cost"]["fields"] = array(
         "in_table"=>true,
         "type" => array("type" => "text", "size" => 50,"class"=>"col-md-6")
     ),
-    "title" => array(
-        "title" => "title",
+    "mablagh" => array(
+        "title" => "mablagh",
         "label" => "مبلغ هزینه",
         "sortable" => true,
         "in_form" => true,
-        "is_title" => true,
         "is_require"=>true,
         "in_table"=>true,
         "type" => array("type" => "text", "size" => 50,"class"=>"col-md-6")
     ),
-    "date" => array(
-        "title" => "date",
+    "sanad_date" => array(
+        "title" => "sanad_date",
         "label" => " تاریخ",
         "sortable" => true,
         "in_form" => true,
