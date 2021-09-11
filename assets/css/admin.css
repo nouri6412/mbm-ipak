@@ -13,8 +13,22 @@
     font-weight: normal;
 }
 
-.ipak-main,.datePicker{
+.ipak-main,.datePicker,.rtl h1, .rtl h2, .rtl h3, .rtl h4, .rtl h5, .rtl h6{
     font-family: Vazir, yekan;
+}
+
+.ipak-main > h2:first-child{
+    margin: 10px 0px 10px 0px;
+    padding: 9px;
+    /* padding-bottom: 20px; */
+    background: #686d65;
+    color: #fff;
+    /* border-radius: 9px; */
+    text-align: center;
+}
+
+.modal-header{
+font-size: 20px;
 }
 
 .loading-ajax{

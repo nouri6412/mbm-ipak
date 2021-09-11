@@ -52,7 +52,8 @@ class MBM_Ipak_Ajax_Form
 
         echo json_encode([
             'success'       => true,
-            'html'          => $output
+            'html'          => $output,
+            'title'          => $model["label"]
         ]);
 
         die();
@@ -78,6 +79,9 @@ class MBM_Ipak_Ajax_Form
                     }
                     else if ($field["type"]["type"] == "date") {
                         return $this->field_date($field);
+                    }
+                    else if ($field["type"]["type"] == "select") {
+                        return $this->field_select($field);
                     }
                 } else {
                     $field["type"]["type"] = "text";
@@ -157,6 +161,32 @@ class MBM_Ipak_Ajax_Form
         return $ret;
     }
 
+    function field_select($field)
+    {
+        global $wpdb;
+        $values = $this->get_values($field);
+
+        $ret = '<div class="' . $values["class"] . ' form-group">';
+        $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
+
+        $table     = $wpdb->prefix . "hesab_model";
+        $query_string       = $wpdb->prepare("select * from $table where type_id=%d", array($field["type"]["select"]["model"]));
+        $items       = $wpdb->get_results($query_string, ARRAY_A);
+
+        $ret .='<select id="' . $field["title"] . '" name="' . $field["title"] . '" class="form-control ' . $values["input_class"] . '">';
+
+        foreach($items  as $item)
+        {
+            $ret .='<option value="'.$item["id"].'">'.$item[$field["type"]["select"]["label"]].'</option>';
+        }
+
+        $ret .="</select>";
+
+        $ret .= '</div>';
+
+        return $ret;
+    }
+
     function field_date($field)
     {
         $values = $this->get_values($field);
@@ -229,8 +259,11 @@ class MBM_Ipak_Ajax_Form
                         $values[$field["title"]] = ["key" => $field["title"], "value" => $value];
                     }
                     if (isset($field["is_require"]) && $field["is_require"] && strlen($value) == 0) {
-                        $is_true = false;
-                        $MBM_Ipak_Core->add_alert($field["label"] . " " . "نباید خالی بماند", "danger");
+                        if(isset($field["type"])&&isset($field["type"]["type"])&&$field["type"]["type"]!="hidden")
+                        {
+                            $is_true = false;
+                            $MBM_Ipak_Core->add_alert($field["label"] . " " . "نباید خالی بماند", "danger");
+                        }
                     }
                 }
             }
@@ -240,6 +273,11 @@ class MBM_Ipak_Ajax_Form
              
             if($primary_value==0)
             {
+                
+               // $title= apply_filters($table."_title_insert",$title,$model["id"],$values);
+
+               // $values= apply_filters($table."_values_insert",$values,$model["id"],$title);
+                
                 do_action($table."_before_insert",$model["id"],$title,$values);
 
                 $query_string       = $wpdb->prepare("insert into $table(type_id,title) values(%d,%s)", array($model["id"], $title));

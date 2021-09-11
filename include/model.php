@@ -20,12 +20,12 @@ class MBM_Ipak_Models_List extends WP_List_Table
         $this->model_obj          = $params["model_obj"];
         $this->model_table_name   = $params["model_table_name"];
         $this->where              = $params["where"];
-      //  echo $this->where;
+        //  echo $this->where;
         $this->primary_key        = $this->model_obj["primary_key"];
         $this->columns            = $this->model_obj["fields"];
 
-       // $MBM_Ipak_Models = new MBM_Ipak_Models;
-        $this->data_model = $this->model_obj ;
+        // $MBM_Ipak_Models = new MBM_Ipak_Models;
+        $this->data_model = $this->model_obj;
 
 
         parent::__construct([
@@ -55,7 +55,11 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         foreach ($this->data_model["fields"] as $field) {
             if (isset($field["in_table"]) && $field["in_table"]) {
-                if ((isset($field["is_title"]) && $field["is_title"])||(isset($field["is_primary"]) && $field["is_primary"])) {
+                if ($this->get_type  == "select") {
+                    $table     = $wpdb->prefix . "hesab_model";
+                    $tit = "met." . $field["type"]["select"]["label"];
+                    $field_query .= $vir . "(select $tit from $table as met where met.id=tb.id) as " . $field["title"];
+                } else if ((isset($field["is_title"]) && $field["is_title"]) || (isset($field["is_primary"]) && $field["is_primary"])) {
                     $field_query .= $vir . $field["title"];
                 } else {
                     $field_query .= $vir . "(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "' limit 1) as " . $field["title"];
@@ -78,6 +82,14 @@ class MBM_Ipak_Models_List extends WP_List_Table
         return $result;
     }
 
+    function get_type($field)
+    {
+        if (isset($field["type"]) && isset($field["type"]["type"])) {
+            return $field["type"]["type"];
+        }
+
+        return "text";
+    }
 
     /**
      * Delete a customer record.
@@ -88,7 +100,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
     {
         global $wpdb;
 
-        do_action($this->model_table_name."_before_delete",$id);
+        do_action($this->model_table_name . "_before_delete", $id);
 
         $wpdb->delete(
             "{$this->model_table_name}",
@@ -96,13 +108,12 @@ class MBM_Ipak_Models_List extends WP_List_Table
             ['%d']
         );
 
-        $table_meta=$this->model_table_name."_meta";
+        $table_meta = $this->model_table_name . "_meta";
 
         $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d", array($id));
         $query_result       = $wpdb->query($query_string);
 
-        do_action($this->model_table_name."_after_delete",$id);
-
+        do_action($this->model_table_name . "_after_delete", $id);
     }
 
 
@@ -275,8 +286,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
                 // add_query_arg() return the current url
-               // wp_redirect(esc_url_raw(add_query_arg()));
-               // exit;
+                // wp_redirect(esc_url_raw(add_query_arg()));
+                // exit;
             }
         }
 
@@ -294,8 +305,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
             // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
             // add_query_arg() return the current url
-           // wp_redirect(esc_url_raw(add_query_arg()));
-          //  exit;
+            // wp_redirect(esc_url_raw(add_query_arg()));
+            //  exit;
         }
     }
 }

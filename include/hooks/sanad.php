@@ -41,6 +41,7 @@ class MBM_Ipak_Sanad_Hooks
         $query_string       = $wpdb->prepare("delete from $table  where hesab_model_id=%d ", array($id));
         $query_result       = $wpdb->query($query_string);
     }
+
 }
 
 $table     = $wpdb->prefix . "hesab_model";
@@ -52,3 +53,5 @@ add_action($table . "_after_insert", array($MBM_Ipak_Sanad_Hooks, "insert"), 10,
 add_action($table . "_after_update", array($MBM_Ipak_Sanad_Hooks, "update"), 10, 4);
 
 add_action($table . "_after_delete", array($MBM_Ipak_Sanad_Hooks, "delete"), 10, 1);
+
+add_filter($table . "_title_insert", array($MBM_Ipak_Sanad_Hooks, "filter_title"), 10, 3);
