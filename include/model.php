@@ -88,6 +88,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
     {
         global $wpdb;
 
+        do_action($this->model_table_name."_before_delete",$id);
+
         $wpdb->delete(
             "{$this->model_table_name}",
             [$this->primary_key => $id],
@@ -98,6 +100,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d", array($id));
         $query_result       = $wpdb->query($query_string);
+
+        do_action($this->model_table_name."_after_delete",$id);
 
     }
 

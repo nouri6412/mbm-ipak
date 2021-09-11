@@ -240,9 +240,13 @@ class MBM_Ipak_Ajax_Form
              
             if($primary_value==0)
             {
+                do_action($table."_before_insert",$model["id"],$title,$values);
+
                 $query_string       = $wpdb->prepare("insert into $table(type_id,title) values(%d,%s)", array($model["id"], $title));
                 $query_result       = $wpdb->query($query_string);
                 $insert_id =  $wpdb->insert_id;
+
+               
     
                 if ($insert_id > 0) {
                     $table_meta=$table."_meta";
@@ -252,7 +256,9 @@ class MBM_Ipak_Ajax_Form
                             $query_result       = $wpdb->query($query_string);
                         }
                     }
-    
+
+                    do_action($table."_after_insert",$insert_id,$model["id"],$title,$values);
+
                     $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد " . " " . $insert_id, "success");
                 } else {
                     $MBM_Ipak_Core->add_alert("خطا در ثبت اطلاعات دوباره امتحان فرمائید " . " " . $insert_id, "danger");
@@ -261,6 +267,8 @@ class MBM_Ipak_Ajax_Form
             else
             {
                // $query_result= $wpdb->update($table, array("title"=>$title),  array("id"=>$primary_value) );
+
+               do_action($table."_before_update",$primary_value,$title,$values);
 
                 $query_string       = $wpdb->prepare("update $table set title=%s where $primary_key=%d", array($title,$primary_value));
                 $query_result       = $wpdb->query($query_string);
@@ -295,7 +303,7 @@ class MBM_Ipak_Ajax_Form
                             }
                         }
                     }
-    
+                    do_action($table."_after_update",$primary_value,$title,$values);
                     $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد " . " " . $query_result, "success");
                 }
             }

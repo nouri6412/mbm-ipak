@@ -153,6 +153,12 @@ class MBM_Ipak_Core
         $entity->render();
     }
 
+    public function insert_cost()
+    {
+        $entity =  $this->get_entity("insert_cost");
+        $entity->render();
+    }
+
     public function define_income()
     {
         $entity =  $this->get_entity("income");
@@ -175,21 +181,11 @@ class MBM_Ipak_Core
        
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف هزینه', 'تعاریف هزینه', 'manage_options', 'ipak-hesab-define-cost',  array($this, "define_cost"));
         
-        $model_parent='';
-        if(isset($_GET["page"]))
-        {
-          $arr=explode("-",$_GET["page"]);
-          $model_parent=$arr[count($arr)-1];
-        }
-        
-    
-        $this->add_entity($model_parent);
-        // $this->add_entity("contact");
-        // $this->add_entity("cost");
-        // $this->add_entity("income");
+
+
  
         
-        add_submenu_page('ipak-hesab-dashboard', 'ثبت هزینه', 'ثبت هزینه', 'manage_options', 'ipak-hesab-insert-cost', array($this, "insert_cost"));
+        add_submenu_page('ipak-hesab-dashboard', 'ثبت هزینه', 'ثبت هزینه', 'manage_options', 'ipak-hesab-insert_cost', array($this, "insert_cost"));
         add_submenu_page('ipak-hesab-dashboard', 'ثبت درآمد', 'ثبت درآمد', 'manage_options', 'ipak-hesab-insert-income', array($this, "insert_income"));
         add_submenu_page('ipak-hesab-dashboard', 'ثبت بدهی', 'ثبت بدهی / به دیگران', 'manage_options', 'ipak-hesab-insert-debt', array($this, "insert_debt"));
         add_submenu_page('ipak-hesab-dashboard', 'ثبت مطالبه', 'ثبت مطالبه / از دیگران', 'manage_options', 'ipak-hesab-insert-demand', array($this, "insert_demand"));
@@ -202,6 +198,16 @@ class MBM_Ipak_Core
         add_submenu_page('ipak-hesab-dashboard', 'گزارش پرداخت نقدی', 'گزارش پرداخت نقدی', 'manage_options', 'ipak-hesab-report-pay', array($this, "report_pay"));
         add_submenu_page('ipak-hesab-dashboard', 'گزارش دریافت نقدی', 'گزارش دریافت نقدی', 'manage_options', 'ipak-hesab-report-cash', array($this, "report_cash"));
 
+
+        $model_parent='';
+        if(isset($_GET["page"]))
+        {
+          $arr=explode("-",$_GET["page"]);
+          $model_parent=$arr[count($arr)-1];
+        }
+        
+    
+        $this->add_entity($model_parent);
         //add_submenu_page('ipak-hesab-dashboard', '', '', 'manage_options', 'ipak-hesab-define-bank', array($this,"define_bank"));
 
     }
