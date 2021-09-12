@@ -56,7 +56,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
         foreach ($this->data_model["fields"] as $field) {
             if (isset($field["in_table"]) && $field["in_table"]) {
                 if ($this->get_type($field) == "select") {
-                    $table     = $wpdb->prefix . "hesab_model";
+                    $table=$field["type"]["select"]["model"];
                     $tit = "met." . $field["type"]["select"]["label"];
                     $field_query .= $vir . "(select $tit from $table as met where met.id=tb.title) as " . $field["title"];
                 } else if ((isset($field["is_title"]) && $field["is_title"]) || (isset($field["is_primary"]) && $field["is_primary"])) {

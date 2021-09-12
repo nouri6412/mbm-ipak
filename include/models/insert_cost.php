@@ -1,4 +1,5 @@
 <?php
+global $wpdb;
 $this->models["insert_cost"] = [];
 $this->models["insert_cost"]["id"] = "5";
 $this->models["insert_cost"]["name"] = "insert_cost";
@@ -20,7 +21,7 @@ $this->models["insert_cost"]["fields"] = array(
         "in_form" => true,
         "is_title" => true,
         "in_table" => true,
-        "type" => array("type" => "select", "select" => ["model" => "3", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
+        "type" => array("type" => "select", "select" => ["model"=> $wpdb->prefix . "hesab_model","model_id" => "3", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
     ),
     "mablagh" => array(
         "title" => "mablagh",

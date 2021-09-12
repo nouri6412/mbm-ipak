@@ -169,8 +169,8 @@ class MBM_Ipak_Ajax_Form
         $ret = '<div class="' . $values["class"] . ' form-group">';
         $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
 
-        $table     = $wpdb->prefix . "hesab_model";
-        $query_string       = $wpdb->prepare("select * from $table where type_id=%d", array($field["type"]["select"]["model"]));
+        $table=$field["type"]["select"]["model"];
+        $query_string       = $wpdb->prepare("select * from $table where type_id=%d", array($field["type"]["select"]["model_id"]));
         $items       = $wpdb->get_results($query_string, ARRAY_A);
 
         $ret .='<select id="' . $field["title"] . '" name="' . $field["title"] . '" class="form-control ' . $values["input_class"] . '">';
