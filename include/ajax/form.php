@@ -170,7 +170,15 @@ class MBM_Ipak_Ajax_Form
         $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
 
         $table=$field["type"]["select"]["model"];
-        $query_string       = $wpdb->prepare("select * from $table where type_id=%d", array($field["type"]["select"]["model_id"]));
+
+        $where='';
+
+        if(isset($field["type"]["select"]["where"]))
+        {
+            $where=" and ".$field["type"]["select"]["where"];
+        }
+   
+        $query_string       = $wpdb->prepare("select * from $table where 1=1 ".$where, array());
         $items       = $wpdb->get_results($query_string, ARRAY_A);
 
         $ret .='<select id="' . $field["title"] . '" name="' . $field["title"] . '" class="form-control ' . $values["input_class"] . '">';
