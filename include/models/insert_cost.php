@@ -1,5 +1,4 @@
 <?php
-global $wpdb;
 $this->models["insert_cost"] = [];
 $this->models["insert_cost"]["id"] = "5";
 $this->models["insert_cost"]["name"] = "insert_cost";

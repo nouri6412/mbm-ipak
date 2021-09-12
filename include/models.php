@@ -4,6 +4,7 @@ class MBM_Ipak_Models
     var $models=[];
     public function __construct()
     {
+        global $wpdb;
         foreach (glob(MBM_IPAK_Include."models/*.php") as $filename)
         {
             include $filename;
