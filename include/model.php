@@ -58,7 +58,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
                 if ($this->get_type($field) == "select") {
                     $table     = $wpdb->prefix . "hesab_model";
                     $tit = "met." . $field["type"]["select"]["label"];
-                    $field_query .= $vir . "(select $tit from $table as met where met.id=tb.id) as " . $field["title"];
+                    $field_query .= $vir . "(select $tit from $table as met where met.id=tb.title) as " . $field["title"];
                 } else if ((isset($field["is_title"]) && $field["is_title"]) || (isset($field["is_primary"]) && $field["is_primary"])) {
                     $field_query .= $vir . $field["title"];
                 } else {
@@ -69,7 +69,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
         }
 
         $sql = "SELECT $field_query FROM {$this->model_table_name} as tb" . ' where 1=1 ' . $this->where;
-echo $sql;
+//echo $sql;
         if (!empty($_REQUEST['orderby'])) {
             $sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
             $sql .= !empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
