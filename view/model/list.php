@@ -7,7 +7,7 @@
         <div> <button onclick="ipak_hesab_model_form('<?php echo $this->model['name']; ?>',0)" data-toggle="modal" data-target="#ipak-model-form" class="btn btn-primary"><span class="span-inside-btn"><?php echo "" . " " . $this->model["label"]; ?></span><i class="fa fa-plus"></i></button>
         </div>
         <form action="?page=<?php echo $_REQUEST["page"]; ?>" method="post" class="form-search-table">
-            <input id="search-main-table" name="search-main-table" class="form-control" placeholder="جستجو.."  />
+            <input value="<?php if (isset($_POST["search-main-table"])) echo $_POST["search-main-table"]; ?>" id="search-main-table" name="search-main-table" class="form-control" placeholder="جستجو.."  />
             <input class="btn btn-primary" type="submit" value="بگرد"/>
         </form>
     </div>

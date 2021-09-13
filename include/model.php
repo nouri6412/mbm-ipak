@@ -13,6 +13,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
     var $columns = [];
     var $where = "";
     var $data_model;
+    var $sql_main="";
+    var $sql_count;
     /** Class constructor */
     public function __construct($params = [])
     {
@@ -44,32 +46,74 @@ class MBM_Ipak_Models_List extends WP_List_Table
      *
      * @return mixed
      */
-    public  function get_models($per_page = 5, $page_number = 1)
+    public  function get_models()
     {
 
         global $wpdb;
 
+        $result = $wpdb->get_results($this->sql_main, 'ARRAY_A');
+        return $result;
+    }
+
+    function get_sql($per_page = 5, $page_number)
+    {
+        $sql="";
         $field_query = "";
         $vir = "";
         $table_name = $this->model_table_name . "_meta";
 
+        $search=" and ( ";
+        $vir_search="";
+
         foreach ($this->data_model["fields"] as $field) {
             if (isset($field["in_table"]) && $field["in_table"]) {
                 if ($this->get_type($field) == "select") {
-                    $table=$field["type"]["select"]["model"];
+                    $table = $field["type"]["select"]["model"];
                     $tit = "met." . $field["type"]["select"]["label"];
                     $field_query .= $vir . "(select $tit from $table as met where met.id=tb.title) as " . $field["title"];
+
+                    if (isset($_POST["search-main-table"])) {
+                        $search=$search.$vir_search." ".$field["title"]." like '%".$_POST["search-main-table"]."%'";
+                    }
+
                 } else if ((isset($field["is_title"]) && $field["is_title"]) || (isset($field["is_primary"]) && $field["is_primary"])) {
                     $field_query .= $vir . $field["title"];
+
+                    if (isset($_POST["search-main-table"])) {
+                        $search=$search.$vir_search." ".$field["title"]." like '%".$_POST["search-main-table"]."%'";
+                    }
+                  
                 } else {
                     $field_query .= $vir . "(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "' limit 1) as " . $field["title"];
+                    if (isset($_POST["search-main-table"])) {
+                        $search=$search.$vir_search." ".$field["title"]." like '%".$_POST["search-main-table"]."%'";
+                    }
                 }
                 $vir = ",";
-            }
-        }
 
-        $sql = "SELECT $field_query FROM {$this->model_table_name} as tb" . ' where 1=1 ' . $this->where;
-//echo $sql;
+                if (isset($_POST["search-main-table"])) {
+                    $vir_search=" or ";
+                }
+            }
+        }      
+
+        
+
+         if($search==" and ( ")
+         {
+            $search="";
+         }
+         else
+         {
+            $search=$search." )";
+         }
+       
+
+        
+
+        $sql = "select * from (SELECT $field_query FROM {$this->model_table_name} as tb where 1=1 $this->where) as tb_all" . ' where 1=1 '.$search ;
+        //echo $sql;
+
         if (!empty($_REQUEST['orderby'])) {
             $sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
             $sql .= !empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
@@ -77,9 +121,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $sql .= " LIMIT $per_page";
         $sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
-
-        $result = $wpdb->get_results($sql, 'ARRAY_A');
-        return $result;
+        $this->sql_main=$sql;
     }
 
     function get_type($field)
@@ -253,6 +295,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
     public function prepare_items()
     {
 
+        $sql_main="";
+        $sql_count="";
         $this->_column_headers = $this->get_column_info();
 
         /** Process bulk action */
@@ -260,14 +304,14 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $per_page     = $this->get_items_per_page($this->model . 's' . '_per_page', 5);
         $current_page = $this->get_pagenum();
-        $total_items  = $this->record_count();
+        $total_items  = $this->record_count($sql_count);
 
         $this->set_pagination_args([
             'total_items' => $total_items, //WE have to calculate the total number of items
             'per_page'    => $per_page //WE have to determine how many items to show on a page
         ]);
 
-        $this->items = $this->get_models($per_page, $current_page);
+        $this->items = $this->get_models($per_page, $current_page,$sql_main);
     }
 
     public function process_bulk_action()
