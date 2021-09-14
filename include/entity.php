@@ -6,7 +6,6 @@ class MBM_Ipak_Entity extends MBM_Ipak_Base_Class
     var $opt = 'list';
     var $title_page = '';
 
-
     public function __construct($type, $op = 'list')
     {
         $this->model_name = $type;

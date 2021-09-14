@@ -13,8 +13,10 @@ class MBM_Ipak_Models_List extends WP_List_Table
     var $columns = [];
     var $where = "";
     var $data_model;
-    var $sql_main="";
+    var $sql_main = "";
     var $sql_count;
+    var $is_search = false;
+    var $text_search = '';
     /** Class constructor */
     public function __construct($params = [])
     {
@@ -57,13 +59,29 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
     function get_sql($per_page = 5, $page_number)
     {
-        $sql="";
+        $sql = "";
         $field_query = "";
         $vir = "";
+
         $table_name = $this->model_table_name . "_meta";
 
-        $search=" and ( ";
-        $vir_search="";
+        $search = " and ( ";
+        $vir_search = "";
+
+
+        if (isset($_POST["search-main-table"])) {
+            update_option($_REQUEST["page"] . "_search", trim($_POST["search-main-table"]));
+        }
+
+        $this->text_search = trim(get_option($_REQUEST["page"] . "_search"));
+
+        if (strlen($this->text_search) > 0) {
+            $this->is_search = true;
+        }
+        else
+        {
+            $this->is_search = false; 
+        }
 
         foreach ($this->data_model["fields"] as $field) {
             if (isset($field["in_table"]) && $field["in_table"]) {
@@ -72,46 +90,44 @@ class MBM_Ipak_Models_List extends WP_List_Table
                     $tit = "met." . $field["type"]["select"]["label"];
                     $field_query .= $vir . "(select $tit from $table as met where met.id=tb.title) as " . $field["title"];
 
-                    if (isset($_POST["search-main-table"])) {
-                        $search=$search.$vir_search." ".$field["title"]." like '%".$_POST["search-main-table"]."%'";
+                    if ($this->is_search) {
+                        $search = $search . $vir_search . " " . $field["title"] . " like '%" . $this->text_search . "%'";
                     }
-
                 } else if ((isset($field["is_title"]) && $field["is_title"]) || (isset($field["is_primary"]) && $field["is_primary"])) {
                     $field_query .= $vir . $field["title"];
 
-                    if (isset($_POST["search-main-table"])) {
-                        $search=$search.$vir_search." ".$field["title"]." like '%".$_POST["search-main-table"]."%'";
+                    if ($this->is_search) {
+                        $search = $search . $vir_search . " " . $field["title"] . " like '%" . $this->text_search . "%'";
                     }
-                  
                 } else {
                     $field_query .= $vir . "(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "' limit 1) as " . $field["title"];
-                    if (isset($_POST["search-main-table"])) {
-                        $search=$search.$vir_search." ".$field["title"]." like '%".$_POST["search-main-table"]."%'";
+                    if ($this->is_search) {
+                        $search = $search . $vir_search . " " . $field["title"] . " like '%" . $this->text_search . "%'";
                     }
                 }
                 $vir = ",";
 
-                if (isset($_POST["search-main-table"])) {
-                    $vir_search=" or ";
+                if ($this->is_search) {
+                    $vir_search = " or ";
                 }
             }
-        }      
+        }
 
-        
 
-         if($search==" and ( ")
-         {
-            $search="";
-         }
-         else
-         {
-            $search=$search." )";
-         }
-       
 
-        
+        if ($search == " and ( ") {
+            $search = "";
+        } else {
+            $search = $search . " )";
+        }
 
-        $sql = "select * from (SELECT $field_query FROM {$this->model_table_name} as tb where 1=1 $this->where) as tb_all" . ' where 1=1 '.$search ;
+
+
+
+        $sql = "select * from (SELECT $field_query FROM {$this->model_table_name} as tb where 1=1 $this->where) as tb_all" . ' where 1=1 ' . $search;
+
+        $sql_count = "select count(*) from (SELECT $field_query FROM {$this->model_table_name} as tb where 1=1 $this->where) as tb_all" . ' where 1=1 ' . $search;
+
         //echo $sql;
 
         if (!empty($_REQUEST['orderby'])) {
@@ -121,7 +137,12 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $sql .= " LIMIT $per_page";
         $sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
-        $this->sql_main=$sql;
+
+        $this->sql_main = $sql;
+
+
+
+        $this->sql_count = $sql_count;
     }
 
     function get_type($field)
@@ -168,9 +189,9 @@ class MBM_Ipak_Models_List extends WP_List_Table
     {
         global $wpdb;
 
-        $sql = "SELECT COUNT(*) FROM {$this->model_table_name}" . ' where 1=1 ' . $this->where;
 
-        return $wpdb->get_var($sql);
+
+        return $wpdb->get_var($this->sql_count);
     }
 
 
@@ -295,8 +316,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
     public function prepare_items()
     {
 
-        $sql_main="";
-        $sql_count="";
+        $sql_main = "";
+        $sql_count = "";
         $this->_column_headers = $this->get_column_info();
 
         /** Process bulk action */
@@ -304,6 +325,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $per_page     = $this->get_items_per_page($this->model . 's' . '_per_page', 5);
         $current_page = $this->get_pagenum();
+        $this->get_sql($per_page, $current_page);
         $total_items  = $this->record_count($sql_count);
 
         $this->set_pagination_args([
@@ -311,7 +333,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
             'per_page'    => $per_page //WE have to determine how many items to show on a page
         ]);
 
-        $this->items = $this->get_models($per_page, $current_page,$sql_main);
+        $this->items = $this->get_models();
     }
 
     public function process_bulk_action()
