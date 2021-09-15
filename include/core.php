@@ -126,6 +126,32 @@ class MBM_Ipak_Core
             'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
             'max_page' => $wp_query->max_num_pages
         ));
+
+        wp_enqueue_script(
+            'ipak_hesab_jalali',
+            MBM_IPAK_URI . 'assets/js/jalali.js',
+            array('jquery'),
+            1,
+            true
+        );
+
+        wp_enqueue_script(
+            'ipak_hesab_chart_bundle',
+            MBM_IPAK_URI . 'assets/js/Chart.bundle.min.js',
+            array('jquery'),
+            1,
+            true
+        );
+
+        wp_enqueue_script(
+            'ipak_hesab_chart',
+            MBM_IPAK_URI . 'assets/js/chart-render.js',
+            array('jquery'),
+            1,
+            true
+        );
+
+
     }
 
 
