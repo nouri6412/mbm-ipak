@@ -19,7 +19,7 @@ class tools
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }
-    function to_jalali($time, $format = 'Y/m/d')
+  public static  function to_jalali($time, $format = 'Y/m/d')
     {
         $ex=explode('-',$time);
        // if (validateDate($time,$format)) 
@@ -43,6 +43,35 @@ class tools
         $var = ob_get_contents();
         ob_end_clean();
         return $var;
+    }
+    public static function get_jalali_year($year = 0)
+    {
+        global $TR_tools;
+        if ($year <= 0) {
+            $year = $TR_tools->to_jalali(date('Y-m-d H:i:s'), "Y");
+        }
+        return $year;
+    }
+    public static  function get_range_month($year = 0)
+    {
+        global $TR_tools;
+        if ($year <= 0) {
+            $year = $TR_tools->to_jalali(date('Y-m-d H:i:s'), "Y");
+        }
+        $range = array();
+        $range[] = array("title" => "فروردین", "from" => $year . "/1/1", "to" => $year . "/1/31");
+        $range[] = array("title" => "اردیبهشت", "from" => $year . "/2/1", "to" => $year . "/2/31");
+        $range[] = array("title" => "خرداد", "from" => $year . "/3/1", "to" => $year . "/3/31");
+        $range[] = array("title" => "تیر", "from" => $year . "/4/1", "to" => $year . "/4/31");
+        $range[] = array("title" => "مرداد", "from" => $year . "/5/1", "to" => $year . "/6/31");
+        $range[] = array("title" => "شهریور", "from" => $year . "/6/1", "to" => $year . "/6/31");
+        $range[] = array("title" => "مهر", "from" => $year . "/7/1", "to" => $year . "/7/30");
+        $range[] = array("title" => "آبان", "from" => $year . "/8/1", "to" => $year . "/8/30");
+        $range[] = array("title" => "آذر", "from" => $year . "/9/1", "to" => $year . "/9/30");
+        $range[] = array("title" => "دی", "from" => $year . "/10/1", "to" => $year . "/10/30");
+        $range[] = array("title" => "بهمن", "from" => $year . "/11/1", "to" => $year . "/11/30");
+        $range[] = array("title" => "اسفند", "from" => $year . "/12/1", "to" => $year . "/12/30");
+        return $range;
     }
     public static  function deleteFolders($path)
     {
