@@ -53,6 +53,7 @@ class MBM_Ipak_Sql_Scripts
   `hesab_model_id` bigint(20) NOT NULL,
   `bed` bigint(20) NOT NULL,
   `bes` bigint(18) NOT NULL,
+  `model_id` bigint(18) NOT NULL,
   `sanad_order` int(11) NOT NULL,
   PRIMARY KEY (`id`)
           ) $charset_collate; ";

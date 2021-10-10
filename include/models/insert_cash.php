@@ -15,10 +15,18 @@ $this->models["insert_cash"]["fields"] = array(
     ),
     "title" => array(
         "title" => "title",
-        "label" => "دریافت نقدی",
+        "label" => "بانک",
         "sortable" => true,
         "in_form" => true,
         "is_title" => true,
+        "in_table" => true,
+        "type" => array("type" => "select", "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=1", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
+    ),
+    "contact" => array(
+        "title" => "contact",
+        "label" => "طرف حساب",
+        "sortable" => true,
+        "in_form" => true,
         "in_table" => true,
         "type" => array("type" => "select", "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=2", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
     ),

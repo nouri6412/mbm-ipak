@@ -256,6 +256,7 @@ class MBM_Ipak_Ajax_Form
                     }
                     else if (isset($field["is_title"]) && $field["is_title"]) {
                         $title = $value;
+                        $values[$field["title"]] = ["key" => $field["title"], "value" => $value,"is_title"=>true];
                     }
                     else if(isset($field["type"])&&isset($field["type"]["type"])&&$field["type"]["type"]=="date")
                     {
@@ -295,6 +296,10 @@ class MBM_Ipak_Ajax_Form
                 if ($insert_id > 0) {
                     $table_meta=$table."_meta";
                     foreach ($values as $key => $item) {
+                        if(isset($item["is_title"]))
+                        {
+                          continue;
+                        }
                         if (strlen($item["value"]) > 0) {
                             $query_string       = $wpdb->prepare("insert into $table_meta(model_id,key_meta,value_meta) values(%d,%s,%s)", array($insert_id, $item["key"], $item["value"]));
                             $query_result       = $wpdb->query($query_string);
@@ -321,7 +326,10 @@ class MBM_Ipak_Ajax_Form
                     $table_meta=$table."_meta";
 
                     foreach ($values as $key => $item) {
-
+                        if(isset($item["is_title"]))
+                        {
+                          continue;
+                        }
                         $sql       = $wpdb->prepare("select model_id from $table_meta where model_id=%d and key_meta=%s", array($primary_value, $item["key"]));
                         $result = $wpdb->get_results($sql, 'ARRAY_A');
 
