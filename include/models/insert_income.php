@@ -20,7 +20,7 @@ $this->models["insert_income"]["fields"] = array(
         "in_form" => true,
         "is_title" => true,
         "in_table" => true,
-        "type" => array("type" => "select", "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=2", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
+        "type" => array("type" => "select", "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=4", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
     ),
     "mablagh" => array(
         "title" => "mablagh",

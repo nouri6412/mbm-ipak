@@ -167,6 +167,18 @@ class MBM_Ipak_Core
         $entity->render();
     }
 
+    public function report_income()
+    {
+        $entity =  $this->get_entity("report_income");
+        $entity->render();
+    }
+
+    public function report_debt()
+    {
+        $entity =  $this->get_entity("report_debt");
+        $entity->render();
+    }
+
     public function define_income()
     {
         $entity =  $this->get_entity("income");
@@ -233,11 +245,8 @@ class MBM_Ipak_Core
         add_submenu_page('ipak-hesab-dashboard', 'پرداخت نقدی ', 'پرداخت نقدی ', 'manage_options', 'ipak-hesab-insert_pay', array($this, "insert_pay"));
         add_submenu_page('ipak-hesab-dashboard', 'دریافت نقدی', 'دریافت نقدی', 'manage_options', 'ipak-hesab-insert_cash', array($this, "insert_cash"));
         add_submenu_page('ipak-hesab-dashboard', 'گزارش هزینه', 'گزارش هزینه', 'manage_options', 'ipak-hesab-report_cost', array($this, "report_cost"));
-        add_submenu_page('ipak-hesab-dashboard', 'گزارش درآمد', 'گزارش درآمد', 'manage_options', 'ipak-hesab-report-income', array($this, "report_income"));
-        add_submenu_page('ipak-hesab-dashboard', 'گزارش بدهی ها', 'گزارش بدهی ها', 'manage_options', 'ipak-hesab-report-debt', array($this, "report_debt"));
-        add_submenu_page('ipak-hesab-dashboard', 'گزارش مطالبه ها', 'گزارش مطالبه ها', 'manage_options', 'ipak-hesab-report-demand', array($this, "report_demand"));
-        add_submenu_page('ipak-hesab-dashboard', 'گزارش پرداخت نقدی', 'گزارش پرداخت نقدی', 'manage_options', 'ipak-hesab-report-pay', array($this, "report_pay"));
-        add_submenu_page('ipak-hesab-dashboard', 'گزارش دریافت نقدی', 'گزارش دریافت نقدی', 'manage_options', 'ipak-hesab-report-cash', array($this, "report_cash"));
+        add_submenu_page('ipak-hesab-dashboard', 'گزارش درآمد', 'گزارش درآمد', 'manage_options', 'ipak-hesab-report_income', array($this, "report_income"));
+        add_submenu_page('ipak-hesab-dashboard', 'گزارش بدهی ها و مطالبه ها', 'گزارش بدهی ها و مطالبه ها', 'manage_options', 'ipak-hesab-report_debt', array($this, "report_debt"));
 
 
         $model_parent='';
