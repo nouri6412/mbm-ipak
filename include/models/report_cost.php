@@ -4,6 +4,7 @@ $this->models["report_cost"]["id"] = "3";
 $this->models["report_cost"]["name"] = "report_cost";
 $this->models["report_cost"]["from_table"] = "cost";
 $this->models["report_cost"]["label"] = "هزینه";
+$this->models["report_cost"]["is_report"] = true;
 $this->models["report_cost"]["primary_key"] = "id";
 $table_name=$wpdb->prefix . "hesab_sanad as san";
 $this->models["report_cost"]["fields"] = array(
