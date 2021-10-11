@@ -88,7 +88,16 @@ class MBM_Ipak_Models_List extends WP_List_Table
                 if ($this->get_type($field) == "select") {
                     $table = $field["type"]["select"]["model"];
                     $tit = "met." . $field["type"]["select"]["label"];
-                    $field_query .= $vir . "(select $tit from $table as met where met.id=tb.title) as " . $field["title"];
+                    
+                    if(!isset($field["is_title"]))
+                    {
+                        $tit = "meti." . $field["type"]["select"]["label"];
+                        $field_query .= $vir . "(select $tit from $table as meti where meti.id=(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "' limit 1)) as " . $field["title"];
+                    }
+                    else
+                    {
+                        $field_query .= $vir . "(select $tit from $table as met where met.id=tb.title) as " . $field["title"];
+                    }
 
                     if ($this->is_search) {
                         $search = $search . $vir_search . " " . $field["title"] . " like '%" . $this->text_search . "%'";

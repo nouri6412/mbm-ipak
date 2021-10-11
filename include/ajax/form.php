@@ -8,24 +8,22 @@ class MBM_Ipak_Ajax_Form
         $model_id = $_POST["model_id"];
         $MBM_Ipak_Models = new MBM_Ipak_Models;
         $item_edit = [];
-        $output='';
+        $output = '';
 
         if ($model_id > 0) {
             $table     = $wpdb->prefix . "hesab_model";
             $query_string       = $wpdb->prepare("select * from $table where id=%d", array($model_id));
             $items       = $wpdb->get_results($query_string, ARRAY_A);
-            if($items>0)
-            {
-                $item_edit=$items[0];
+            if ($items > 0) {
+                $item_edit = $items[0];
 
                 $table     = $wpdb->prefix . "hesab_model_meta";
                 $query_string       = $wpdb->prepare("select * from $table where model_id=%d", array($model_id));
                 $items_meta       = $wpdb->get_results($query_string, ARRAY_A);
 
-                foreach($items_meta  as $item)
-                {
-                   // $output .= 'salam '.$item["key_meta"].' '.$item["value_meta"].'<br>';
-                    $item_edit[$item["key_meta"]]=$item["value_meta"];
+                foreach ($items_meta  as $item) {
+                    // $output .= 'salam '.$item["key_meta"].' '.$item["value_meta"].'<br>';
+                    $item_edit[$item["key_meta"]] = $item["value_meta"];
                 }
             }
         }
@@ -36,9 +34,8 @@ class MBM_Ipak_Ajax_Form
         $output .= '<div class="row">';
 
         foreach ($model["fields"] as $field) {
-            if(count($item_edit)>0 && isset($item_edit[$field["title"]]))
-            {
-                $field["value"]=$item_edit[$field["title"]];
+            if (count($item_edit) > 0 && isset($item_edit[$field["title"]])) {
+                $field["value"] = $item_edit[$field["title"]];
             }
             $output .= $this->field_form($field);
         }
@@ -62,13 +59,11 @@ class MBM_Ipak_Ajax_Form
     {
         if (isset($field["in_form"]) && $field["in_form"]) {
 
-            if (isset($field["is_primary"]))
-            {
+            if (isset($field["is_primary"])) {
                 $field["type"] = [];
                 $field["type"]["type"] = "hidden";
                 return $this->field_hidden($field);
-            }
-            else if (isset($field["type"]) && $field["type"]) {
+            } else if (isset($field["type"]) && $field["type"]) {
                 if (isset($field["type"]["type"]) && $field["type"]["type"]) {
                     if ($field["type"]["type"] == "text") {
                         return $this->field_text($field);
@@ -76,11 +71,9 @@ class MBM_Ipak_Ajax_Form
                         return $this->field_text($field);
                     } else if ($field["type"]["type"] == "textarea") {
                         return $this->field_textarea($field);
-                    }
-                    else if ($field["type"]["type"] == "date") {
+                    } else if ($field["type"]["type"] == "date") {
                         return $this->field_date($field);
-                    }
-                    else if ($field["type"]["type"] == "select") {
+                    } else if ($field["type"]["type"] == "select") {
                         return $this->field_select($field);
                     }
                 } else {
@@ -169,26 +162,28 @@ class MBM_Ipak_Ajax_Form
         $ret = '<div class="' . $values["class"] . ' form-group">';
         $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
 
-        $table=$field["type"]["select"]["model"];
+        $table = $field["type"]["select"]["model"];
 
-        $where='';
+        $where = '';
 
-        if(isset($field["type"]["select"]["where"]))
-        {
-            $where=" and ".$field["type"]["select"]["where"];
+        if (isset($field["type"]["select"]["where"])) {
+            $where = " and " . $field["type"]["select"]["where"];
         }
-   
-        $query_string       = $wpdb->prepare("select * from $table where 1=1 ".$where, array());
+
+        $query_string       = $wpdb->prepare("select * from $table where 1=1 " . $where, array());
         $items       = $wpdb->get_results($query_string, ARRAY_A);
 
-        $ret .='<select id="' . $field["title"] . '" name="' . $field["title"] . '" class="form-control ' . $values["input_class"] . '">';
+        $ret .= '<select id="' . $field["title"] . '" name="' . $field["title"] . '" class="form-control ' . $values["input_class"] . '">';
 
-        foreach($items  as $item)
-        {
-            $ret .='<option value="'.$item["id"].'">'.$item[$field["type"]["select"]["label"]].'</option>';
+        foreach ($items  as $item) {
+            $selected = "";
+            if ($values["value"] == $item["id"])
+                $selected = "selected";
+
+            $ret .= '<option ' . $selected . ' value="' . $item["id"] . '">' . $item[$field["type"]["select"]["label"]] . '</option>';
         }
 
-        $ret .="</select>";
+        $ret .= "</select>";
 
         $ret .= '</div>';
 
@@ -202,20 +197,16 @@ class MBM_Ipak_Ajax_Form
         $ret = '<div class="' . $values["class"] . ' form-group">';
         $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
 
-        if(strlen($values["value"])==0)
-        {
+        if (strlen($values["value"]) == 0) {
             $values["value"] = mbm_ipak\tools::to_shamsi(date('Y-m-d', strtotime(date("Y-m-d") . ' - 0 days')));
-        }
-        else
-        {
-            $arr=explode("/",$values["value"]);
-            if(count($arr)==1)
-            {
+        } else {
+            $arr = explode("/", $values["value"]);
+            if (count($arr) == 1) {
                 $values["value"] = mbm_ipak\tools::to_shamsi($values["value"]);
             }
         }
 
-        $ret .= '<input onclick="Mh1PersianDatePicker.Show(this,'."'".$values["value"]."'".',window.holidays)" id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
+        $ret .= '<input onclick="Mh1PersianDatePicker.Show(this,' . "'" . $values["value"] . "'" . ',window.holidays)" id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
         $ret .= '</div>';
 
         return $ret;
@@ -238,38 +229,33 @@ class MBM_Ipak_Ajax_Form
         global $wpdb, $MBM_Ipak_Core;
         $title = "";
         $is_true = true;
-        $primary_value=0;
-        $primary_key='';
+        $primary_value = 0;
+        $primary_key = '';
         $values = [];
 
-        
+
         foreach ($model["fields"] as $field) {
             if (isset($field["in_form"]) && $field["in_form"]) {
                 if (isset($_POST[$field["title"]])) {
                     $value = trim($_POST[$field["title"]]);
 
-                   
+
 
                     if (isset($field["is_primary"]) && $field["is_primary"]) {
-                        $primary_value=$value;
-                        $primary_key=$field["title"];
-                    }
-                    else if (isset($field["is_title"]) && $field["is_title"]) {
+                        $primary_value = $value;
+                        $primary_key = $field["title"];
+                    } else if (isset($field["is_title"]) && $field["is_title"]) {
                         $title = $value;
-                        $values[$field["title"]] = ["key" => $field["title"], "value" => $value,"is_title"=>true];
-                    }
-                    else if(isset($field["type"])&&isset($field["type"]["type"])&&$field["type"]["type"]=="date")
-                    {
+                        $values[$field["title"]] = ["key" => $field["title"], "value" => $value, "is_title" => true];
+                    } else if (isset($field["type"]) && isset($field["type"]["type"]) && $field["type"]["type"] == "date") {
                         $values[$field["title"]] = ["key" => $field["title"], "value" => $value];
                         $value = mbm_ipak\tools::to_miladi($value);
-                        $values[$field["title"]."_miladi"] = ["key" => $field["title"]."_miladi", "value" => $value];
-                    }
-                    else {
+                        $values[$field["title"] . "_miladi"] = ["key" => $field["title"] . "_miladi", "value" => $value];
+                    } else {
                         $values[$field["title"]] = ["key" => $field["title"], "value" => $value];
                     }
                     if (isset($field["is_require"]) && $field["is_require"] && strlen($value) == 0) {
-                        if(isset($field["type"])&&isset($field["type"]["type"])&&$field["type"]["type"]!="hidden")
-                        {
+                        if (isset($field["type"]) && isset($field["type"]["type"]) && $field["type"]["type"] != "hidden") {
                             $is_true = false;
                             $MBM_Ipak_Core->add_alert($field["label"] . " " . "نباید خالی بماند", "danger");
                         }
@@ -279,26 +265,24 @@ class MBM_Ipak_Ajax_Form
         }
         if ($is_true) {
             $table     = $wpdb->prefix . "hesab_model";
-             
-            if($primary_value==0)
-            {
-                
-               // $title= apply_filters($table."_title_insert",$title,$model["id"],$values);
 
-               // $values= apply_filters($table."_values_insert",$values,$model["id"],$title);
-                
-                do_action($table."_before_insert",$model["id"],$title,$values);
+            if ($primary_value == 0) {
+
+                // $title= apply_filters($table."_title_insert",$title,$model["id"],$values);
+
+                // $values= apply_filters($table."_values_insert",$values,$model["id"],$title);
+
+                do_action($table . "_before_insert", $model["id"], $title, $values);
 
                 $query_string       = $wpdb->prepare("insert into $table(type_id,title) values(%d,%s)", array($model["id"], $title));
                 $query_result       = $wpdb->query($query_string);
                 $insert_id =  $wpdb->insert_id;
-    
+
                 if ($insert_id > 0) {
-                    $table_meta=$table."_meta";
+                    $table_meta = $table . "_meta";
                     foreach ($values as $key => $item) {
-                        if(isset($item["is_title"]))
-                        {
-                          continue;
+                        if (isset($item["is_title"])) {
+                            continue;
                         }
                         if (strlen($item["value"]) > 0) {
                             $query_string       = $wpdb->prepare("insert into $table_meta(model_id,key_meta,value_meta) values(%d,%s,%s)", array($insert_id, $item["key"], $item["value"]));
@@ -306,61 +290,51 @@ class MBM_Ipak_Ajax_Form
                         }
                     }
 
-                    do_action($table."_after_insert",$insert_id,$model["id"],$title,$values);
+                    do_action($table . "_after_insert", $insert_id, $model["id"], $title, $values);
 
                     $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد " . " " . $insert_id, "success");
                 } else {
                     $MBM_Ipak_Core->add_alert("خطا در ثبت اطلاعات دوباره امتحان فرمائید " . " " . $insert_id, "danger");
                 }
-            }
-            else
-            {
-               // $query_result= $wpdb->update($table, array("title"=>$title),  array("id"=>$primary_value) );
+            } else {
+                // $query_result= $wpdb->update($table, array("title"=>$title),  array("id"=>$primary_value) );
 
-               do_action($table."_before_update",$primary_value,$model["id"],$title,$values);
+                do_action($table . "_before_update", $primary_value, $model["id"], $title, $values);
 
-                $query_string       = $wpdb->prepare("update $table set title=%s where $primary_key=%d", array($title,$primary_value));
+                $query_string       = $wpdb->prepare("update $table set title=%s where $primary_key=%d", array($title, $primary_value));
                 $query_result       = $wpdb->query($query_string);
-              //  if($query_result>0)
+                //  if($query_result>0)
                 {
-                    $table_meta=$table."_meta";
+                    $table_meta = $table . "_meta";
 
                     foreach ($values as $key => $item) {
-                        if(isset($item["is_title"]))
-                        {
-                          continue;
+                        if (isset($item["is_title"])) {
+                            continue;
                         }
                         $sql       = $wpdb->prepare("select model_id from $table_meta where model_id=%d and key_meta=%s", array($primary_value, $item["key"]));
                         $result = $wpdb->get_results($sql, 'ARRAY_A');
 
-                        if (strlen($item["value"]) > 0 || count($result) > 0) {  
+                        if (strlen($item["value"]) > 0 || count($result) > 0) {
 
-                            if(count($result)==0)
-                            {
+                            if (count($result) == 0) {
                                 $query_string       = $wpdb->prepare("insert into $table_meta(model_id,key_meta,value_meta) values(%d,%s,%s)", array($primary_value, $item["key"], $item["value"]));
                                 $query_result       = $wpdb->query($query_string);
-                            }
-                            else
-                            {
-                                if(strlen($item["value"])==0)
-                                {
-                                  $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d and key_meta=%s", array($primary_value, $item["key"]));
-                                  $query_result       = $wpdb->query($query_string);
-                                }
-                                else
-                                {
-                                    $query_string       = $wpdb->prepare("update $table_meta set value_meta =%s where model_id=%d and key_meta=%s", array($item["value"],$primary_value, $item["key"]));
+                            } else {
+                                if (strlen($item["value"]) == 0) {
+                                    $query_string       = $wpdb->prepare("delete from  $table_meta where model_id=%d and key_meta=%s", array($primary_value, $item["key"]));
+                                    $query_result       = $wpdb->query($query_string);
+                                } else {
+                                    $query_string       = $wpdb->prepare("update $table_meta set value_meta =%s where model_id=%d and key_meta=%s", array($item["value"], $primary_value, $item["key"]));
                                     $query_result       = $wpdb->query($query_string);
                                 }
                             }
                         }
                     }
-                    do_action($table."_after_update",$primary_value,$model["id"],$title,$values);
+                    do_action($table . "_after_update", $primary_value, $model["id"], $title, $values);
                     $MBM_Ipak_Core->add_alert("با موفقیت ثبت شد " . " " . $query_result, "success");
                 }
             }
         }
-        
     }
 }
 $MBM_Ipak_Ajax_Form = new MBM_Ipak_Ajax_Form;
