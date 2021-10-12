@@ -27,13 +27,13 @@ class MBM_Ipak_Sql_Scripts
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '4','income','درآمد' where not exists(select * from $table_name where title = 'income');  ";
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '5','insert_cost','ثبت هزینه' where not exists(select * from $table_name where title = 'insert_cost');  ";
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '6','insert_income','ثبت درآمد' where not exists(select * from $table_name where title = 'insert_income');  ";
-    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '7','insert_debt','ثبت بدهی' where not exists(select * from $table_name where title = 'insert_debt');  ";
-    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '8','insert_demand','ثبت مطالبه' where not exists(select * from $table_name where title = 'insert_demand');  ";
+    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '7','insert_debt','ثبت بدهکار' where not exists(select * from $table_name where title = 'insert_debt');  ";
+    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '8','insert_demand','ثبت طلبکار' where not exists(select * from $table_name where title = 'insert_demand');  ";
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '9','insert_pay','پرداخت نقدی' where not exists(select * from $table_name where title = 'insert_pay');  ";
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '10','insert_cash','دریافت نقدی' where not exists(select * from $table_name where title = 'insert_cash');  ";
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '11','report_cost',' گزارش هزینه' where not exists(select * from $table_name where title = 'report_cost');  ";
-    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '12','report_cost',' گزارش هزینه' where not exists(select * from $table_name where title = 'report_cost');  ";
-    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '13','report_cost',' گزارش هزینه' where not exists(select * from $table_name where title = 'report_cost');  ";
+    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '12','report_cost',' گزارش درآمد' where not exists(select * from $table_name where title = 'report_cost');  ";
+    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '13','report_cost',' گزارش بدهکاران و طلبکاران' where not exists(select * from $table_name where title = 'report_cost');  ";
 
 
 

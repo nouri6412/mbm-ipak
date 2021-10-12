@@ -240,8 +240,8 @@ class MBM_Ipak_Core
         
         add_submenu_page('ipak-hesab-dashboard', 'ثبت هزینه', 'ثبت هزینه', 'manage_options', 'ipak-hesab-insert_cost', array($this, "insert_cost"));
         add_submenu_page('ipak-hesab-dashboard', 'ثبت درآمد', 'ثبت درآمد', 'manage_options', 'ipak-hesab-insert_income', array($this, "insert_income"));
-        add_submenu_page('ipak-hesab-dashboard', 'ثبت بدهی', 'ثبت بدهی / به دیگران', 'manage_options', 'ipak-hesab-insert_debt', array($this, "insert_debt"));
-        add_submenu_page('ipak-hesab-dashboard', 'ثبت مطالبه', 'ثبت مطالبه / از دیگران', 'manage_options', 'ipak-hesab-insert_demand', array($this, "insert_demand"));
+        add_submenu_page('ipak-hesab-dashboard', 'ثبت بدهکار', 'ثبت بدهکار  ', 'manage_options', 'ipak-hesab-insert_debt', array($this, "insert_debt"));
+        add_submenu_page('ipak-hesab-dashboard', 'ثبت طلبکار', 'ثبت طلبکار', 'manage_options', 'ipak-hesab-insert_demand', array($this, "insert_demand"));
         add_submenu_page('ipak-hesab-dashboard', 'پرداخت نقدی ', 'پرداخت نقدی ', 'manage_options', 'ipak-hesab-insert_pay', array($this, "insert_pay"));
         add_submenu_page('ipak-hesab-dashboard', 'دریافت نقدی', 'دریافت نقدی', 'manage_options', 'ipak-hesab-insert_cash', array($this, "insert_cash"));
         add_submenu_page('ipak-hesab-dashboard', 'گزارش هزینه', 'گزارش هزینه', 'manage_options', 'ipak-hesab-report_cost', array($this, "report_cost"));

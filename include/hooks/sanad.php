@@ -71,12 +71,17 @@ class MBM_Ipak_Sanad_Hooks
         }
     }
 
-    public function update($id, $model_id, $title, $values)
+    public function update($insert_id, $model_id, $title, $values)
     {
         // var_dump($values);
         global $wpdb;
-
-        if ($model_id >= 5 && $model_id <= 10)  {
+        $bed=0;
+        $bes=0;
+        $table     = $wpdb->prefix . "hesab_sanad";
+        $query_string       = $wpdb->prepare("delete from $table  where hesab_model_id=%d ", array($insert_id));
+        $query_result       = $wpdb->query($query_string);
+        if ($model_id >= 5 && $model_id <= 10) {
+            $table     = $wpdb->prefix . "hesab_sanad";
 
             $bed=0;
             $bes=0;
@@ -101,46 +106,41 @@ class MBM_Ipak_Sanad_Hooks
                 $bed=$values["mablagh"]["value"];
                 $bes=0;
             }
-            
-            $table     = $wpdb->prefix . "hesab_sanad";
 
             if ($model_id >= 5 && $model_id <= 8)
             {
-                $query_string       = $wpdb->prepare("update $table set sanad_date=%s,description=%s,bed=%d,bes=%d where hesab_model_id=%d ", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $bed, $bes, $id));
-                //  echo $query_string ;
-    
+                $query_string       = $wpdb->prepare("insert into $table( `sanad_date`, `description`, `hesab_model_id`, `bed`, `bes`,`model_id`) VALUES (%s,%s, %d,%d,%d,%d)", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $insert_id, $bed, $bes,$values["title"]["value"]));
                 $query_result       = $wpdb->query($query_string);
-                $id =  $wpdb->insert_id;
             }
-            else
+            else 
             {
                 if($model_id==9)
                 {
                     $bed=$values["mablagh"]["value"];
                     $bes=0;
-                    $query_string       = $wpdb->prepare("update $table set sanad_date=%s,description=%s,bed=%d,bes=%d where hesab_model_id=%d and model_id=%d", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $bed, $bes, $id,$values["contact"]["value"]));
+                    $query_string       = $wpdb->prepare("insert into $table( `sanad_date`, `description`, `hesab_model_id`, `bed`, `bes`,`model_id`) VALUES (%s,%s, %d,%d,%d,%d)", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $insert_id, $bed, $bes,$values["contact"]["value"]));
                     $query_result       = $wpdb->query($query_string);
 
                     $bed=0;
                     $bes=$values["mablagh"]["value"];
-                    $query_string       = $wpdb->prepare("update $table set sanad_date=%s,description=%s,bed=%d,bes=%d where hesab_model_id=%d and model_id=%d", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $bed, $bes, $id,$values["title"]["value"]));
+                    $query_string       = $wpdb->prepare("insert into $table( `sanad_date`, `description`, `hesab_model_id`, `bed`, `bes`,`model_id`) VALUES (%s,%s, %d,%d,%d,%d)", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $insert_id, $bed, $bes,$values["title"]["value"]));
                     $query_result       = $wpdb->query($query_string);
                 }
                 else{
-                    $bed=0;
-                    $bes=$values["mablagh"]["value"];
-                    $query_string       = $wpdb->prepare("update $table set sanad_date=%s,description=%s,bed=%d,bes=%d where hesab_model_id=%d and model_id=%d", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $bed, $bes, $id,$values["contact"]["value"]));
-                    $query_result       = $wpdb->query($query_string);
-
                     $bed=$values["mablagh"]["value"];
                     $bes=0;
-                    $query_string       = $wpdb->prepare("update $table set sanad_date=%s,description=%s,bed=%d,bes=%d where hesab_model_id=%d and model_id=%d", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $bed, $bes, $id,$values["title"]["value"]));
+                    $query_string       = $wpdb->prepare("insert into $table( `sanad_date`, `description`, `hesab_model_id`, `bed`, `bes`,`model_id`) VALUES (%s,%s, %d,%d,%d,%d)", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $insert_id, $bed, $bes,$values["title"]["value"]));
+                    $query_result       = $wpdb->query($query_string);
+
+                    $bed=0;
+                    $bes=$values["mablagh"]["value"];
+                    $query_string       = $wpdb->prepare("insert into $table( `sanad_date`, `description`, `hesab_model_id`, `bed`, `bes`,`model_id`) VALUES (%s,%s, %d,%d,%d,%d)", array($values["sanad_date_miladi"]["value"], $values["description"]["value"], $insert_id, $bed, $bes,$values["contact"]["value"]));
                     $query_result       = $wpdb->query($query_string);
                 }
+
             }
-       
 
-
+            $id =  $wpdb->insert_id;
         }
     }
 
