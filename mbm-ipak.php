@@ -16,7 +16,7 @@
  * Description:       سیستم حسابداری ایپک
  * Version:           1.0.0
  * Author:            ایپک
- * Author URI:        https://mbmti.ir
+ * Author URI:        https://mbmti.ir/Author
  * Text Domain:       mbm-ipak
  * Domain Path:       /languages
  */

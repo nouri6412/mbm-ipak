@@ -6,13 +6,13 @@ $this->models["report_debt"]["from_table"] = "contact";
 $this->models["report_debt"]["label"] = "بدهکاران و طلبکاران";
 $this->models["report_debt"]["is_report"] = true;
 $this->models["report_debt"]["primary_key"] = "id";
-$table_name=$wpdb->prefix . "hesab_sanad as san";
+$table_name = $wpdb->prefix . "hesab_sanad as san";
 $this->models["report_debt"]["fields"] = array(
     "id" => array(
         "title" => "id",
         "label" => "شماره سیستمی ",
         "sortable" => true,
-        "in_table"=>true,
+        "in_table" => true,
         "is_primary" => true
     ),
     "title" => array(
@@ -20,7 +20,7 @@ $this->models["report_debt"]["fields"] = array(
         "label" => "طرف حساب",
         "sortable" => true,
         "is_title" => true,
-        "in_table"=>true,
+        "in_table" => true,
         "type" => array("type" => "text")
     ),
     "sum_mablagh" => array(
@@ -33,7 +33,7 @@ $this->models["report_debt"]["fields"] = array(
     ELSE concat((sum(san.bed)-sum(san.bes))*-1,' ','بدهکار')
 END
          as sum_mablagh from  $table_name where san.model_id=tb.id ) as sum_mablagh",
-        "in_table"=>true,
+        "in_table" => true,
         "type" => array("type" => "number")
     ),
 );
