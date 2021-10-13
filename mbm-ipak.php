@@ -45,7 +45,9 @@ require MBM_IPAK_Include . 'base_class.php';
 require MBM_IPAK_Include . 'entity.php';
 require MBM_IPAK_Include . 'shared.php';
 require MBM_IPAK_Include . 'ajax.php';
+require MBM_IPAK_Include . 'setting.php';
 require MBM_IPAK_Include . 'core.php';
+
 
 foreach (glob(MBM_IPAK_Include."hooks/*.php") as $filename)
 {

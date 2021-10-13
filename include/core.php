@@ -137,7 +137,8 @@ class MBM_Ipak_Core
     }
     public function setting()
     {
-        View("public/setting");
+       $MBM_Ipak_Setting=new MBM_Ipak_Setting;
+       $MBM_Ipak_Setting->render();
     }
 
     public function define_bank()
