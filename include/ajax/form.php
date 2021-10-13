@@ -4,8 +4,9 @@ class MBM_Ipak_Ajax_Form
     function form()
     {
         global $wpdb;
-        $model_name = $_POST["model_name"];
-        $model_id = $_POST["model_id"];
+        $model_name = esc_sql(isset($_POST["model_name"]) ? sanitize_text_field($_POST["model_name"]) : '');
+        $model_id = esc_sql(isset($_POST["model_id"]) ? sanitize_text_field($_POST["model_id"]) : '');
+
         $MBM_Ipak_Models = new MBM_Ipak_Models;
         $item_edit = [];
         $output = '';
@@ -30,8 +31,10 @@ class MBM_Ipak_Ajax_Form
 
         $model = $MBM_Ipak_Models->get_model($model_name);
 
-        $output .= '<form method="post" action="' . esc_html(admin_url('admin.php')) . '?page=' . $_POST["page"] . '" class="model-form">';
-        $output .= '<div class="row">';
+        $page = esc_sql(isset($_POST["page"]) ? sanitize_text_field($_POST["page"]) : '');
+
+        $output .= sprintf('<form method="post" action="%s?page=%s" class="model-form">', esc_html(admin_url('admin.php')), esc_attr($page));
+        $output .= sprintf('<div class="row">');
 
         foreach ($model["fields"] as $field) {
             if (count($item_edit) > 0 && isset($item_edit[$field["title"]])) {
@@ -40,12 +43,11 @@ class MBM_Ipak_Ajax_Form
             $output .= $this->field_form($field);
         }
 
-        $output .= '<div class="col-md-12">'
-            . '<input name="submit_model" class="btn btn-primary" type="submit" value="ذخیره" />'
-            . '</div>';
+        $output .= sprintf('<div class="col-md-12">' . '<input name="submit_model" class="btn btn-primary" type="submit" value="ذخیره" />'
+            . '</div>');
 
-        $output .= '</div>';
-        $output .= '</form>';
+        $output .= sprintf('</div>');
+        $output .= sprintf('</form>');
 
         echo json_encode([
             'success'       => true,
@@ -136,8 +138,7 @@ class MBM_Ipak_Ajax_Form
     {
         $values = $this->get_values($field);
 
-        $ret = '<input id="' . $field["title"] . '" name="' . $field["title"] . '" type="hidden" value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
-
+        $ret = sprintf('<input id="%s" name="%s" type="hidden" value="%s" class="form-control %s" />',  esc_attr($field["title"]),  esc_attr($field["title"]), esc_attr($values["value"]), esc_attr($values["input_class"]));
 
         return $ret;
     }
@@ -146,10 +147,10 @@ class MBM_Ipak_Ajax_Form
     {
         $values = $this->get_values($field);
 
-        $ret = '<div class="' . $values["class"] . ' form-group">';
-        $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
-        $ret .= '<input id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
-        $ret .= '</div>';
+        $ret = sprintf('<div class="%s form-group">', esc_attr($values["class"]));
+        $ret .= sprintf('<label class="label-control">%s</label>', esc_html($values["label_title"]));
+        $ret .= sprintf('<input id="%s" name="%s" %s value="%s" class="form-control %s" />', esc_attr($field["title"]), esc_attr($field["title"]), esc_attr($values["type_field"]), esc_attr($values["value"]), esc_attr($values["input_class"]));
+        $ret .= sprintf('</div>');
 
         return $ret;
     }
@@ -159,8 +160,8 @@ class MBM_Ipak_Ajax_Form
         global $wpdb;
         $values = $this->get_values($field);
 
-        $ret = '<div class="' . $values["class"] . ' form-group">';
-        $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
+        $ret =sprintf('<div class="%s form-group">',esc_attr($values["class"])) ;
+        $ret .=sprintf('<label class="label-control">%s</label>',esc_html($values["label_title"])) ;
 
         $table = $field["type"]["select"]["model"];
 
@@ -180,12 +181,12 @@ class MBM_Ipak_Ajax_Form
             if ($values["value"] == $item["id"])
                 $selected = "selected";
 
-            $ret .= '<option ' . $selected . ' value="' . $item["id"] . '">' . $item[$field["type"]["select"]["label"]] . '</option>';
+            $ret .=sprintf('<option %s value="%s">%s</option>',esc_attr($selected),esc_attr($item["id"]),esc_html($item[$field["type"]["select"]["label"]])) ;
         }
 
-        $ret .= "</select>";
+        $ret .=sprintf("</select>") ;
 
-        $ret .= '</div>';
+        $ret .= sprintf('</div>');
 
         return $ret;
     }
@@ -194,8 +195,8 @@ class MBM_Ipak_Ajax_Form
     {
         $values = $this->get_values($field);
 
-        $ret = '<div class="' . $values["class"] . ' form-group">';
-        $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
+        $ret =sprintf('<div class="%s form-group">',esc_attr( $values["class"])) ;
+        $ret .=sprintf('<label class="label-control">%s</label>',esc_attr($values["label_title"])) ;
 
         if (strlen($values["value"]) == 0) {
             $values["value"] = mbm_ipak\tools::to_shamsi(date('Y-m-d', strtotime(date("Y-m-d") . ' - 0 days')));
@@ -206,8 +207,8 @@ class MBM_Ipak_Ajax_Form
             }
         }
 
-        $ret .= '<input onclick="Mh1PersianDatePicker.Show(this,' . "'" . $values["value"] . "'" . ',window.holidays)" id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' value="' . $values["value"] . '" class="form-control ' . $values["input_class"] . '" />';
-        $ret .= '</div>';
+        $ret .=sprintf('<input onclick="Mh1PersianDatePicker.Show(this,' . "'%s'" . ',window.holidays)" id="%s" name="%s" %s value="%s" class="form-control %s" />',esc_attr($values["value"]),esc_attr($values["title"]),esc_attr($values["title"]),esc_attr($values["type_field"]),esc_attr($values["value"]),esc_attr($values["input_class"]));
+        $ret .=sprintf('</div>') ;
 
         return $ret;
     }
@@ -216,10 +217,10 @@ class MBM_Ipak_Ajax_Form
     {
         $values = $this->get_values($field);
 
-        $ret = '<div class="' . $values["class"] . ' form-group">';
-        $ret .= '<label class="label-control">' . $values["label_title"] . '</label>';
-        $ret .= '<textarea  id="' . $field["title"] . '" name="' . $field["title"] . '" ' .  $values["type_field"] . ' class="form-control ' . $values["input_class"] . '" >' . $values["value"] . '</textarea>';
-        $ret .= '</div>';
+        $ret =sprintf('<div class="%s form-group">',esc_attr($values["class"])) ;
+        $ret .= sprintf('<label class="label-control">%s</label>',esc_html($values["label_title"])) ;
+        $ret .=sprintf( '<textarea  id="%s" name="%s" %s class="form-control %s" >%s</textarea>',esc_attr($field["title"]),esc_attr($field["title"]),esc_attr($values["type_field"]),esc_attr($values["input_class"]),esc_html($values["value"]));
+        $ret .=sprintf('</div>') ;
 
         return $ret;
     }
@@ -237,9 +238,8 @@ class MBM_Ipak_Ajax_Form
         foreach ($model["fields"] as $field) {
             if (isset($field["in_form"]) && $field["in_form"]) {
                 if (isset($_POST[$field["title"]])) {
-                    $value = trim($_POST[$field["title"]]);
 
-
+                    $value = sanitize_text_field($_POST[$field["title"]]);
 
                     if (isset($field["is_primary"]) && $field["is_primary"]) {
                         $primary_value = $value;

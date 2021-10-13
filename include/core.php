@@ -29,8 +29,8 @@ class MBM_Ipak_Core
     {
         foreach ($this->alerts as $alert) {
 ?>
-            <div class="alert alert-<?php echo $alert["type"] ?>">
-                <?php echo $alert["message"]; ?>
+            <div class="alert alert-<?php echo esc_attr($alert["type"]); ?>">
+                <?php echo esc_html($alert["message"]); ?>
             </div>
 
 <?php
@@ -63,7 +63,7 @@ class MBM_Ipak_Core
 
         wp_enqueue_style(
             'hesab-styles-bootstrap-rtl',
-            MBM_IPAK_URI . 'assets/css/bootstrap-rtl.css',
+            MBM_IPAK_URI . 'assets/css/bootstrap.rtl.css',
             array(),
             1.0
         );
@@ -133,7 +133,7 @@ class MBM_Ipak_Core
 
     public function dashboard()
     {
-        echo 'hello';
+        echo esc_html( __( 'My Home', 'mbm-ipak' ) );
     }
 
     public function define_bank()
@@ -252,7 +252,8 @@ class MBM_Ipak_Core
         $model_parent='';
         if(isset($_GET["page"]))
         {
-          $arr=explode("-",$_GET["page"]);
+         $page=sanitize_text_field($_GET["page"]);
+          $arr=explode("-",$page);
           $model_parent=$arr[count($arr)-1];
         }
         
@@ -299,7 +300,7 @@ class MBM_Ipak_Core
 
         $entity->model_obj = $MBM_Ipak_Models_List;
 
-        $entity->title_page = "لیست " . $model["label"] . " " . "ها";
+        $entity->title_page =sprintf('لیست %s',$model["label"]);
 
         $this->entities[$model_in] = $entity;
     }

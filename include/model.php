@@ -68,12 +68,28 @@ class MBM_Ipak_Models_List extends WP_List_Table
         $search = " and ( ";
         $vir_search = "";
 
+        $page = '';
 
-        if (isset($_POST["search-main-table"])) {
-            update_option($_REQUEST["page"] . "_search", trim($_POST["search-main-table"]));
+        if (!empty($_REQUEST['page'])) {
+            $page = $_REQUEST['page'];
         }
 
-        $this->text_search = trim(get_option($_REQUEST["page"] . "_search"));
+
+
+        if (isset($_POST["search-main-table"])) {
+
+            $search_main_table = sanitize_text_field($_POST["search-main-table"]);
+         
+            if (sanitize_option($page . "_search", $search_main_table)) {
+                update_option($page . "_search", $search_main_table);
+            }
+            else
+            {
+                update_option($page . "_search", '');
+            }
+        }
+
+        $this->text_search = esc_sql(get_option($page . "_search"));
 
         if (strlen($this->text_search) > 0) {
             $this->is_search = true;
@@ -138,8 +154,20 @@ class MBM_Ipak_Models_List extends WP_List_Table
         //echo $sql;
 
         if (!empty($_REQUEST['orderby'])) {
-            $sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
-            $sql .= !empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
+            $orderby=esc_sql($_REQUEST['orderby']);
+            $order=
+            $sql .= ' ORDER BY ' . $orderby;
+
+            $order= !empty($_REQUEST['order']) ?  esc_sql($_REQUEST['order']) : '';
+
+            if(strlen($order)==0)
+            {
+                $sql .=  ' ASC';
+            }
+            else{
+                $sql .=sprintf(' %s',$order) ;
+            }
+
         }
 
         $sql .= " LIMIT $per_page";
@@ -205,7 +233,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
     /** Text displayed when no customer data is available */
     public function no_items()
     {
-        _e('نتیجه ای یافت نشد', 'sp');
+        _e('نتیجه ای یافت نشد', 'mbm-ipak');
     }
 
 
@@ -255,12 +283,14 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $delete_nonce = wp_create_nonce('sp_delete_' . $this->model);
 
-        $title = '<strong>' . $item['id'] . '</strong>';
+        $title = sprintf('<strong>%s</strong>', $item['id']);
         $actions = [];
+        $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+
         if (!isset($this->model_obj["is_report"])) {
             $actions = [
-                'delete' => sprintf('<a href="?page=%s&action=%s&' . $this->model . '=%s&_wpnonce=%s">حذف</a>', esc_attr($_REQUEST['page']), 'delete', absint($item[$this->primary_key]), $delete_nonce),
-                'edit'   => '<a onclick="ipak_hesab_model_form(\'' . $this->model_obj["name"] . '\',' . absint($item[$this->primary_key]) . ');" data-toggle="modal" data-target="#ipak-model-form" href="#">ویرایش</a>'
+                'delete' => sprintf('<a href="?page=%s&action=%s&%s=%s&_wpnonce=%s">حذف</a>', esc_attr($page), esc_attr('delete'), esc_attr($this->model), absint($item[$this->primary_key]), $delete_nonce),
+                'edit'   => sprintf('<a onclick="ipak_hesab_model_form(\'%s\',%d);" type="button" data-bs-toggle="modal" data-bs-target="#ipak-model-form" href="#">ویرایش</a>', esc_attr($this->model_obj["name"]), esc_attr(absint($item[$this->primary_key])))
             ];
         }
 
@@ -312,15 +342,14 @@ class MBM_Ipak_Models_List extends WP_List_Table
      */
     public function get_bulk_actions()
     {
-        $actions=[];
-        
-        if (!isset($this->model_obj["is_report"]))
-        {
+        $actions = [];
+
+        if (!isset($this->model_obj["is_report"])) {
             $actions = [
                 'bulk-delete' => 'حذف'
             ];
         }
-      
+
 
         return $actions;
     }
@@ -364,7 +393,10 @@ class MBM_Ipak_Models_List extends WP_List_Table
             if (!wp_verify_nonce($nonce, 'sp_delete_' . $this->model)) {
                 die('Go get a life script kiddies');
             } else {
-                $this->delete_model(absint($_GET[$this->model]));
+                if(isset($_GET[$this->model]))
+                {
+                    $this->delete_model(absint($_GET[$this->model]));
+                }
 
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
                 // add_query_arg() return the current url

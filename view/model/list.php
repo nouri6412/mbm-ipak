@@ -9,12 +9,12 @@
             <?php
             if (!isset($this->model["is_report"])) {
             ?>
-                <button onclick="ipak_hesab_model_form('<?php echo $this->model['name']; ?>',0)" data-toggle="modal" data-target="#ipak-model-form" class="btn btn-primary"><span class="span-inside-btn"><?php echo "" . " " . $this->model["label"]; ?></span><i class="fa fa-plus"></i></button>
-
+                <button onclick="ipak_hesab_model_form('<?php echo esc_attr($this->model['name']); ?>',0)" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ipak-model-form">
+                <span class="span-inside-btn "><?php echo esc_attr($this->model["label"]) ; ?></span><i class="fa fa-plus"></i></button>
             <?php } ?>
         </div>
-        <form action="?page=<?php echo $_REQUEST["page"]; ?>" method="post" class="form-search-table">
-            <input value="<?php echo $this->model_obj->text_search; ?>" id="search-main-table" name="search-main-table" class="form-control" placeholder="جستجو.." />
+        <form action="?page=<?php echo !empty($_REQUEST["page"])?esc_attr($_REQUEST["page"]) : ''; ?>" method="post" class="form-search-table">
+            <input value="<?php echo esc_attr($this->model_obj->text_search); ?>" id="search-main-table" name="search-main-table" class="form-control" placeholder="جستجو.." />
             <input class="btn btn-primary" type="submit" value="بگرد" />
         </form>
     </div>

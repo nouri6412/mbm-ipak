@@ -4,7 +4,7 @@ Donate link: http://mbmti.ir/
 Tags: hesab,hesabdari,حسابداری,ماژول حسابداری,حسابداری ایپک,ایپک
 Requires at least: 3.0.1
 Tested up to: 5.8.1
-Stable tag: 4.3
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 افزونه حسابداری ایپک برای وردپرس .

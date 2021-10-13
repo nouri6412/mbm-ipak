@@ -8,7 +8,7 @@
             <div class="col-md-4">سلام</div>
             <div class="col-md-4">سلام</div>
         </div>
-        <button data-toggle="modal" data-target="#ipak-model-form" class="btn btn-primary">ایجاد</button>
+        <button data-toggle="modal" data-bs-target="#ipak-model-form" class="btn btn-primary">ایجاد</button>
     </div>
 </div>
 

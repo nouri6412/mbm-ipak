@@ -46,12 +46,10 @@ require MBM_IPAK_Include . 'entity.php';
 require MBM_IPAK_Include . 'shared.php';
 require MBM_IPAK_Include . 'ajax.php';
 require MBM_IPAK_Include . 'core.php';
-require MBM_IPAK_Include . 'report.php';
 
 foreach (glob(MBM_IPAK_Include."hooks/*.php") as $filename)
 {
     include $filename;
 }
-
 
 $MBM_Ipak_Core = new MBM_Ipak_Core();
