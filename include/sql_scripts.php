@@ -66,6 +66,7 @@ class MBM_Ipak_Sql_Scripts
             `id` BIGINT(18) NOT NULL AUTO_INCREMENT,
             `key_meta_id` BIGINT(18)  NOT NULL,
             `model_id` BIGINT(18)  NOT NULL,
+            `key_meta` varchar(500) CHARACTER SET utf8 NOT NULL,
             `value_meta` text CHARACTER SET utf8 NOT NULL,
             PRIMARY KEY (`id`)
           ) $charset_collate; ";
