@@ -239,7 +239,7 @@ class MBM_Ipak_Ajax_Form
             if (isset($field["in_form"]) && $field["in_form"]) {
                 if (isset($_POST[$field["title"]])) {
 
-                    $MBM_Ipak_Core->add_alert($field["title"] . " " . $_POST[$field["title"]], "success");
+                   // $MBM_Ipak_Core->add_alert($field["title"] . " " . $_POST[$field["title"]], "success");
 
                     $value = sanitize_text_field($_POST[$field["title"]]);
 
