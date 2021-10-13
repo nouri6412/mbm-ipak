@@ -239,6 +239,8 @@ class MBM_Ipak_Ajax_Form
             if (isset($field["in_form"]) && $field["in_form"]) {
                 if (isset($_POST[$field["title"]])) {
 
+                    $MBM_Ipak_Core->add_alert($field["title"] . " " . $_POST[$field["title"]], "success");
+
                     $value = sanitize_text_field($_POST[$field["title"]]);
 
                     if (isset($field["is_primary"]) && $field["is_primary"]) {
@@ -250,6 +252,8 @@ class MBM_Ipak_Ajax_Form
                     } else if (isset($field["type"]) && isset($field["type"]["type"]) && $field["type"]["type"] == "date") {
                         $values[$field["title"]] = ["key" => $field["title"], "value" => $value];
                         $value = mbm_ipak\tools::to_miladi($value);
+                     
+
                         $values[$field["title"] . "_miladi"] = ["key" => $field["title"] . "_miladi", "value" => $value];
                     } else {
                         $values[$field["title"]] = ["key" => $field["title"], "value" => $value];

@@ -17,7 +17,7 @@ function jdate($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran',
 
 	$T_sec = 0;/* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
 
-	if ($time_zone != 'local') date_default_timezone_set(($time_zone === '') ? 'Asia/Tehran' : $time_zone);
+	if ($time_zone != 'local') date_default_timezone_set(get_option('timezone_string'));
 	$ts = $T_sec + (($timestamp === '') ? time() : tr_num($timestamp));
 	$date = explode('_', date('H_i_j_n_O_P_s_w_Y', $ts));
 	list($j_y, $j_m, $j_d) = gregorian_to_jalali($date[8], $date[3], $date[2]);
@@ -37,7 +37,7 @@ function jdate($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran',
 			case 'R':
 			case 'x':
 			case 'X':
-				$out .= 'http://jdf.scr.ir';
+				$out .= '';
 				break;
 
 			case 'B':
@@ -234,7 +234,7 @@ function jstrftime($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehr
 
 	$T_sec = 0;/* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
 
-	if ($time_zone != 'local') date_default_timezone_set(($time_zone === '') ? 'Asia/Tehran' : $time_zone);
+	if ($time_zone != 'local') date_default_timezone_set(get_option('timezone_string'));
 	$ts = $T_sec + (($timestamp === '') ? time() : tr_num($timestamp));
 	$date = explode('_', date('h_H_i_j_n_s_w_Y', $ts));
 	list($j_y, $j_m, $j_d) = gregorian_to_jalali($date[7], $date[4], $date[3]);
