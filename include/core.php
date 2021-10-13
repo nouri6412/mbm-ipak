@@ -135,6 +135,10 @@ class MBM_Ipak_Core
     {
         echo esc_html( __( 'My Home', 'mbm-ipak' ) );
     }
+    public function setting()
+    {
+        View("public/setting");
+    }
 
     public function define_bank()
     {
@@ -223,6 +227,8 @@ class MBM_Ipak_Core
         add_menu_page('سیستم حسابداری', ' حسابداری ایپک', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"), 'dashicons-money-alt');
         add_submenu_page('ipak-hesab-dashboard', 'داشبورد حسابداری', 'داشبورد حسابداری', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"));
 
+        add_submenu_page('ipak-hesab-dashboard', 'تنظیمات', 'تنظیمات', 'manage_options', 'ipak-hesab-setting', array($this, "setting"));
+
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف بانک', 'تعاریف بانک', 'manage_options', 'ipak-hesab-define-bank', array($this, "define_bank"));
     
 
@@ -259,7 +265,7 @@ class MBM_Ipak_Core
         
     
         $this->add_entity($model_parent);
-        //add_submenu_page('ipak-hesab-dashboard', '', '', 'manage_options', 'ipak-hesab-define-bank', array($this,"define_bank"));
+        //add_submenu_page('ipak-hesab-dashboard', '', '', 'manage_options', '', array($this,"define_bank"));
 
     }
 
