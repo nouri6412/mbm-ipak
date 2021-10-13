@@ -207,7 +207,7 @@ class MBM_Ipak_Ajax_Form
             }
         }
 
-        $ret .=sprintf('<input onclick="Mh1PersianDatePicker.Show(this,' . "'%s'" . ',window.holidays)" id="%s" name="%s" %s value="%s" class="form-control %s" />',esc_attr($values["value"]),esc_attr($values["title"]),esc_attr($values["title"]),esc_attr($values["type_field"]),esc_attr($values["value"]),esc_attr($values["input_class"]));
+        $ret .=sprintf('<input onclick="Mh1PersianDatePicker.Show(this,' . "'%s'" . ',window.holidays)" id="%s" name="%s" %s value="%s" class="form-control %s" />',esc_attr($values["value"]),esc_attr($field["title"]),esc_attr($field["title"]),esc_attr($values["type_field"]),esc_attr($values["value"]),esc_attr($values["input_class"]));
         $ret .=sprintf('</div>') ;
 
         return $ret;
