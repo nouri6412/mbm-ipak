@@ -71,7 +71,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
         $page = '';
 
         if (!empty($_REQUEST['page'])) {
-            $page = $_REQUEST['page'];
+            $page = sanitize_text_field($_REQUEST['page']);
         }
 
 
@@ -154,11 +154,11 @@ class MBM_Ipak_Models_List extends WP_List_Table
         //echo $sql;
 
         if (!empty($_REQUEST['orderby'])) {
-            $orderby=esc_sql($_REQUEST['orderby']);
+            $orderby=esc_sql(sanitize_text_field($_REQUEST['orderby']));
             $order=
             $sql .= ' ORDER BY ' . $orderby;
 
-            $order= !empty($_REQUEST['order']) ?  esc_sql($_REQUEST['order']) : '';
+            $order= !empty($_REQUEST['order']) ?  esc_sql(sanitize_text_field($_REQUEST['order'])) : '';
 
             if(strlen($order)==0)
             {
@@ -285,7 +285,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $title = sprintf('<strong>%s</strong>', $item['id']);
         $actions = [];
-        $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+        $page = isset($_REQUEST['page']) ? sanitize_text_field($_REQUEST['page']) : 1;
 
         if (!isset($this->model_obj["is_report"])) {
             $actions = [
@@ -410,7 +410,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
             || (isset($_POST['action2']) && $_POST['action2'] == 'bulk-delete')
         ) {
 
-            $delete_ids = esc_sql($_POST['bulk-delete']);
+            $delete_ids = esc_sql(sanitize_text_field($_POST['bulk-delete']));
 
             // loop over the array of record IDs and delete them
             foreach ($delete_ids as $id) {

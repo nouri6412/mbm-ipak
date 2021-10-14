@@ -20,7 +20,7 @@ class MBM_Ipak_Setting extends MBM_Ipak_Base_Class
         global $MBM_Ipak_Core;
         $page = '';
         if (!empty($_REQUEST['page'])) {
-            $page = $_REQUEST['page'];
+            $page = sanitize_text_field($_REQUEST['page']);
         }   
         if (isset($_POST["submit_model"])) {
             
