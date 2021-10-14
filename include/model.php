@@ -395,7 +395,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
             } else {
                 if(isset($_GET[$this->model]))
                 {
-                    $this->delete_model(absint($_GET[$this->model]));
+                    $this->delete_model(absint(sanitize_text_field($_GET[$this->model])));
                 }
 
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
