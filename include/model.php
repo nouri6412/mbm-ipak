@@ -154,18 +154,18 @@ class MBM_Ipak_Models_List extends WP_List_Table
         //echo $sql;
 
         if (!empty($_REQUEST['orderby'])) {
-            $orderby=esc_sql(sanitize_text_field($_REQUEST['orderby']));
+            $orderby=sanitize_text_field($_REQUEST['orderby']);
             $order=
-            $sql .= ' ORDER BY ' . $orderby;
+            $sql .= ' ORDER BY ' . esc_sql($orderby);
 
-            $order= !empty($_REQUEST['order']) ?  esc_sql(sanitize_text_field($_REQUEST['order'])) : '';
+            $order= !empty($_REQUEST['order']) ?  sanitize_text_field($_REQUEST['order']) : '';
 
             if(strlen($order)==0)
             {
                 $sql .=  ' ASC';
             }
             else{
-                $sql .=sprintf(' %s',$order) ;
+                $sql .= esc_sql($order) ;
             }
 
         }
