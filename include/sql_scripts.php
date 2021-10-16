@@ -13,6 +13,10 @@ class MBM_Ipak_Sql_Scripts
                 PRIMARY KEY (`id`)
               ) $charset_collate; ";
 
+    $sql .= "INSERT INTO $table_name(id,type_id,title) select '-1','1','بانک ووکامرس' where not exists(select * from $table_name where id = '-1');  ";
+    $sql .= "INSERT INTO $table_name(id,type_id,title) select '-2','4','فروش محصولات ووکامرس' where not exists(select * from $table_name where id = '-2');  ";
+    $sql .= "INSERT INTO $table_name(id,type_id,title) select '-3','2',' مشتری ووکامرس' where not exists(select * from $table_name where id = '-3');  ";
+
     $table_name = $wpdb->prefix . "hesab_model_type";
     $sql .= "CREATE TABLE $table_name (
                     `id` BIGINT(18) NOT NULL,
