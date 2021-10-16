@@ -18,8 +18,9 @@ class MBM_Ipak_Setting extends MBM_Ipak_Base_Class
 
     public function get_setting($key)
     {
-        if (isset($this->setting[$key])) {
-            return $this->setting[$key];
+        
+        if (isset($this->setting->$key)) {
+            return $this->setting->$key;
         }
         return '';
     }
@@ -30,14 +31,14 @@ class MBM_Ipak_Setting extends MBM_Ipak_Base_Class
         if($is_post)
         {
             if (isset($_POST[$key])) {
-                $this->setting[$key]=$value;
+                $this->setting->$key=$value;
             } else {
-                $this->setting[$key]=$def;
+                $this->setting->$key=$def;
             }
         }
         else
         {
-            $this->setting[$key]=$value;
+            $this->setting->$key=$value;
         }
     
     }
