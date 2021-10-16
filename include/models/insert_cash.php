@@ -1,6 +1,6 @@
 <?php
 $this->models["insert_cash"] = [];
-$this->models["insert_cash"]["id"] = "9";
+$this->models["insert_cash"]["id"] = "10";
 $this->models["insert_cash"]["name"] = "insert_cash";
 $this->models["insert_cash"]["label"] = "ثبت دریافت نقدی";
 $this->models["insert_cash"]["primary_key"] = "id";

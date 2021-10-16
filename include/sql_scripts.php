@@ -34,6 +34,7 @@ class MBM_Ipak_Sql_Scripts
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '11','report_cost',' گزارش هزینه' where not exists(select * from $table_name where title = 'report_cost');  ";
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '12','report_cost',' گزارش درآمد' where not exists(select * from $table_name where title = 'report_cost');  ";
     $sql .= "INSERT INTO $table_name(id,title,title_fa) select '13','report_cost',' گزارش بدهکاران و طلبکاران' where not exists(select * from $table_name where title = 'report_cost');  ";
+    $sql .= "INSERT INTO $table_name(id,title,title_fa) select '14','report_cost',' گزارش   موجودی بانک' where not exists(select * from $table_name where title = 'report_bank');  ";
 
 
 
