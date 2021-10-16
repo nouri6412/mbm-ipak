@@ -133,7 +133,8 @@ class MBM_Ipak_Core
 
     public function dashboard()
     {
-        echo esc_html( __( 'My Home', 'mbm-ipak' ) );
+        $MBM_Ipak_Home=new MBM_Ipak_Home;
+        $MBM_Ipak_Home->home();
     }
     public function setting()
     {

@@ -74,6 +74,35 @@ font-size: 20px;
     margin-top: 20px;
 }
 
+.mbm-ipak-tile{
+    color: #fff;
+    padding: 5px;
+    position: relative;
+    height: 131px;
+}
+
+.mbm-ipak-tile h3{
+color: #fff;
+font-weight: normal;
+font-size: 24px;
+}
+
+.mbm-ipak-tile hr{
+
+}
+
+.mbm-ipak-tile p{
+
+}
+
+.mbm-ipak-tile i{
+    position: absolute;
+    font-size: 79px;
+    top: 53px;
+    left: 6px;
+    opacity: 0.7;
+}
+
 @media (min-width: 992px)
 {
     .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {

@@ -47,6 +47,7 @@ require MBM_IPAK_Include . 'shared.php';
 require MBM_IPAK_Include . 'ajax.php';
 require MBM_IPAK_Include . 'setting.php';
 require MBM_IPAK_Include . 'core.php';
+require MBM_IPAK_Include . 'home.php';
 require MBM_IPAK_Include . 'woocommerce.php';
 
 
