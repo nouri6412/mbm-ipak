@@ -29,8 +29,8 @@ $this->models["report_bank"]["fields"] = array(
         "sortable" => true,
         "query" => "(select 
         CASE
-    WHEN (sum(san.bed)-sum(san.bes)) > 0 THEN concat((sum(san.bed)-sum(san.bes)),' ','طلبکار') 
-    ELSE concat((sum(san.bed)-sum(san.bes))*-1,' ','بدهکار')
+    WHEN (sum(san.bed)-sum(san.bes)) > 0 THEN concat((sum(san.bed)-sum(san.bes)),' ','') 
+    ELSE concat((sum(san.bed)-sum(san.bes)),' ','')
 END
          as sum_mablagh from  $table_name where san.model_id=tb.id ) as sum_mablagh",
         "in_table" => true,
