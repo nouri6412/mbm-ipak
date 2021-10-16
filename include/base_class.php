@@ -1,6 +1,7 @@
 <?php
 class MBM_Ipak_Base_Class
 {
+    var $ViewData=[];
     public function view($view)
     {
         $url = MBM_IPAK_View . $view . '.php';
