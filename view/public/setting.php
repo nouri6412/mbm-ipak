@@ -5,7 +5,7 @@
 <form action="<?php  echo esc_html(admin_url('admin.php')); ?>?page=ipak-hesab-setting" method="POST">
 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" <?php if($this->_woo_transition == "1") echo 'checked="checked"'; ?> value="1" name="chk-woo-to-ipak-sanad" id="flexCheckDefault">
+        <input class="form-check-input" type="checkbox" <?php if ($this->get_setting("_woo_transition") == 1 ) echo 'checked="checked"'; ?> value="1" name="_woo_transition" id="flexCheckDefault">
         <label class="form-check-label" for="flexCheckDefault">
             <?php  echo esc_html("پشتیبانی از تراکنش های افزونه ووکامرس"); ?>
         </label>

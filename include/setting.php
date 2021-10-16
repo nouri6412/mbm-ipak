@@ -1,46 +1,73 @@
 <?php
 class MBM_Ipak_Setting extends MBM_Ipak_Base_Class
 {
-    public $_woo_transition = "0";
+    public $setting = array();
 
     public function __construct()
     {
-
+        $str = get_option("mbm_ipak_setting");
+        $this->setting = json_decode($str);
     }
-    
+
     public function render()
     {
-       
+
         $this->post();
         $this->view('public/setting');
     }
 
+    public function get_setting($key)
+    {
+        if (isset($this->setting[$key])) {
+            return $this->setting[$key];
+        }
+        return '';
+    }
+
+    public function set_setting($key,$value,$def='',$is_post=true)
+    {
+
+        if($is_post)
+        {
+            if (isset($_POST[$key])) {
+                $this->setting[$key]=$value;
+            } else {
+                $this->setting[$key]=$def;
+            }
+        }
+        else
+        {
+            $this->setting[$key]=$value;
+        }
+    
+    }
+
     public function post()
     {
-        global $MBM_Ipak_Core;
-        $page = '';
-        if (!empty($_REQUEST['page'])) {
-            $page = sanitize_text_field($_REQUEST['page']);
-        }   
+       
         if (isset($_POST["submit_model"])) {
-            
-            if (isset($_POST["chk-woo-to-ipak-sanad"])) {
-                
-                $search_main_table = sanitize_text_field($_POST["chk-woo-to-ipak-sanad"]);
-                if (sanitize_option($page . "_woo_transition", $search_main_table)) {
-                    update_option($page . "_woo_transition", $search_main_table);
-                    $MBM_Ipak_Core->add_alert( "تغییرات با موفقیت اعمال شد", "success");
-                }
-                else
-                {
-                    update_option($page . "_woo_transition", '0');
-                    $MBM_Ipak_Core->add_alert( "خطایی رخ داده است" , "danger");
-                }
-            }else{
-                update_option($page . "_woo_transition", '0');
-                $MBM_Ipak_Core->add_alert( "تغییرات با موفقیت اعمال شد", "success");
-            } 
+            $this->set_setting("_woo_transition",1,0);
         }
-        $this->_woo_transition = esc_sql(get_option($page . "_woo_transition"));
+
+        $this->save_setting();
+    }
+
+    public function save_setting(){
+        global $MBM_Ipak_Core;
+        if (sanitize_option("mbm_ipak_setting", json_encode($this->setting))) {
+            update_option("mbm_ipak_setting", json_encode($this->setting));
+            $MBM_Ipak_Core->add_alert("تغییرات با موفقیت اعمال شد", "success");
+        } else {
+            $MBM_Ipak_Core->add_alert("خطایی رخ داده است", "danger");
+        }
+    }
+
+    public function is_woocommerce_activated()
+    {
+        if (class_exists('woocommerce')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
