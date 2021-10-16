@@ -173,6 +173,12 @@ class MBM_Ipak_Core
         $entity->render();
     }
 
+    public function report_bank()
+    {
+        $entity =  $this->get_entity("report_bank");
+        $entity->render();
+    }
+
     public function report_income()
     {
         $entity =  $this->get_entity("report_income");
@@ -252,6 +258,7 @@ class MBM_Ipak_Core
         add_submenu_page('ipak-hesab-dashboard', 'ثبت طلبکار', 'ثبت طلبکار', 'manage_options', 'ipak-hesab-insert_demand', array($this, "insert_demand"));
         add_submenu_page('ipak-hesab-dashboard', 'پرداخت نقدی ', 'پرداخت نقدی ', 'manage_options', 'ipak-hesab-insert_pay', array($this, "insert_pay"));
         add_submenu_page('ipak-hesab-dashboard', 'دریافت نقدی', 'دریافت نقدی', 'manage_options', 'ipak-hesab-insert_cash', array($this, "insert_cash"));
+        add_submenu_page('ipak-hesab-dashboard', 'گزارش موجودی بانک', 'گزارش موجودی بانک', 'manage_options', 'ipak-hesab-report_bank', array($this, "report_bank"));
         add_submenu_page('ipak-hesab-dashboard', 'گزارش هزینه', 'گزارش هزینه', 'manage_options', 'ipak-hesab-report_cost', array($this, "report_cost"));
         add_submenu_page('ipak-hesab-dashboard', 'گزارش درآمد', 'گزارش درآمد', 'manage_options', 'ipak-hesab-report_income', array($this, "report_income"));
         add_submenu_page('ipak-hesab-dashboard', 'گزارش بدهی ها و مطالبه ها', 'گزارش بدهی ها و مطالبه ها', 'manage_options', 'ipak-hesab-report_debt', array($this, "report_debt"));
