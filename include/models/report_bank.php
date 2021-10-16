@@ -30,7 +30,7 @@ $this->models["report_bank"]["fields"] = array(
         "query" => "(select 
         CASE
     WHEN (sum(san.bed)-sum(san.bes)) > 0 THEN concat((sum(san.bed)-sum(san.bes)),' ','') 
-    ELSE concat((sum(san.bed)-sum(san.bes)),' ','')
+    ELSE concat((sum(san.bed)-sum(san.bes))*-1,' ','-')
 END
          as sum_mablagh from  $table_name where san.model_id=tb.id ) as sum_mablagh",
         "in_table" => true,
