@@ -6,17 +6,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://mbmti.ir
+ * @link              http://mbmti.ir
  * @since             2.0.2
  * @package           MBM_IPAK
  *
  * @wordpress-plugin
  * Plugin Name:       MBM Ipak
- * Plugin URI:        https://mbmti.ir
+ * Plugin URI:        http://mbmti.ir
  * Description:       سیستم حسابداری ایپک
  * Version:           2.0.2
  * Author:            ایپک
- * Author URI:        https://mbmti.ir/Author
+ * Author URI:        http://mbmti.ir/Author
  * Text Domain:       mbm-ipak
  * Domain Path:       /languages
  */
