@@ -15,7 +15,7 @@ class MBM_Ipak_Woocommerce extends MBM_Ipak_Base_Class
 
             $order = wc_get_order($order_id);
             $user = $order->get_user();
-            $price =  $order->get_prices_include_tax();
+            $price =  $order->get_total();
             
             if ($user) {
 
@@ -37,4 +37,4 @@ class MBM_Ipak_Woocommerce extends MBM_Ipak_Base_Class
 }
 
 $MBM_Ipak_Woocommerce = new MBM_Ipak_Woocommerce;
-add_action('woocommerce_payment_complete', array($MBM_Ipak_Woocommerce, 'so_payment_complete'), 10, 1);
+add_action('woocommerce_checkout_order_processed', array($MBM_Ipak_Woocommerce, 'so_payment_complete'), 10, 1);
