@@ -34,4 +34,17 @@
         </div>
     </div>
 
+    <hr>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            راهنمایی
+        </div>
+        <div >
+            بدهکار یعنی مبلغی که دیگران به شما بدهکار هستند
+        </div>
+        <div >
+            طلبکار یعنی مبلغی که دیگران از شما طلبکار هستند
+        </div>
+    </div>
+
 </div>
