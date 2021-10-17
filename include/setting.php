@@ -6,6 +6,9 @@ class MBM_Ipak_Setting extends MBM_Ipak_Base_Class
     public function __construct()
     {
         $str = get_option("mbm_ipak_setting");
+
+        if(strlen($str)==0) $str='[]';
+
         $this->setting = json_decode($str);
     }
 
