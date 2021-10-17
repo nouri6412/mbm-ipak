@@ -73,5 +73,5 @@ class MBM_Ipak_Woocommerce extends MBM_Ipak_Base_Class
 
 $MBM_Ipak_Woocommerce = new MBM_Ipak_Woocommerce;
 add_action('woocommerce_checkout_order_processed', array($MBM_Ipak_Woocommerce, 'order_complete'), 10, 1);
-add_action('woocommerce_cancelled_order', array($MBM_Ipak_Woocommerce, 'order_cancel'), 10, 1);
+add_action('woocommerce_order_status_cancelled', array($MBM_Ipak_Woocommerce, 'order_cancel'), 10, 1);
 add_action('woocommerce_process_shop_order_meta', array($MBM_Ipak_Woocommerce, 'order_update'), 10, 1);
