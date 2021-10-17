@@ -19,12 +19,12 @@ class MBM_Ipak_Setting extends MBM_Ipak_Base_Class
         $this->view('public/setting');
     }
 
-    public function get_setting($key)
+    public function get_setting($key,$def='')
     {
         if (isset($this->setting->$key)) {
             return $this->setting->$key;
         }
-        return '';
+        return $def;
     }
 
     public function set_setting($key,$value,$def='',$is_post=true)
