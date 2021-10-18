@@ -65,8 +65,6 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
         $this->sql_main = $data["sql"];
 
-
-
         $this->sql_count = $data["sql_count"];
     }
 
