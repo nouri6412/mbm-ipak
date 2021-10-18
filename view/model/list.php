@@ -13,6 +13,7 @@
                 <span class="span-inside-btn "><?php echo esc_attr($this->model["label"]) ; ?></span><i class="fa fa-plus"></i></button>
             <?php } ?>
         </div>
+        
         <form action="?page=<?php echo !empty($_REQUEST["page"])?esc_attr(sanitize_text_field($_REQUEST["page"])) : ''; ?>" method="post" class="form-search-table">
             <input value="<?php echo esc_attr($this->model_obj->text_search); ?>" id="search-main-table" name="search-main-table" class="form-control" placeholder="جستجو.." />
             <input class="btn btn-primary" type="submit" value="بگرد" />
@@ -32,4 +33,6 @@
         </div>
         <br class="clear">
     </div>
+    <a class="btn btn-primary" href="?page=<?php echo !empty($_REQUEST["page"])?esc_attr(sanitize_text_field($_REQUEST["page"])) : ''; ?>&export_model=1">خروجی CSV</a>
+
 </div>

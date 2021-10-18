@@ -54,140 +54,23 @@ class MBM_Ipak_Models_List extends WP_List_Table
         global $wpdb;
 
         $result = $wpdb->get_results($this->sql_main, 'ARRAY_A');
+
         return $result;
     }
 
-    function get_sql($per_page = 5, $page_number)
+    function get_sql($per_page = 5, $page_number = 1, $all_data = false)
     {
-        $sql = "";
-        $field_query = "";
-        $vir = "";
 
-        $table_name = $this->model_table_name . "_meta";
+        $data = mbm_ipak\tools::get_sql($per_page, $page_number, $all_data, $this->model_table_name, $this->data_model["fields"], $this->where);
 
-        $search = " and ( ";
-        $vir_search = "";
-
-        $page = '';
-
-        if (!empty($_REQUEST['page'])) {
-            $page = sanitize_text_field($_REQUEST['page']);
-        }
+        $this->sql_main = $data["sql"];
 
 
 
-        if (isset($_POST["search-main-table"])) {
-
-            $search_main_table = sanitize_text_field($_POST["search-main-table"]);
-         
-            if (sanitize_option($page . "_search", $search_main_table)) {
-                update_option($page . "_search", $search_main_table);
-            }
-            else
-            {
-                update_option($page . "_search", '');
-            }
-        }
-
-        $this->text_search = esc_sql(get_option($page . "_search"));
-
-        if (strlen($this->text_search) > 0) {
-            $this->is_search = true;
-        } else {
-            $this->is_search = false;
-        }
-
-        foreach ($this->data_model["fields"] as $field) {
-            if (isset($field["in_table"]) && $field["in_table"]) {
-                if (isset($field["query"])) {
-                    $field_query .= $vir . $field["query"];
-                } else 
-                if ($this->get_type($field) == "select") {
-                    $table = $field["type"]["select"]["model"];
-                    $tit = "met." . $field["type"]["select"]["label"];
-
-                    if (!isset($field["is_title"])) {
-                        $tit = "meti." . $field["type"]["select"]["label"];
-                        $field_query .= $vir . "(select $tit from $table as meti where meti.id=(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "' limit 1)) as " . $field["title"];
-                    } else {
-                        $field_query .= $vir . "(select $tit from $table as met where met.id=tb.title) as " . $field["title"];
-                    }
-
-                    if ($this->is_search) {
-                        $search = $search . $vir_search . " " . $field["title"] . " like '%" . $this->text_search . "%'";
-                    }
-                } else if ((isset($field["is_title"]) && $field["is_title"]) || (isset($field["is_primary"]) && $field["is_primary"])) {
-                    $field_query .= $vir . $field["title"];
-
-                    if ($this->is_search) {
-                        $search = $search . $vir_search . " " . $field["title"] . " like '%" . $this->text_search . "%'";
-                    }
-                } else {
-                    $field_query .= $vir . "(select met.value_meta from $table_name as met where met.model_id =tb.id and met.key_meta='" . $field["title"] . "' limit 1) as " . $field["title"];
-                    if ($this->is_search) {
-                        $search = $search . $vir_search . " " . $field["title"] . " like '%" . $this->text_search . "%'";
-                    }
-                }
-                $vir = ",";
-
-                if ($this->is_search) {
-                    $vir_search = " or ";
-                }
-            }
-        }
-
-
-
-        if ($search == " and ( ") {
-            $search = "";
-        } else {
-            $search = $search . " )";
-        }
-
-
-
-
-        $sql = "select * from (SELECT $field_query FROM {$this->model_table_name} as tb where 1=1 $this->where) as tb_all" . ' where 1=1 ' . $search;
-
-        $sql_count = "select count(*) from (SELECT $field_query FROM {$this->model_table_name} as tb where 1=1 $this->where) as tb_all" . ' where 1=1 ' . $search;
-
-        //echo $sql;
-
-        if (!empty($_REQUEST['orderby'])) {
-            $orderby=sanitize_text_field($_REQUEST['orderby']);
-            $order=
-            $sql .= ' ORDER BY ' . esc_sql($orderby);
-
-            $order= !empty($_REQUEST['order']) ?  sanitize_text_field($_REQUEST['order']) : '';
-
-            if(strlen($order)==0)
-            {
-                $sql .=  ' ASC';
-            }
-            else{
-                $sql .= esc_sql($order) ;
-            }
-
-        }
-
-        $sql .= " LIMIT $per_page";
-        $sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
-
-        $this->sql_main = $sql;
-
-
-
-        $this->sql_count = $sql_count;
+        $this->sql_count = $data["sql_count"];
     }
 
-    function get_type($field)
-    {
-        if (isset($field["type"]) && isset($field["type"]["type"])) {
-            return $field["type"]["type"];
-        }
 
-        return "text";
-    }
 
     /**
      * Delete a customer record.
@@ -393,8 +276,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
             if (!wp_verify_nonce($nonce, 'sp_delete_' . $this->model)) {
                 die('Go get a life script kiddies');
             } else {
-                if(isset($_GET[$this->model]))
-                {
+                if (isset($_GET[$this->model])) {
                     $this->delete_model(absint(sanitize_text_field($_GET[$this->model])));
                 }
 

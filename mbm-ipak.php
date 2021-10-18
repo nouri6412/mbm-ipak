@@ -57,3 +57,5 @@ foreach (glob(MBM_IPAK_Include."hooks/*.php") as $filename)
 }
 
 $MBM_Ipak_Core = new MBM_Ipak_Core();
+
+

@@ -264,16 +264,10 @@ class MBM_Ipak_Core
         add_submenu_page('ipak-hesab-dashboard', 'گزارش بدهی ها و مطالبه ها', 'گزارش بدهی ها و مطالبه ها', 'manage_options', 'ipak-hesab-report_debt', array($this, "report_debt"));
 
 
-        $model_parent='';
-        if(isset($_GET["page"]))
-        {
-         $page=sanitize_text_field($_GET["page"]);
-          $arr=explode("-",$page);
-          $model_parent=$arr[count($arr)-1];
-        }
+    
         
     
-        $this->add_entity($model_parent);
+        $this->add_entity(mbm_ipak\tools::get_model_from_url());
         //add_submenu_page('ipak-hesab-dashboard', '', '', 'manage_options', '', array($this,"define_bank"));
 
     }
