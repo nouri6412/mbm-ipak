@@ -11,7 +11,7 @@
  * @package           MBM_IPAK
  *
  * @wordpress-plugin
- * Plugin Name:       MBM Ipak
+ * Plugin Name:       ایپک ( حسابداری )
  * Plugin URI:        http://mbmti.ir
  * Description:       سیستم حسابداری ایپک
  * Version:           2.0.3
@@ -56,6 +56,13 @@ foreach (glob(MBM_IPAK_Include."hooks/*.php") as $filename)
     include $filename;
 }
 
-$MBM_Ipak_Core = new MBM_Ipak_Core();
+
+function MBM_Ipak_Core()
+{
+    $MBM_Ipak_Core = new MBM_Ipak_Core();
+}
+
+add_action("init","MBM_Ipak_Core");
+
 
 

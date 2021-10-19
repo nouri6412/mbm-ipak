@@ -232,7 +232,7 @@ class MBM_Ipak_Core
     {
 
         
-        add_menu_page('سیستم حسابداری', ' حسابداری ایپک', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"), 'dashicons-money-alt');
+        add_menu_page('ایپک ( حسابداری )', 'ایپک ( حسابداری )', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"), 'dashicons-money-alt');
         add_submenu_page('ipak-hesab-dashboard', 'داشبورد حسابداری', 'داشبورد حسابداری', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"));
 
         add_submenu_page('ipak-hesab-dashboard', 'تنظیمات', 'تنظیمات', 'manage_options', 'ipak-hesab-setting', array($this, "setting"));
