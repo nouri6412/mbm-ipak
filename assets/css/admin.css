@@ -47,6 +47,7 @@ font-size: 20px;
     height: 100%;
     top: 0;
     background-image: url(../img/bg.png);
+    z-index: 10000;
 }
 
 .loading-ajax img{
