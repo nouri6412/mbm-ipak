@@ -37,3 +37,10 @@ END
         "type" => array("type" => "number")
     ),
 );
+$this->models["report_bank"]["filter"] = array("sanad_date" => array(
+    "title" => "sanad_date",
+    "label" => "تاریخ",
+    "sortable" => true,
+    "in_form" => true,
+    "type" => array("type" => "date")
+));
