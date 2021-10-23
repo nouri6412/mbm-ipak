@@ -95,4 +95,4 @@ function do_export_models()
 
     }
 }
-add_action( 'init', 'do_export_models' );
+add_action( 'init', 'do_export_models' ,11);
