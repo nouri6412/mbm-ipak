@@ -126,20 +126,18 @@ class MBM_Ipak_Core
             'current_page' => get_query_var('paged') ? get_query_var('paged') : 1,
             'max_page' => $wp_query->max_num_pages
         ));
-
-
     }
 
 
     public function dashboard()
     {
-        $MBM_Ipak_Home=new MBM_Ipak_Home;
+        $MBM_Ipak_Home = new MBM_Ipak_Home;
         $MBM_Ipak_Home->home();
     }
     public function setting()
     {
-       $MBM_Ipak_Setting=new MBM_Ipak_Setting;
-       $MBM_Ipak_Setting->render();
+        $MBM_Ipak_Setting = new MBM_Ipak_Setting;
+        $MBM_Ipak_Setting->render();
     }
 
     public function define_bank()
@@ -221,7 +219,7 @@ class MBM_Ipak_Core
         $entity->render();
     }
 
-    
+
     public function insert_cash()
     {
         $entity =  $this->get_entity("insert_cash");
@@ -231,27 +229,27 @@ class MBM_Ipak_Core
     public function menu()
     {
 
-        
+
         add_menu_page('ایپک ( حسابداری )', 'ایپک ( حسابداری )', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"), 'dashicons-money-alt');
         add_submenu_page('ipak-hesab-dashboard', 'داشبورد حسابداری', 'داشبورد حسابداری', 'manage_options', 'ipak-hesab-dashboard', array($this, "dashboard"));
 
         add_submenu_page('ipak-hesab-dashboard', 'تنظیمات', 'تنظیمات', 'manage_options', 'ipak-hesab-setting', array($this, "setting"));
 
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف بانک', 'تعاریف بانک', 'manage_options', 'ipak-hesab-define-bank', array($this, "define_bank"));
-    
+
 
         add_submenu_page('ipak-hesab-dashboard', '  تعاریف طرف حساب / اشخاص / شرکت', 'تعاریف طرف حساب / اشخاص / شرکت', 'manage_options', 'ipak-hesab-define-contact', array($this, "define_contact"));
-      
-       
+
+
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف درآمد', 'تعاریف درآمد', 'manage_options', 'ipak-hesab-define-income',  array($this, "define_income"));
-      
-       
+
+
         add_submenu_page('ipak-hesab-dashboard', 'تعاریف هزینه', 'تعاریف هزینه', 'manage_options', 'ipak-hesab-define-cost',  array($this, "define_cost"));
-        
 
 
- 
-        
+
+
+
         add_submenu_page('ipak-hesab-dashboard', 'ثبت هزینه', 'ثبت هزینه', 'manage_options', 'ipak-hesab-insert_cost', array($this, "insert_cost"));
         add_submenu_page('ipak-hesab-dashboard', 'ثبت درآمد', 'ثبت درآمد', 'manage_options', 'ipak-hesab-insert_income', array($this, "insert_income"));
         add_submenu_page('ipak-hesab-dashboard', 'ثبت بدهکار', 'ثبت بدهکار  ', 'manage_options', 'ipak-hesab-insert_debt', array($this, "insert_debt"));
@@ -264,9 +262,9 @@ class MBM_Ipak_Core
         add_submenu_page('ipak-hesab-dashboard', 'گزارش بدهی ها و مطالبه ها', 'گزارش بدهی ها و مطالبه ها', 'manage_options', 'ipak-hesab-report_debt', array($this, "report_debt"));
 
 
-    
-        
-    
+
+
+
         $this->add_entity(mbm_ipak\tools::get_model_from_url());
         //add_submenu_page('ipak-hesab-dashboard', '', '', 'manage_options', '', array($this,"define_bank"));
 
@@ -274,7 +272,7 @@ class MBM_Ipak_Core
 
     public function get_entity($model_in)
     {
-       
+
         return $this->entities[$model_in];
     }
 
@@ -287,7 +285,10 @@ class MBM_Ipak_Core
         $MBM_Ipak_Models = new MBM_Ipak_Models;
 
         $model = $MBM_Ipak_Models->get_model($model_in);
-      
+
+        if (count($model) == 0) {
+            return;
+        }
 
         $MBM_Ipak_Models_List = new MBM_Ipak_Models_List(
             array(
@@ -309,7 +310,7 @@ class MBM_Ipak_Core
 
         $entity->model_obj = $MBM_Ipak_Models_List;
 
-        $entity->title_page =sprintf('لیست %s',$model["label"]);
+        $entity->title_page = sprintf('لیست %s', $model["label"]);
 
         $this->entities[$model_in] = $entity;
     }

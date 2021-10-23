@@ -27,6 +27,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
         //  echo $this->where;
         $this->primary_key        = $this->model_obj["primary_key"];
         $this->columns            = $this->model_obj["fields"];
+        
 
         // $MBM_Ipak_Models = new MBM_Ipak_Models;
         $this->data_model = $this->model_obj;
