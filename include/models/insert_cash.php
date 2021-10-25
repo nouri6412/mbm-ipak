@@ -27,6 +27,7 @@ $this->models["insert_cash"]["fields"] = array(
         "label" => "طرف حساب",
         "sortable" => true,
         "in_form" => true,
+        "is_require" => true,
         "in_table" => true,
         "type" => array("type" => "select", "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=2", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
     ),

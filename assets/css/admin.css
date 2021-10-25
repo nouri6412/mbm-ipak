@@ -104,6 +104,32 @@ font-size: 24px;
     opacity: 0.7;
 }
 
+.auto-select-box{
+    position: relative;
+ 
+}
+
+.auto-select-box .auto-select{
+    position: absolute;
+    top:63px;
+    background: #fff;
+    padding: 5px;
+    border: 1px solid #bdbaba;
+    max-height: 193px;
+    overflow: auto;
+    display: none;
+}
+
+.auto-select-box .auto-select .auto-select-item{
+    width: 100%;
+    float: right;
+    cursor: pointer;
+}
+
+.auto-select-box .auto-select .auto-select-item:hover{
+    background:  #bdbaba;
+}
+
 @media (min-width: 992px)
 {
     .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {

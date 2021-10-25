@@ -26,9 +26,10 @@ $this->models["insert_pay"]["fields"] = array(
         "title" => "contact",
         "label" => "طرف حساب",
         "sortable" => true,
+        "is_require" => true,
         "in_form" => true,
         "in_table" => true,
-        "type" => array("type" => "select", "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=2", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
+        "type" => array("type" => "select","auto-select"=>true, "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=2", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
     ),
     "mablagh" => array(
         "title" => "mablagh",
