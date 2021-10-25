@@ -45,7 +45,7 @@ function ipak_auto_select_item_key_down(obj) {
         'where': obj.attr('model-where'),
         'label': obj.attr('model-label'),
         'name': obj.attr('target-id'),
-        'value': obj.attr(obj.val())
+        'value': obj.val()
     }, function (result) {
         console.log(result);
         jQuery("#" + obj.attr("target-id") + "_box_auto .auto-select").html(result.html);

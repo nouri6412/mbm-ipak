@@ -44,9 +44,10 @@ class MBM_Ipak_Ajax
         }
 
 
-        $where = $where . " abd " . $label . " like '%" . esc_sql($value) . "%' ";
-
-        $query_string       = $wpdb->prepare("select * from $table where 1=1 " . $where . " limit 100 ", array());
+        $where = $where . " and " . $label . " like '%" . esc_sql($value) . "%' ";
+        
+$sql="select * from $table where 1=1 " . $where . " limit 100 ";
+        $query_string       = $wpdb->prepare($sql, array());
         $items       = $wpdb->get_results($query_string, ARRAY_A);
 
         $ret = '';
@@ -55,9 +56,16 @@ class MBM_Ipak_Ajax
             $ret .= sprintf('<div target-id="%s" onclick="ipak_auto_select_item(jQuery(this));" class="auto-select-item"  value="%s" title="%s">%s</div>', $name, $item["id"], $item[$label],  $item[$label]);
         }
 
+        if(count($items)==0)
+        {
+            $ret .= sprintf('<div  class="auto-select-item"  value="%s" title="%s">%s</div>',  0, 'موردی یافت نشد','موردی یافت نشد');
+
+        }
+
         echo json_encode([
             'success'       => true,
             'html'          => $ret,
+            'sql'          => $sql,
             'max_num_pages' => 1
         ]);
         die();
