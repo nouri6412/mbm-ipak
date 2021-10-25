@@ -23,6 +23,6 @@ function ipak_hesab_model_insert() {
         'action': 'ipak_hesab_model_insert',
         'test': 'hello test ajax'
     }, function (result) {
-        console.log(result);
+       // console.log(result);
     });
 }
