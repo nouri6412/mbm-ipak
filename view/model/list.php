@@ -15,7 +15,7 @@
         </div>
         
         <form action="?page=<?php echo !empty($_REQUEST["page"])?esc_attr(sanitize_text_field($_REQUEST["page"])) : ''; ?>" method="post" class="form-search-table">
-            <input value="<?php echo esc_attr($this->model_obj->text_search); ?>" id="search-main-table" name="search-main-table" class="form-control" placeholder="جستجو.." />
+            <input value="<?php echo !empty($_REQUEST["page"])?esc_attr(get_option(sanitize_text_field($_REQUEST["page"]). "_search")) : ''; ?>" id="search-main-table" name="search-main-table" class="form-control" placeholder="جستجو.." />
             <input class="btn btn-primary" type="submit" value="بگرد" />
         </form>
     </div>

@@ -200,19 +200,32 @@ class MBM_Ipak_Ajax_Form
         global $wpdb;
         $values = $this->get_values($field);
         $table = $field["type"]["select"]["model"];
+        $title_value="";
+        $ret='';
+
+        if($values["value"] > 0 || $values["value"] < 0)
+        {
+            $sql="select * from $table where  ".$field["type"]["select"]["key"]."=".$values["value"];
+            $query_string       = $wpdb->prepare($sql, array());
+            $items       = $wpdb->get_results($query_string, ARRAY_A);
+            $title_value=$items[0][$field["type"]["select"]["label"]];
+           // $ret .= $sql;
+        }
 
         $where = '';
 
-        if (isset($field["type"]["select"]["where"])) {
+        if (isset($field["type"]["select"]["where"])&& strlen(trim($field["type"]["select"]["where"]))>0) {
             $where = " and " . $field["type"]["select"]["where"];
         }
 
-        $ret = sprintf('<div id="%s" class="%s form-group auto-select-box">', esc_html($field["title"] . "_box_auto"), esc_attr($values["class"]));
+        $ret .= sprintf('<div id="%s" class="%s form-group auto-select-box">', esc_html($field["title"] . "_box_auto"), esc_attr($values["class"]));
         $ret .= sprintf('<label class="label-control">%s</label>', esc_html($values["label_title"]));
+        $ret .= sprintf('<input model-label="%s" model-table="%s" model-where="%s" onKeyUp="ipak_auto_select_item_key_down(jQuery(this))" autocomplete="off" target-id="%s" id="%s"  class="form-control" value="%s" onclick="ipak_auto_select_input(jQuery(this));" />', $field["type"]["select"]["label"], $table, $where, esc_html($field["title"]), esc_html($field["title"] . "_auto_complete"), esc_html($title_value));
         $ret .= sprintf('<input type="hidden" id="%s" name="%s" value="%s" />', esc_html($field["title"]), esc_html($field["title"]), esc_html($values["value"]));
-        $ret .= sprintf('<input model-label="%s" model-table="%s" model-where="%s" onKeyUp="ipak_auto_select_item_key_down(jQuery(this))" autocomplete="off" target-id="%s" id="%s"  class="form-control" value="%s" onclick="ipak_auto_select_input(jQuery(this));" />', $field["type"]["select"]["label"], $table, $where, esc_html($field["title"]), esc_html($field["title"] . "_auto_complete"), esc_html($values["value"]));
 
-        $query_string       = $wpdb->prepare("select * from $table where 1=1 " . $where . " limit 100 ", array());
+        $sql="select * from $table where 1=1 " . $where . " limit 100 ";
+        
+        $query_string       = $wpdb->prepare($sql, array());
         $items       = $wpdb->get_results($query_string, ARRAY_A);
 
         $ret .= '<div class="auto-select"  class="form-control ' . $values["input_class"] . '">';
@@ -220,17 +233,22 @@ class MBM_Ipak_Ajax_Form
         foreach ($items  as $item) {
             $selected = "";
             if ($values["value"] == $item["id"])
-                $selected = "selected";
+            {
+                //$edit_id = $item["id"];
+            }
+               
             // for ($x = 0; $x < 50; $x++) {
             //     $ret .= sprintf('<div onclick="ipak_auto_select_item(jQuery(this));" class="auto-select-item" %s value="%s">%s</div>', esc_attr($selected), esc_attr($item["id"]), esc_html($item[$field["type"]["select"]["label"]]));
             // }
-            $ret .= sprintf('<div target-id="%s" onclick="ipak_auto_select_item(jQuery(this));" class="auto-select-item" %s value="%s" title="%s" >%s</div>', esc_html($field["title"]), esc_attr($selected), esc_attr($item["id"]), esc_html($item[$field["type"]["select"]["label"]]), esc_html($item[$field["type"]["select"]["label"]]));
+            $ret .= sprintf('<div target-id="%s" onclick="ipak_auto_select_item(jQuery(this));" class="auto-select-item" %s value="%s" title="%s" >%s</div>', esc_html($field["title"]), esc_attr($selected), esc_attr($item[$field["type"]["select"]["key"]]), esc_html($item[$field["type"]["select"]["label"]]), esc_html($item[$field["type"]["select"]["label"]]));
         }
 
         $ret .= sprintf("</div>");
 
         $ret .= sprintf('</div>');
 
+
+//$ret .= $sql;
         return $ret;
     }
 

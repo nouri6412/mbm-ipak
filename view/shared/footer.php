@@ -13,7 +13,7 @@
                 </div>
 
                 <!-- Modal body -->
-                <div class="modal-body">
+                <div style="min-height: 250px;" class="modal-body">
 
                 </div>
 
