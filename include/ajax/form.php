@@ -76,15 +76,12 @@ class MBM_Ipak_Ajax_Form
                     } else if ($field["type"]["type"] == "date") {
                         return $this->field_date($field);
                     } else if ($field["type"]["type"] == "select") {
-                        if(isset($field["type"]["auto-select"]) && $field["type"]["auto-select"])
-                        {
+                        if (isset($field["type"]["auto-select"]) && $field["type"]["auto-select"]) {
                             return $this->field_select_auto($field);
-                        }
-                        else
-                        {
+                        } else {
                             return $this->field_select($field);
-                        }                       
-                    } 
+                        }
+                    }
                 } else {
                     $field["type"]["type"] = "text";
                     return $this->field_text($field);
@@ -121,20 +118,20 @@ class MBM_Ipak_Ajax_Form
 
         $values["class"] = "col-md-4";
 
-        if (isset($values["type"]["class"])) {
+        if (isset($field["type"]["class"])) {
             $values["class"] = $values["type"]["class"];
         }
 
         $values["type_field"] = '';
 
-        if ($values["type"] == "number") {
+        if ($field["type"] == "number") {
             $values["type_field"]  = ' type="number" ';
         }
 
 
         $values["input_class"] = '';
 
-        if (isset($values["type"]["input_class"])) {
+        if (isset($field["type"]["input_class"])) {
             $values["input_class"] = $values["type"]["input_class"];
         }
 
@@ -210,11 +207,11 @@ class MBM_Ipak_Ajax_Form
             $where = " and " . $field["type"]["select"]["where"];
         }
 
-        $ret = sprintf('<div id="%s" class="%s form-group auto-select-box">',esc_html($field["title"]."_box_auto"), esc_attr($values["class"]));
+        $ret = sprintf('<div id="%s" class="%s form-group auto-select-box">', esc_html($field["title"] . "_box_auto"), esc_attr($values["class"]));
         $ret .= sprintf('<label class="label-control">%s</label>', esc_html($values["label_title"]));
         $ret .= sprintf('<input type="hidden" id="%s" name="%s" value="%s" />', esc_html($field["title"]), esc_html($field["title"]), esc_html($values["value"]));
-        $ret .= sprintf('<input model-label="%s" model-table="%s" model-where="%s" onKeyUp="ipak_auto_select_item_key_down(jQuery(this))" autocomplete="off" target-id="%s" id="%s"  class="form-control" value="%s" onclick="ipak_auto_select_input(jQuery(this));" />',$field["type"]["select"]["label"],$table,$where,esc_html($field["title"]), esc_html($field["title"]."_auto_complete"), esc_html($values["value"]));
-       
+        $ret .= sprintf('<input model-label="%s" model-table="%s" model-where="%s" onKeyUp="ipak_auto_select_item_key_down(jQuery(this))" autocomplete="off" target-id="%s" id="%s"  class="form-control" value="%s" onclick="ipak_auto_select_input(jQuery(this));" />', $field["type"]["select"]["label"], $table, $where, esc_html($field["title"]), esc_html($field["title"] . "_auto_complete"), esc_html($values["value"]));
+
         $query_string       = $wpdb->prepare("select * from $table where 1=1 " . $where . " limit 100 ", array());
         $items       = $wpdb->get_results($query_string, ARRAY_A);
 
@@ -227,7 +224,7 @@ class MBM_Ipak_Ajax_Form
             // for ($x = 0; $x < 50; $x++) {
             //     $ret .= sprintf('<div onclick="ipak_auto_select_item(jQuery(this));" class="auto-select-item" %s value="%s">%s</div>', esc_attr($selected), esc_attr($item["id"]), esc_html($item[$field["type"]["select"]["label"]]));
             // }
-            $ret .= sprintf('<div target-id="%s" onclick="ipak_auto_select_item(jQuery(this));" class="auto-select-item" %s value="%s" title="%s" >%s</div>',esc_html($field["title"]), esc_attr($selected), esc_attr($item["id"]), esc_html($item[$field["type"]["select"]["label"]]), esc_html($item[$field["type"]["select"]["label"]]));
+            $ret .= sprintf('<div target-id="%s" onclick="ipak_auto_select_item(jQuery(this));" class="auto-select-item" %s value="%s" title="%s" >%s</div>', esc_html($field["title"]), esc_attr($selected), esc_attr($item["id"]), esc_html($item[$field["type"]["select"]["label"]]), esc_html($item[$field["type"]["select"]["label"]]));
         }
 
         $ret .= sprintf("</div>");
@@ -263,9 +260,15 @@ class MBM_Ipak_Ajax_Form
     {
         $values = $this->get_values($field);
 
+        $height = '100px;';
+        if (isset($field["type"]["height"])) {
+            $height = $field["type"]["height"] . 'px;';
+        }
+       
+
         $ret = sprintf('<div class="%s form-group">', esc_attr($values["class"]));
         $ret .= sprintf('<label class="label-control">%s</label>', esc_html($values["label_title"]));
-        $ret .= sprintf('<textarea  id="%s" name="%s" %s class="form-control %s" >%s</textarea>', esc_attr($field["title"]), esc_attr($field["title"]), esc_attr($values["type_field"]), esc_attr($values["input_class"]), esc_html($values["value"]));
+        $ret .= sprintf('<textarea style="height: %s"  id="%s" name="%s" %s class="form-control %s" >%s</textarea>', $height, esc_attr($field["title"]), esc_attr($field["title"]), esc_attr($values["type_field"]), esc_attr($values["input_class"]), esc_html($values["value"]));
         $ret .= sprintf('</div>');
 
         return $ret;
