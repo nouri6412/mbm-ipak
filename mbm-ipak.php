@@ -7,16 +7,16 @@
  * that starts the plugin.
  *
  * @link              http://mbmti.ir
- * @since             2.0.3
+ * @since             2.0.6
  * @package           MBM_IPAK
  *
  * @wordpress-plugin
  * Plugin Name:       ایپک ( حسابداری )
  * Plugin URI:        http://mbmti.ir
  * Description:       سیستم حسابداری ایپک
- * Version:           2.0.3
+ * Version:           2.0.6
  * Author:            ایپک
- * Author URI:        http://mbmti.ir/Author
+ * Author URI:        http://mbmti.ir/our-team
  * Text Domain:       mbm-ipak
  * Domain Path:       /languages
  */
@@ -26,7 +26,7 @@ if (!defined('WPINC')) die;
 
 /* General Definition
 ******************************/
-define('MBM_IPAK_VERSION', '2.0.3');
+define('MBM_IPAK_VERSION', '2.0.6');
 
 define('MBM_IPAK_BASE', plugin_dir_path(__FILE__));
 define('MBM_IPAK_URI', plugin_dir_url(__FILE__));
@@ -59,9 +59,10 @@ foreach (glob(MBM_IPAK_Include."hooks/*.php") as $filename)
  $MBM_Ipak_Core;
 function MBM_Ipak_Core()
 {
-    global $MBM_Ipak_Core;
-    $MBM_Ipak_Core = new MBM_Ipak_Core();
+
 }
+global $MBM_Ipak_Core;
+$MBM_Ipak_Core = new MBM_Ipak_Core();
 
 
 add_action("init","MBM_Ipak_Core");

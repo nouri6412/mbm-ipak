@@ -29,7 +29,7 @@ $this->models["insert_cash"]["fields"] = array(
         "in_form" => true,
         "is_require" => true,
         "in_table" => true,
-        "type" => array("type" => "select", "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=2", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
+        "type" => array("type" => "select","auto-select"=>true, "select" => ["model"=> $wpdb->prefix . "hesab_model","where" => "type_id=2", "key" => "id", "label" => "title"], "size" => 50, "class" => "col-md-6")
     ),
     "mablagh" => array(
         "title" => "mablagh",

@@ -46,7 +46,8 @@ class MBM_Ipak_Ajax
 
         $where = $where . " and " . $label . " like '%" . esc_sql($value) . "%' ";
         
-$sql="select * from $table where 1=1 " . $where . " limit 100 ";
+       $sql="select * from $table where 1=1 " . $where . " limit 100 ";
+
         $query_string       = $wpdb->prepare($sql, array());
         $items       = $wpdb->get_results($query_string, ARRAY_A);
 
@@ -65,7 +66,7 @@ $sql="select * from $table where 1=1 " . $where . " limit 100 ";
         echo json_encode([
             'success'       => true,
             'html'          => $ret,
-            'sql'          => $sql,
+            'sql'          => '',
             'max_num_pages' => 1
         ]);
         die();
