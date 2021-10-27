@@ -17,6 +17,7 @@ class MBM_Ipak_Models_List extends WP_List_Table
     var $sql_count;
     var $is_search = false;
     var $text_search = '';
+    var $model_where = '';
     /** Class constructor */
     public function __construct($params = [])
     {
@@ -27,7 +28,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
         //  echo $this->where;
         $this->primary_key        = $this->model_obj["primary_key"];
         $this->columns            = $this->model_obj["fields"];
-        
+        $this->model_where            = $params["model_where"];
+
 
         // $MBM_Ipak_Models = new MBM_Ipak_Models;
         $this->data_model = $this->model_obj;
@@ -61,8 +63,8 @@ class MBM_Ipak_Models_List extends WP_List_Table
 
     function get_sql($per_page = 5, $page_number = 1, $all_data = false)
     {
-
-        $data = mbm_ipak\tools::get_sql($per_page, $page_number, $all_data, $this->model_table_name, $this->data_model["fields"], $this->where);
+        $model_where = $this->where . $this->model_where;
+        $data = mbm_ipak\tools::get_sql($per_page, $page_number, $all_data, $this->model_table_name, $this->data_model["fields"], $model_where);
 
         $this->sql_main = $data["sql"];
 

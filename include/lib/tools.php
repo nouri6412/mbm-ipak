@@ -320,7 +320,7 @@ class tools
                         $search = $search . $vir_search . " " . $field["title"] . " like '%" . $text_search . "%'";
                     }
                 } else if ((isset($field["is_title"]) && $field["is_title"]) || (isset($field["is_primary"]) && $field["is_primary"])) {
-                    $field_query .= $vir . $field["title"];
+                    $field_query .= $vir . "tb." . $field["title"];
 
                     if ($is_search) {
                         $search = $search . $vir_search . " " . $field["title"] . " like '%" . $text_search . "%'";
@@ -339,22 +339,17 @@ class tools
             }
         }
 
-
-
         if ($search == " and ( ") {
             $search = "";
         } else {
             $search = $search . " )";
         }
 
-
-
-
-        $sql = "select * from (SELECT $field_query FROM {$model_table_name} as tb where 1=1 $model_where) as tb_all" . ' where 1=1 ' . $search;
+        $sql = "select distinct  * from (SELECT $field_query FROM {$model_table_name} as tb left join $table_name tb_meta on tb.id=tb_meta.model_id where 1=1 $model_where) as tb_all" . ' where 1=1 ' . $search;
 
         $sql_count = "select count(*) from (SELECT $field_query FROM {$model_table_name} as tb where 1=1 $model_where) as tb_all" . ' where 1=1 ' . $search;
 
-        //echo $sql;
+
 
         if (!empty($_REQUEST['orderby'])) {
             $orderby = sanitize_text_field($_REQUEST['orderby']);
@@ -375,7 +370,7 @@ class tools
             $sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
         }
 
-
+       // echo $sql;
         return ["sql" => $sql, "sql_count" => $sql_count];
     }
     public static function get_type($field)

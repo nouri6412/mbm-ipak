@@ -289,13 +289,20 @@ class MBM_Ipak_Core
         if (count($model) == 0) {
             return;
         }
-
+       
+        $where='';
+        if(isset($model["where"]))
+        {
+            $where=$model["where"];
+        }
+        
         $MBM_Ipak_Models_List = new MBM_Ipak_Models_List(
             array(
                 "model" => $model_in,
                 "model_obj" => $model,
                 "model_table_name" => $wpdb->prefix . "hesab_model",
-                "where" => " and type_id='" . $model["id"] . "'"
+                "where" => " and type_id='" . $model["id"] . "'",
+                "model_where" => $where
             )
         );
 
