@@ -118,6 +118,7 @@ font-size: 24px;
     max-height: 193px;
     overflow: auto;
     display: none;
+    z-index: 1000;
 }
 
 .auto-select-box .auto-select .auto-select-item{
