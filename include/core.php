@@ -289,13 +289,12 @@ class MBM_Ipak_Core
         if (count($model) == 0) {
             return;
         }
-       
-        $where='';
-        if(isset($model["where"]))
-        {
-            $where=$model["where"];
+
+        $where = '';
+        if (isset($model["where"])) {
+            $where = $model["where"];
         }
-        
+
         $MBM_Ipak_Models_List = new MBM_Ipak_Models_List(
             array(
                 "model" => $model_in,
